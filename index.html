@@ -124,16 +124,22 @@ function profile(id){
   return true;
 }
 function category(id){
-  const c=catById(id); if(!c)return false;
-  const items=software.filter(s=>relations.some(r=>r.software_id===s.software_id && r.category_id===id));
+  const c=catById(id);
+  if(!c){
+    app.innerHTML=`<section><div class="back"><a href="./">← Back to directory</a></div><h1>Category not found</h1><p class="lead">This category could not be found in the directory.</p></section>`;
+    return;
+  }
+  const childCats = cats.filter(x=>x.parent_category_id===id);
+  const descendantIds = new Set([id, ...childCats.map(x=>x.category_id)]);
+  const items=software.filter(s=>relations.some(r=>r.software_id===s.software_id && descendantIds.has(r.category_id)));
   app.innerHTML=`<section>
     <div class="back"><a href="./">← Back to directory</a></div>
     <div class="eyebrow">Category</div>
     <h1>${esc(c.category_name)}</h1>
     <p class="lead">${esc(c.description || "Software listed in this category.")}</p>
-    <section class="section"><div>${items.length ? softwareList(items) : `<div class="status">No software is currently listed in this category.</div>`}</div></section>
+    ${childCats.length ? `<section class="section"><h2>Subcategories</h2><div class="catlist">${childCats.map(x=>`<div class="cat"><a href="?category=${encodeURIComponent(x.category_id)}">${esc(x.category_name)}</a><p>${esc(x.description || "")}</p></div>`).join("")}</div></section>` : ""}
+    <section class="section"><h2>Software</h2><div>${items.length ? softwareList(items) : `<div class="status">No software is currently listed in this category.</div>`}</div></section>
   </section>`;
-  return true;
 }
 async function load(){
   const [c,s,r,a]=await Promise.all([
@@ -146,9 +152,15 @@ async function load(){
   if(errors.length) throw errors[0].error;
   cats=c.data||[]; software=s.data||[]; relations=r.data||[]; affiliates=a.data||[];
   const p=new URLSearchParams(location.search);
-  if(p.has("software") && !profile(p.get("software"))) home();
-  else if(p.has("category") && !category(p.get("category"))) home();
-  else home();
+  if(p.has("software")){
+    if(!profile(p.get("software"))) home();
+    return;
+  }
+  if(p.has("category")){
+    category(p.get("category"));
+    return;
+  }
+  home();
 }
 load().catch(err=>{
   console.error(err);
