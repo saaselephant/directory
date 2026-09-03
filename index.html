@@ -1,29 +1,159 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>SaaSElephant — Software Directory</title>
 <meta name="description" content="Discover software for business, marketing, finance, design, HR, security and IT.">
 <style>
-:root{--ink:#172033;--muted:#667085;--line:#e6e8ec;--blue:#1769e0;--soft:#f7f9fc}*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;color:var(--ink);line-height:1.55}a{color:var(--blue);text-decoration:none}a:hover{text-decoration:underline}.nav{border-bottom:1px solid var(--line);padding:18px 24px;position:sticky;top:0;background:#fff}.navin,.wrap,footer div{max-width:1180px;margin:auto}.brand{font-size:22px;font-weight:750;color:var(--ink)}.brand span{font-weight:400}.wrap{padding:45px 24px}.eyebrow{text-transform:uppercase;font-size:12px;font-weight:700;letter-spacing:1.4px;color:var(--blue)}h1{font-size:42px;line-height:1.12;margin:10px 0}.lead{font-size:18px;color:var(--muted);max-width:760px}.search{display:flex;gap:10px;margin:26px 0}.search input{flex:1;padding:14px;border:1px solid #ccd2db;border-radius:8px;font-size:16px}.btn{background:var(--blue);color:white;border:0;border-radius:8px;padding:13px 20px;font-weight:700}.section{border-top:1px solid var(--line);padding:34px 0}.catlist{display:grid;grid-template-columns:1fr 1fr;gap:0 55px}.cat,.software{padding:18px 0;border-bottom:1px solid var(--line)}.cat a{font-size:18px;font-weight:650}.cat p,.software p{margin:5px 0;color:var(--muted);font-size:14px}.software h3{margin:0;font-size:20px}.vendor{font-size:13px;color:var(--muted)}.tag{display:inline-block;background:var(--soft);padding:3px 8px;border-radius:5px;margin:3px 5px 0 0;font-size:12px}.meta{font-size:13px;color:var(--muted);margin-top:8px}.back{margin-bottom:25px;font-size:14px}.profile{max-width:850px}.box{border-top:1px solid var(--line);padding:22px 0}.box h3{text-transform:uppercase;font-size:14px;letter-spacing:.8px}.affiliate{background:var(--soft);border:1px solid var(--line);padding:20px;border-radius:10px}.cta{display:inline-block;background:var(--blue);color:#fff;padding:12px 18px;border-radius:7px;font-weight:700}.notice{font-size:12px;color:var(--muted);margin-top:10px}footer{border-top:1px solid var(--line);margin-top:40px}footer div{padding:24px;color:var(--muted);font-size:13px}@media(max-width:700px){.catlist{grid-template-columns:1fr}h1{font-size:34px}.wrap{padding:32px 18px}.search{display:block}.search .btn{margin-top:8px;width:100%}}
-</style></head><body>
+:root{--ink:#172033;--muted:#667085;--line:#e6e8ec;--blue:#1769e0;--soft:#f7f9fc}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;color:var(--ink);line-height:1.55}
+a{color:var(--blue);text-decoration:none}a:hover{text-decoration:underline}
+.nav{border-bottom:1px solid var(--line);padding:18px 24px;position:sticky;top:0;background:#fff;z-index:5}
+.navin,.wrap,footer div{max-width:1180px;margin:auto}.brand{font-size:22px;font-weight:750;color:var(--ink)}.brand span{font-weight:400}
+.wrap{padding:45px 24px}.eyebrow{text-transform:uppercase;font-size:12px;font-weight:700;letter-spacing:1.4px;color:var(--blue)}
+h1{font-size:42px;line-height:1.12;margin:10px 0}.lead{font-size:18px;color:var(--muted);max-width:760px}
+.search{display:flex;gap:10px;margin:26px 0}.search input{flex:1;padding:14px;border:1px solid #ccd2db;border-radius:8px;font-size:16px}
+.btn{background:var(--blue);color:white;border:0;border-radius:8px;padding:13px 20px;font-weight:700;cursor:pointer}
+.section{border-top:1px solid var(--line);padding:34px 0}.catlist{display:grid;grid-template-columns:1fr 1fr;gap:0 55px}
+.cat,.software{padding:18px 0;border-bottom:1px solid var(--line)}.cat a{font-size:18px;font-weight:650}
+.cat p,.software p{margin:5px 0;color:var(--muted);font-size:14px}.software h3{margin:0;font-size:20px}
+.vendor{font-size:13px;color:var(--muted)}.tag{display:inline-block;background:var(--soft);padding:3px 8px;border-radius:5px;margin:3px 5px 0 0;font-size:12px}
+.meta{font-size:13px;color:var(--muted);margin-top:8px}.back{margin-bottom:25px;font-size:14px}.profile{max-width:850px}
+.box{border-top:1px solid var(--line);padding:22px 0}.box h3{text-transform:uppercase;font-size:14px;letter-spacing:.8px}
+.affiliate{background:var(--soft);border:1px solid var(--line);padding:20px;border-radius:10px}.cta{display:inline-block;background:var(--blue);color:#fff;padding:12px 18px;border-radius:7px;font-weight:700}
+.notice{font-size:12px;color:var(--muted);margin-top:10px}.status{font-size:14px;color:var(--muted);padding:18px 0}
+footer{border-top:1px solid var(--line);margin-top:40px}footer div{padding:24px;color:var(--muted);font-size:13px}
+@media(max-width:700px){.catlist{grid-template-columns:1fr}h1{font-size:34px}.wrap{padding:32px 18px}.search{display:block}.search .btn{margin-top:8px;width:100%}}
+</style>
+</head>
+<body>
 <div class="nav"><div class="navin"><a class="brand" href="./">SaaS<span>Elephant</span></a></div></div>
-<main class="wrap" id="app"></main><footer><div>© 2026 SaaSElephant · Software discovery and affiliate directory</div></footer>
+<main class="wrap" id="app"><div class="status">Loading software directory…</div></main>
+<footer><div>© 2026 SaaSElephant · Software discovery and affiliate directory</div></footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const cats=[['CAT001','Business & Productivity','Manage work, teams, projects, and everyday business tasks.'],['CAT002','Marketing & Sales','Find tools for marketing, customers, sales, and growth.'],['CAT003','Finance & Accounting','Manage accounting, expenses, billing, taxes, and finances.'],['CAT004','Design & Creative','Create designs, graphics, videos, presentations, and more.'],['CAT005','HR & Operations','Manage people, payroll, performance, time, and operations.'],['CAT006','Security & IT','Protect data, manage IT, secure systems, and support users.']];
-const software=[
-['SE001','HubSpot','CRM and marketing software for managing customers, sales, and growth.','CRM & Lead Management','CRM; Marketing Automation; Sales; Customer Service; Analytics','CRM, Marketing Automation, Sales, Customer Service, Analytics','https://www.hubspot.com'],
-['SE002','Pipedrive','Sales CRM software for managing leads, deals, pipelines, and customer relationships.','CRM & Lead Management','Sales CRM; Lead Management; Pipeline Management; Sales Automation; Reporting','Sales teams and small businesses','https://www.pipedrive.com'],
-['SE003','ClickUp','Productivity software for managing projects, tasks, teams, and workflows.','Manage Projects & Teams','Project Management; Task Management; Collaboration; Documents; Automation','Teams and businesses','https://clickup.com'],
-['SE004','monday.com','Work management software for projects, teams, workflows, and business operations.','Manage Projects & Teams','Project Management; Work Management; CRM; Automation; Collaboration','Teams and businesses','https://monday.com'],
-['SE005','Notion','Workspace software for notes, documents, knowledge, projects, and collaboration.','Documents & Collaboration','Documents; Knowledge Management; Project Management; Collaboration; AI','Individuals and teams','https://www.notion.com'],
-['SE006','Zapier','Automation software for connecting apps and automating repetitive workflows.','Workflow & Automation','Workflow Automation; App Integrations; Task Automation; AI Automation','Businesses and teams','https://zapier.com'],
-['SE007','Semrush','Digital marketing software for SEO, content, advertising, and competitive research.','SEO & Content','SEO; Keyword Research; Competitive Research; Content Marketing; Analytics','Marketing teams and agencies','https://www.semrush.com'],
-['SE008','ActiveCampaign','Marketing automation software for email marketing, CRM, and customer engagement.','Email Marketing','Email Marketing; Marketing Automation; CRM; Customer Engagement; AI','Small and growing businesses','https://www.activecampaign.com'],
-['SE009','GetResponse','Email marketing and automation software for growing businesses and online marketers.','Email Marketing','Email Marketing; Marketing Automation; Landing Pages; Lead Generation; Webinars','Marketers and small businesses','https://www.getresponse.com'],
-['SE010','Canva','Design software for creating graphics, presentations, documents, videos, and marketing content.','Graphic Design','Graphic Design; Presentations; Video; Templates; Brand Design','Individuals, teams, and businesses','https://www.canva.com'],
-['SE011','FreshBooks','Accounting and invoicing software for small businesses and self-employed professionals.','Accounting Software','Invoicing; Accounting; Expenses; Payments; Time Tracking','Small businesses and freelancers','https://www.freshbooks.com'],
-['SE012','1Password','Password management software for securely protecting business and personal credentials.','Identity & Access Management','Password Management; Security; Secrets Management; Access Control','Individuals, teams, and businesses','https://1password.com']];
-function list(items){return items.map(s=>`<article class="software"><h3><a href="?software=${s[0]}">${s[1]}</a></h3><div class="vendor">${s[0]}</div><p>${s[2]}</p><div>${s[4].split('; ').map(x=>`<span class="tag">${x}</span>`).join('')}</div><div class="meta">Best for: ${s[5]}</div></article>`).join('')}
-function home(){app.innerHTML=`<section><div class="eyebrow">Software directory</div><h1>Find the right software for your business.</h1><p class="lead">Explore software by category, see what each tool is built for, and visit the vendor when you are ready to learn more.</p><div class="search"><input id="q" placeholder="Search software by name, feature, or category"><button class="btn" onclick="search()">Search</button></div></section><section class="section"><h2>Software Categories</h2><p class="lead" style="font-size:15px">Browse software by what it helps you do.</p><div class="catlist">${cats.map(c=>`<div class="cat"><a href="?category=${encodeURIComponent(c[1])}">${c[1]}</a><p>${c[2]}</p></div>`).join('')}</div></section><section class="section"><h2>Software</h2><div id="results">${list(software)}</div></section>`}function search(){const q=document.getElementById('q').value.toLowerCase();document.getElementById('results').innerHTML=list(software.filter(s=>(s[1]+' '+s[2]+' '+s[3]+' '+s[4]+' '+s[5]).toLowerCase().includes(q)))}function profile(id){const s=software.find(x=>x[0]===id);if(!s)return false;app.innerHTML=`<section class="profile"><div class="back"><a href="./">← Back to directory</a></div><div class="eyebrow">Software profile</div><h1>${s[1]}</h1><div class="vendor">${s[0]}</div><div class="box"><p>${s[2]}</p></div><div class="box"><h3>Best for</h3><p>${s[5]}</p></div><div class="box"><h3>Key features</h3><p>${s[4].split('; ').map(x=>`<span class="tag">${x}</span>`).join('')}</p></div><div class="box"><h3>Category</h3><p><a href="?category=${encodeURIComponent(s[3])}">${s[3]}</a></p></div><div class="affiliate"><strong>Explore ${s[1]}</strong><p>Visit the vendor to learn more and choose the plan that fits your needs.</p><a class="cta" href="${s[6]}" target="_blank" rel="sponsored noopener">Visit ${s[1]}</a><div class="notice">SaaSElephant may earn a commission when you use qualifying affiliate links.</div></div></section>`;return true}function category(name){const items=software.filter(s=>s[3]===name);if(!items.length)return false;app.innerHTML=`<section><div class="back"><a href="./">← Back to directory</a></div><div class="eyebrow">Category</div><h1>${name}</h1><p class="lead">Software listed in this category.</p><section class="section"><div>${list(items)}</div></section></section>`;return true}const p=new URLSearchParams(location.search);if(p.has('software')&&!profile(p.get('software')))home();else if(p.has('category')&&!category(p.get('category')))home();else if(!p.has('software')&&!p.has('category'))home();
-</script></body></html>
+const SUPABASE_URL = "https://gwdpcrmivoehkjlauqfi.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_CaeRqOwr9kQXL6pf02Y8GQ_yAtGPqjy";
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+
+let cats = [], software = [], relations = [], affiliates = [];
+
+function esc(v){
+  return String(v ?? "").replace(/[&<>"']/g, c => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[c]));
+}
+function tags(v){
+  return String(v || "").split(";").map(x=>x.trim()).filter(Boolean)
+    .map(x=>`<span class="tag">${esc(x)}</span>`).join("");
+}
+function catById(id){ return cats.find(c=>c.category_id===id); }
+function categoriesForSoftware(id){
+  return relations.filter(r=>r.software_id===id)
+    .map(r=>catById(r.category_id)).filter(Boolean);
+}
+function primaryCategory(id){
+  const r = relations.find(x=>x.software_id===id && x.primary_category);
+  return r ? catById(r.category_id) : categoriesForSoftware(id)[0];
+}
+function affiliateFor(id){
+  return affiliates.find(a=>a.software_id===id && a.status==="Active");
+}
+function softwareList(items){
+  return items.map(s=>{
+    const pc=primaryCategory(s.software_id);
+    return `<article class="software">
+      <h3><a href="?software=${encodeURIComponent(s.software_id)}">${esc(s.software_name)}</a></h3>
+      <div class="vendor">${esc(s.software_id)} · ${esc(s.vendor)}</div>
+      <p>${esc(s.short_description)}</p>
+      <div>${tags(s.key_features)}</div>
+      <div class="meta">Best for: ${esc(s.best_for || "Businesses and teams")}</div>
+      ${pc ? `<div class="meta">Category: <a href="?category=${encodeURIComponent(pc.category_id)}">${esc(pc.category_name)}</a></div>` : ""}
+    </article>`;
+  }).join("");
+}
+function home(){
+  app.innerHTML=`<section>
+    <div class="eyebrow">Software directory</div>
+    <h1>Find the right software for your business.</h1>
+    <p class="lead">Explore software by category, see what each tool is built for, and visit the vendor when you are ready to learn more.</p>
+    <div class="search"><input id="q" placeholder="Search software by name, feature, or category"><button class="btn" onclick="search()">Search</button></div>
+  </section>
+  <section class="section">
+    <h2>Software Categories</h2>
+    <p class="lead" style="font-size:15px">Browse software by what it helps you do.</p>
+    <div class="catlist">${cats.filter(c=>c.level===1).map(c=>`<div class="cat"><a href="?category=${encodeURIComponent(c.category_id)}">${esc(c.category_name)}</a><p>${esc(c.description)}</p></div>`).join("")}</div>
+  </section>
+  <section class="section"><h2>Software</h2><div id="results">${softwareList(software)}</div></section>`;
+}
+function search(){
+  const q=(document.getElementById("q").value||"").toLowerCase().trim();
+  const results=software.filter(s=>{
+    const names=categoriesForSoftware(s.software_id).map(c=>c.category_name).join(" ");
+    return [s.software_name,s.vendor,s.short_description,s.full_description,s.best_for,s.key_features,s.pricing,names]
+      .join(" ").toLowerCase().includes(q);
+  });
+  document.getElementById("results").innerHTML=results.length ? softwareList(results) : `<div class="status">No software matched your search.</div>`;
+}
+function profile(id){
+  const s=software.find(x=>x.software_id===id); if(!s)return false;
+  const catsFor=categoriesForSoftware(id);
+  const a=affiliateFor(id);
+  const destination=a && a.affiliate_url && !a.affiliate_url.startsWith("Generated") ? a.affiliate_url : s.website_url;
+  app.innerHTML=`<section class="profile">
+    <div class="back"><a href="./">← Back to directory</a></div>
+    <div class="eyebrow">Software profile</div>
+    <h1>${esc(s.software_name)}</h1>
+    <div class="vendor">${esc(s.software_id)} · ${esc(s.vendor)}</div>
+    <div class="box"><p>${esc(s.full_description || s.short_description)}</p></div>
+    <div class="box"><h3>Best for</h3><p>${esc(s.best_for || "Businesses and teams")}</p></div>
+    <div class="box"><h3>Key features</h3><p>${tags(s.key_features)}</p></div>
+    <div class="box"><h3>Pricing</h3><p>${esc(s.pricing || "See vendor for current pricing.")}</p>
+      <p class="meta">${s.free_plan ? "Free plan available" : "No free plan listed"} · ${s.free_trial ? "Free trial available" : "No free trial listed"}</p>
+    </div>
+    <div class="box"><h3>Categories</h3><p>${catsFor.map(c=>`<a href="?category=${encodeURIComponent(c.category_id)}">${esc(c.category_name)}</a>`).join(" · ") || "Uncategorized"}</p></div>
+    <div class="affiliate">
+      <strong>Explore ${esc(s.software_name)}</strong>
+      <p>Visit the vendor to learn more and choose the plan that fits your needs.</p>
+      <a class="cta" href="${esc(destination)}" target="_blank" rel="sponsored noopener">Visit ${esc(s.software_name)}</a>
+      <div class="notice">SaaSElephant may earn a commission when you use qualifying affiliate links.</div>
+    </div>
+  </section>`;
+  return true;
+}
+function category(id){
+  const c=catById(id); if(!c)return false;
+  const items=software.filter(s=>relations.some(r=>r.software_id===s.software_id && r.category_id===id));
+  app.innerHTML=`<section>
+    <div class="back"><a href="./">← Back to directory</a></div>
+    <div class="eyebrow">Category</div>
+    <h1>${esc(c.category_name)}</h1>
+    <p class="lead">${esc(c.description || "Software listed in this category.")}</p>
+    <section class="section"><div>${items.length ? softwareList(items) : `<div class="status">No software is currently listed in this category.</div>`}</div></section>
+  </section>`;
+  return true;
+}
+async function load(){
+  const [c,s,r,a]=await Promise.all([
+    db.from("categories").select("*").eq("status","Active").order("level").order("category_name"),
+    db.from("software").select("*").eq("status","Candidate").order("software_name"),
+    db.from("software_categories").select("*"),
+    db.from("affiliate_programs").select("*")
+  ]);
+  const errors=[c,s,r,a].filter(x=>x.error);
+  if(errors.length) throw errors[0].error;
+  cats=c.data||[]; software=s.data||[]; relations=r.data||[]; affiliates=a.data||[];
+  const p=new URLSearchParams(location.search);
+  if(p.has("software") && !profile(p.get("software"))) home();
+  else if(p.has("category") && !category(p.get("category"))) home();
+  else home();
+}
+load().catch(err=>{
+  console.error(err);
+  app.innerHTML=`<section><div class="eyebrow">Software directory</div><h1>We’re updating the directory.</h1><p class="lead">The software database could not be loaded right now. Please try again shortly.</p></section>`;
+});
+</script>
+</body>
+</html>
