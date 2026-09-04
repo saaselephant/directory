@@ -63,14 +63,13 @@ as $$
   limit 1;
 $$;
 
-revoke execute on function public.saaselephant_select_verified_affiliate_link
+revoke execute on function public.saaselephant_select_verified_affiliate_link(text, timestamptz)
   from public, anon, authenticated;
 
 create trigger saaselephant_software_updated_at
 before update on public.software
 for each row execute function public.saaselephant_set_updated_at();
 
-commit;
 create trigger saaselephant_categories_updated_at
 before update on public.categories
 for each row execute function public.saaselephant_set_updated_at();
@@ -101,3 +100,5 @@ for each row execute function public.saaselephant_set_updated_at();
 create trigger saaselephant_comparison_products_updated_at
 before update on public.comparison_page_products
 for each row execute function public.saaselephant_set_updated_at();
+
+commit;

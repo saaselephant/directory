@@ -45,7 +45,7 @@ alter table public.media_assets enable row level security;
 revoke all on table public.media_assets from anon, authenticated;
 
 create table public.affiliate_links as
-select s.software_id, a.affiliate_program_id
+select s.software_id, a.affiliate_id as affiliate_program_id
 from public.software as s
 cross join public.affiliate_programs as a
 with no data;
@@ -80,7 +80,7 @@ alter table public.affiliate_links
   add constraint saaselephant_affiliate_links_software_fk foreign key (software_id)
     references public.software(software_id) on delete cascade,
   add constraint saaselephant_affiliate_links_program_fk foreign key (affiliate_program_id)
-    references public.affiliate_programs(affiliate_program_id) on delete set null;
+    references public.affiliate_programs(affiliate_id) on delete set null;
 alter table public.affiliate_links enable row level security;
 revoke all on table public.affiliate_links from anon, authenticated;
 
