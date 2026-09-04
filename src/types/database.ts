@@ -1,25 +1,15 @@
 /**
- * Provisional Phase 2 contract. Do not use these types for database I/O until the
- * production preflight confirms legacy ID types and Supabase-generated Database
- * types replace the provisional ID markers below.
+ * Raw Supabase schema contract derived from the verified production inventory and
+ * the applied Phase 2 migrations. Keep application view models in a separate file.
  */
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
-declare const provisionalIdBrand: unique symbol;
-declare const uuidBrand: unique symbol;
-declare const exactNumericBrand: unique symbol;
-declare const int8Brand: unique symbol;
-
-export type ProvisionalLegacyId<Entity extends string> = {
-  readonly [provisionalIdBrand]: Entity;
-};
-export type Uuid = string & { readonly [uuidBrand]: "uuid" };
-export type ExactNumeric = string & { readonly [exactNumericBrand]: "numeric" };
-export type Int8String = string & { readonly [int8Brand]: "int8" };
-
-export type SoftwareId = ProvisionalLegacyId<"software">;
-export type CategoryId = ProvisionalLegacyId<"category">;
-export type AffiliateProgramId = ProvisionalLegacyId<"affiliate_program">;
+export type SoftwareId = string;
+export type CategoryId = string;
+export type AffiliateProgramId = string;
+export type Uuid = string;
+export type ExactNumeric = string;
+export type Int8String = string;
 
 export type PublicationStatus = "draft" | "in_review" | "published" | "archived";
 export type VerificationStatus = "needs_verification" | "pending" | "verified" | "failed" | "stale";
@@ -41,8 +31,20 @@ export type EntityType =
 
 export interface SoftwareRow {
   software_id: SoftwareId;
+  software_name: string;
+  vendor: string;
+  website_url: string;
+  short_description: string;
+  full_description: string | null;
+  best_for: string | null;
+  key_features: string | null;
+  pricing: string | null;
+  free_plan: boolean | null;
+  free_trial: boolean | null;
+  status: string;
+  last_verified: string | null;
   vendor_id: Uuid | null;
-  slug: string | null;
+  slug: string;
   publication_status: PublicationStatus | null;
   verification_status: VerificationStatus | null;
   verified_at: string | null;
@@ -56,7 +58,12 @@ export interface SoftwareRow {
 
 export interface CategoryRow {
   category_id: CategoryId;
-  slug: string | null;
+  category_name: string;
+  parent_category_id: CategoryId | null;
+  level: number | null;
+  slug: string;
+  description: string | null;
+  status: string;
   publication_status: PublicationStatus | null;
   sort_order: number | null;
   seo_title: string | null;
@@ -68,14 +75,28 @@ export interface CategoryRow {
 export interface SoftwareCategoryRow {
   software_id: SoftwareId;
   category_id: CategoryId;
-  primary_category: boolean | null;
+  primary_category: boolean;
+  verified_on: string | null;
   created_at: string | null;
   updated_at: string | null;
 }
 
 export interface AffiliateProgramRow {
-  affiliate_program_id: AffiliateProgramId;
+  affiliate_id: AffiliateProgramId;
   software_id: SoftwareId;
+  program_name: string;
+  affiliate_program_url: string | null;
+  affiliate_network: string | null;
+  commission_type: string | null;
+  commission: string | null;
+  recurring_commission: string | null;
+  renewal_terms: string | null;
+  cookie_duration: string | null;
+  affiliate_url: string | null;
+  status: string;
+  last_verified: string | null;
+  source_url: string | null;
+  notes: string | null;
   network: string | null;
   external_program_reference: string | null;
   program_terms: Json | null;
@@ -261,51 +282,89 @@ export interface AuditLogRow {
 
 type InsertShape<Row, Required extends keyof Row> = Pick<Row, Required> &
   Partial<Omit<Row, Required>>;
-type TableContract<Row, RequiredInsert extends keyof Row> = {
+type DatabaseRelationship = {
+  foreignKeyName: string;
+  columns: string[];
+  isOneToOne: boolean;
+  referencedRelation: string;
+  referencedColumns: string[];
+};
+type TableContract<
+  Row,
+  RequiredInsert extends keyof Row,
+  Relationships extends DatabaseRelationship[] = [],
+> = {
   Row: Row;
   Insert: InsertShape<Row, RequiredInsert>;
   Update: Partial<Row>;
+  Relationships: Relationships;
 };
 
-export interface Phase2DatabaseContract {
-  Tables: {
-    software: TableContract<SoftwareRow, "software_id">;
-    categories: TableContract<CategoryRow, "category_id">;
-    software_categories: TableContract<SoftwareCategoryRow, "software_id" | "category_id">;
-    affiliate_programs: TableContract<AffiliateProgramRow, "affiliate_program_id" | "software_id">;
-    vendors: TableContract<VendorRow, "vendor_name" | "canonical_name" | "slug">;
-    affiliate_links: TableContract<
-      AffiliateLinkRow,
-      "software_id" | "destination_url" | "canonical_destination_url"
-    >;
-    features: TableContract<FeatureRow, "feature_name" | "slug">;
-    software_features: TableContract<SoftwareFeatureRow, "software_id" | "feature_id">;
-    software_relationships: TableContract<
-      SoftwareRelationshipRow,
-      "source_software_id" | "target_software_id" | "relationship_type"
-    >;
-    comparison_pages: TableContract<ComparisonPageRow, "slug" | "title">;
-    comparison_page_products: TableContract<
-      ComparisonPageProductRow,
-      "software_id" | "comparison_page_id"
-    >;
-    media_assets: TableContract<MediaAssetRow, "media_type">;
-    user_roles: TableContract<UserRoleRow, "user_id" | "role">;
-    affiliate_clicks: TableContract<AffiliateClickRow, "affiliate_link_id">;
-    affiliate_conversions: TableContract<
-      AffiliateConversionRow,
-      "network" | "conversion_status" | "occurred_at"
-    >;
-    verification_events: TableContract<
-      VerificationEventRow,
-      "entity_type" | "entity_id" | "subject" | "result"
-    >;
-    audit_log: TableContract<AuditLogRow, "action" | "entity_type">;
-  };
-  Functions: {
-    saaselephant_select_verified_affiliate_link: {
-      Args: { requested_software_id: SoftwareId; at_time?: string };
-      Returns: AffiliateLinkRow[];
+export interface Database {
+  public: {
+    Tables: {
+      software: TableContract<
+        SoftwareRow,
+        "software_id",
+        [
+          {
+            foreignKeyName: "saaselephant_software_vendor_fk";
+            columns: ["vendor_id"];
+            isOneToOne: false;
+            referencedRelation: "vendors";
+            referencedColumns: ["vendor_id"];
+          },
+        ]
+      >;
+      categories: TableContract<CategoryRow, "category_id">;
+      software_categories: TableContract<SoftwareCategoryRow, "software_id" | "category_id">;
+      affiliate_programs: TableContract<
+        AffiliateProgramRow,
+        "affiliate_id" | "software_id" | "program_name"
+      >;
+      vendors: TableContract<VendorRow, "vendor_name" | "canonical_name" | "slug">;
+      affiliate_links: TableContract<
+        AffiliateLinkRow,
+        "software_id" | "destination_url" | "canonical_destination_url"
+      >;
+      features: TableContract<FeatureRow, "feature_name" | "slug">;
+      software_features: TableContract<SoftwareFeatureRow, "software_id" | "feature_id">;
+      software_relationships: TableContract<
+        SoftwareRelationshipRow,
+        "source_software_id" | "target_software_id" | "relationship_type"
+      >;
+      comparison_pages: TableContract<ComparisonPageRow, "slug" | "title">;
+      comparison_page_products: TableContract<
+        ComparisonPageProductRow,
+        "software_id" | "comparison_page_id"
+      >;
+      media_assets: TableContract<MediaAssetRow, "media_type">;
+      user_roles: TableContract<UserRoleRow, "user_id" | "role">;
+      affiliate_clicks: TableContract<AffiliateClickRow, "affiliate_link_id">;
+      affiliate_conversions: TableContract<
+        AffiliateConversionRow,
+        "network" | "conversion_status" | "occurred_at"
+      >;
+      verification_events: TableContract<
+        VerificationEventRow,
+        "entity_type" | "entity_id" | "subject" | "result"
+      >;
+      audit_log: TableContract<AuditLogRow, "action" | "entity_type">;
     };
+    Views: Record<string, never>;
+    Functions: {
+      saaselephant_select_verified_affiliate_link: {
+        Args: { requested_software_id: SoftwareId; at_time?: string };
+        Returns: AffiliateLinkRow[];
+      };
+    };
+    Enums: {
+      saaselephant_publication_status: PublicationStatus;
+      saaselephant_verification_status: VerificationStatus;
+      saaselephant_record_status: RecordStatus;
+      saaselephant_platform_role: PlatformRole;
+      saaselephant_entity_type: EntityType;
+    };
+    CompositeTypes: Record<string, never>;
   };
 }

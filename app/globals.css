@@ -112,3 +112,73 @@ h1 {
 .placeholder-page {
   padding-block: 6rem;
 }
+
+.catalog-page {
+  max-width: 72rem;
+  margin-inline: auto;
+  padding: 6rem 1.5rem;
+}
+
+.catalog-header {
+  margin-bottom: 2.5rem;
+}
+
+.catalog-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+}
+
+.catalog-card,
+.catalog-state {
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  background: white;
+  padding: 1.5rem;
+}
+
+.catalog-card h2,
+.catalog-state h2 {
+  margin-top: 0;
+}
+
+.catalog-card > p,
+.catalog-state p,
+.catalog-vendor {
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.catalog-card-heading h2 {
+  margin-bottom: 0.25rem;
+}
+
+.catalog-vendor {
+  margin-bottom: 1rem;
+}
+
+.catalog-detail {
+  font-size: 0.9rem;
+}
+
+.catalog-options {
+  display: flex;
+  gap: 0.5rem;
+  list-style: none;
+  margin: 1rem 0;
+  padding: 0;
+}
+
+.catalog-options li {
+  border-radius: 999px;
+  background: #edf4ff;
+  color: var(--blue);
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 0.35rem 0.65rem;
+}
+
+.catalog-website {
+  color: var(--blue);
+  font-weight: 700;
+}
