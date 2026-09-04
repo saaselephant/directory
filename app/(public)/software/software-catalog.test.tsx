@@ -86,4 +86,38 @@ describe("SoftwareCatalog", () => {
     expect(html).not.toContain("Free plan");
     expect(html).not.toContain("Free trial");
   });
+
+  it("renders a filtered no-result state", () => {
+    const html = renderToStaticMarkup(
+      <SoftwareCatalog
+        filtered
+        result={{
+          status: "empty",
+          items: [],
+          reason: "no_matches",
+          filters: { query: "crm", categorySlug: "" },
+        }}
+      />,
+    );
+
+    expect(html).toContain("No software found");
+    expect(html).not.toContain("preparing the first software recommendations");
+  });
+
+  it("does not reveal an unavailable category", () => {
+    const html = renderToStaticMarkup(
+      <SoftwareCatalog
+        filtered
+        result={{
+          status: "empty",
+          items: [],
+          reason: "category_unavailable",
+          filters: { query: "", categorySlug: "private-category" },
+        }}
+      />,
+    );
+
+    expect(html).toContain("category isn&#x27;t available");
+    expect(html).not.toContain("private-category");
+  });
 });

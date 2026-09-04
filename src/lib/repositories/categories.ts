@@ -106,3 +106,19 @@ export async function listPublishedSoftwareByCategorySlug(
     items: softwareResult.status === "success" ? softwareResult.items : [],
   };
 }
+
+export async function listPublicCategorySoftwareIds(
+  categoryId: string,
+  client: SupabaseClient<Database> = createServerSupabaseClient(),
+): Promise<
+  { status: "success"; softwareIds: string[] } | { status: "error"; error: PublicCategoryError }
+> {
+  const { data, error } = await client
+    .from("software_categories")
+    .select("software_id")
+    .eq("category_id", categoryId)
+    .overrideTypes<Array<{ software_id: string }>, { merge: false }>();
+
+  if (error) return { status: "error", error: toCategoryError(error) };
+  return { status: "success", softwareIds: (data ?? []).map((row) => row.software_id) };
+}

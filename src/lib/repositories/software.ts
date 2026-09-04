@@ -63,6 +63,17 @@ export interface PublishedSoftwareError {
   hint: string | null;
 }
 
+interface PublishedSoftwareQuery {
+  query?: string;
+  softwareIds?: string[];
+}
+
+const SEARCH_COLUMNS = ["software_name", "short_description", "vendor", "best_for"] as const;
+
+function escapePostgrestFilterValue(value: string): string {
+  return value.replace(/[\\%_"]/g, "\\$&");
+}
+
 function toRepositoryError(error: PostgrestError): PublishedSoftwareError {
   return {
     code: error.code,
@@ -95,10 +106,32 @@ function mapSoftwareCatalogItem(row: SoftwareCatalogQueryRow): SoftwareCatalogIt
 export async function listPublishedSoftware(
   client: SupabaseClient<Database> = createServerSupabaseClient(),
 ): Promise<PublishedSoftwareResult> {
-  const { data, error } = await client
+  return listPublishedSoftwareMatching({}, client);
+}
+
+export async function listPublishedSoftwareMatching(
+  filters: PublishedSoftwareQuery,
+  client: SupabaseClient<Database> = createServerSupabaseClient(),
+): Promise<PublishedSoftwareResult> {
+  if (filters.softwareIds?.length === 0) {
+    return { status: "empty", items: [] };
+  }
+
+  let query = client
     .from("software")
     .select(SOFTWARE_CATALOG_SELECT)
-    .eq("publication_status", "published")
+    .eq("publication_status", "published");
+
+  if (filters.softwareIds) {
+    query = query.in("software_id", filters.softwareIds);
+  }
+
+  if (filters.query) {
+    const pattern = `"%${escapePostgrestFilterValue(filters.query)}%"`;
+    query = query.or(SEARCH_COLUMNS.map((column) => `${column}.ilike.${pattern}`).join(","));
+  }
+
+  const { data, error } = await query
     .order("software_name", { ascending: true })
     .overrideTypes<SoftwareCatalogQueryRow[], { merge: false }>();
 
@@ -119,27 +152,7 @@ export async function listPublishedSoftwareByIds(
   softwareIds: string[],
   client: SupabaseClient<Database> = createServerSupabaseClient(),
 ): Promise<PublishedSoftwareResult> {
-  if (softwareIds.length === 0) {
-    return { status: "empty", items: [] };
-  }
-
-  const { data, error } = await client
-    .from("software")
-    .select(SOFTWARE_CATALOG_SELECT)
-    .in("software_id", softwareIds)
-    .eq("publication_status", "published")
-    .order("software_name", { ascending: true })
-    .overrideTypes<SoftwareCatalogQueryRow[], { merge: false }>();
-
-  if (error) {
-    return { status: "error", error: toRepositoryError(error) };
-  }
-
-  if (!data || data.length === 0) {
-    return { status: "empty", items: [] };
-  }
-
-  return { status: "success", items: data.map(mapSoftwareCatalogItem) };
+  return listPublishedSoftwareMatching({ softwareIds }, client);
 }
 
 export async function getPublishedSoftwareBySlug(

@@ -5,7 +5,11 @@ import type { Database } from "@/types/database";
 
 vi.mock("server-only", () => ({}));
 
-import { getPublishedSoftwareBySlug, listPublishedSoftwareByIds } from "./software";
+import {
+  getPublishedSoftwareBySlug,
+  listPublishedSoftwareByIds,
+  listPublishedSoftwareMatching,
+} from "./software";
 
 const publishedRow = {
   software_id: "software-1",
@@ -28,9 +32,11 @@ function createClient(response: { data: unknown; error: unknown }) {
   const order = vi.fn(() => ({ overrideTypes }));
   const eq = vi.fn();
   const inFilter = vi.fn();
-  const query = { eq, in: inFilter, maybeSingle, order };
+  const or = vi.fn();
+  const query = { eq, in: inFilter, maybeSingle, or, order };
   eq.mockReturnValue(query);
   inFilter.mockReturnValue(query);
+  or.mockReturnValue(query);
   const select = vi.fn(() => query);
   const from = vi.fn(() => ({ select }));
 
@@ -38,6 +44,7 @@ function createClient(response: { data: unknown; error: unknown }) {
     client: { from } as unknown as SupabaseClient<Database>,
     eq,
     inFilter,
+    or,
   };
 }
 
@@ -102,6 +109,20 @@ describe("listPublishedSoftwareByIds", () => {
 
     expect(inFilter).toHaveBeenCalledWith("software_id", ["software-1"]);
     expect(eq).toHaveBeenCalledWith("publication_status", "published");
+    expect(result.status).toBe("success");
+  });
+});
+
+describe("listPublishedSoftwareMatching", () => {
+  it("searches only the approved fields with an escaped case-insensitive pattern", async () => {
+    const { client, eq, or } = createClient({ data: [publishedRow], error: null });
+
+    const result = await listPublishedSoftwareMatching({ query: 'project, 100% "fit"' }, client);
+
+    expect(eq).toHaveBeenCalledWith("publication_status", "published");
+    expect(or).toHaveBeenCalledWith(
+      'software_name.ilike."%project, 100\\% \\"fit\\"%",short_description.ilike."%project, 100\\% \\"fit\\"%",vendor.ilike."%project, 100\\% \\"fit\\"%",best_for.ilike."%project, 100\\% \\"fit\\"%"',
+    );
     expect(result.status).toBe("success");
   });
 });

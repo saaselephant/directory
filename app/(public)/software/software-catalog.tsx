@@ -1,12 +1,14 @@
 import Link from "next/link";
 
 import type { PublishedSoftwareResult } from "@/lib/repositories/software";
+import type { SoftwareSearchResult } from "@/lib/repositories/search";
 
 interface SoftwareCatalogProps {
-  result: PublishedSoftwareResult;
+  result: PublishedSoftwareResult | SoftwareSearchResult;
+  filtered?: boolean;
 }
 
-export function SoftwareCatalog({ result }: SoftwareCatalogProps) {
+export function SoftwareCatalog({ result, filtered = false }: SoftwareCatalogProps) {
   if (result.status === "error") {
     return (
       <section className="catalog-state" aria-labelledby="catalog-error-title">
@@ -17,6 +19,24 @@ export function SoftwareCatalog({ result }: SoftwareCatalogProps) {
   }
 
   if (result.status === "empty") {
+    if ("reason" in result && result.reason === "category_unavailable") {
+      return (
+        <section className="catalog-state" aria-labelledby="catalog-empty-title">
+          <h2 id="catalog-empty-title">That category isn&apos;t available.</h2>
+          <p>Try another category or clear the filters.</p>
+        </section>
+      );
+    }
+
+    if (filtered) {
+      return (
+        <section className="catalog-state" aria-labelledby="catalog-empty-title">
+          <h2 id="catalog-empty-title">No software found.</h2>
+          <p>Try a different search or category.</p>
+        </section>
+      );
+    }
+
     return (
       <section className="catalog-state" aria-labelledby="catalog-empty-title">
         <h2 id="catalog-empty-title">We&apos;re preparing the first software recommendations.</h2>

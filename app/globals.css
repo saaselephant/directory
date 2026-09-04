@@ -123,6 +123,53 @@ h1 {
   margin-bottom: 2.5rem;
 }
 
+.catalog-filters {
+  align-items: end;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: minmax(14rem, 2fr) minmax(12rem, 1fr) auto;
+  margin-bottom: 2rem;
+  padding: 1.25rem;
+}
+
+.catalog-filters label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+}
+
+.catalog-filters input,
+.catalog-filters select {
+  border: 1px solid var(--border);
+  border-radius: 0.45rem;
+  color: var(--ink);
+  font: inherit;
+  min-height: 2.75rem;
+  padding: 0.65rem 0.75rem;
+  width: 100%;
+}
+
+.catalog-filter-actions {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.catalog-filter-actions button {
+  border: 0;
+  cursor: pointer;
+  font: inherit;
+}
+
+@media (max-width: 48rem) {
+  .catalog-filters {
+    grid-template-columns: 1fr;
+  }
+}
+
 .catalog-grid {
   display: grid;
   gap: 1rem;
