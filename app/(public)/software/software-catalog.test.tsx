@@ -38,7 +38,9 @@ describe("SoftwareCatalog", () => {
     expect(html).toContain("$10 per month");
     expect(html).toContain("Free plan");
     expect(html).toContain("Free trial");
-    expect(html).toContain("https://example.com");
+    expect(html).toContain('href="/software/useful-tool"');
+    expect(html).not.toContain("https://example.com");
+    expect(html).not.toContain("affiliate");
   });
 
   it("renders an intentional empty state", () => {

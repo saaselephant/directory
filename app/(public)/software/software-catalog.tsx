@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import type { PublishedSoftwareResult } from "@/lib/repositories/software";
 
 interface SoftwareCatalogProps {
@@ -29,7 +31,9 @@ export function SoftwareCatalog({ result }: SoftwareCatalogProps) {
         <article className="catalog-card" key={item.id}>
           <div className="catalog-card-heading">
             <div>
-              <h2>{item.name}</h2>
+              <h2>
+                <Link href={`/software/${encodeURIComponent(item.slug)}`}>{item.name}</Link>
+              </h2>
               <p className="catalog-vendor">by {item.vendor.name}</p>
             </div>
           </div>
@@ -50,9 +54,9 @@ export function SoftwareCatalog({ result }: SoftwareCatalogProps) {
               {item.hasFreeTrial ? <li>Free trial</li> : null}
             </ul>
           ) : null}
-          <a className="catalog-website" href={item.websiteUrl} rel="noopener noreferrer">
-            Visit website
-          </a>
+          <Link className="catalog-detail-link" href={`/software/${encodeURIComponent(item.slug)}`}>
+            View software
+          </Link>
         </article>
       ))}
     </section>

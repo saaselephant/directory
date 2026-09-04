@@ -8,6 +8,12 @@ export type SoftwareId = ApplicationId<"software">;
 export type CategoryId = ApplicationId<"category">;
 export type AffiliateProgramId = ApplicationId<"affiliate_program">;
 
+export interface PublicCategory {
+  slug: string;
+  name: string;
+  description: string | null;
+}
+
 export interface SoftwareCatalogItem {
   id: SoftwareId;
   slug: string;

@@ -51,6 +51,11 @@ export type PublishedSoftwareResult =
   | { status: "empty"; items: [] }
   | { status: "error"; error: PublishedSoftwareError };
 
+export type PublishedSoftwareDetailResult =
+  | { status: "success"; item: SoftwareCatalogItem }
+  | { status: "not_found" }
+  | { status: "error"; error: PublishedSoftwareError };
+
 export interface PublishedSoftwareError {
   code: string;
   message: string;
@@ -64,6 +69,26 @@ function toRepositoryError(error: PostgrestError): PublishedSoftwareError {
     message: error.message,
     details: error.details,
     hint: error.hint,
+  };
+}
+
+function mapSoftwareCatalogItem(row: SoftwareCatalogQueryRow): SoftwareCatalogItem {
+  return {
+    id: row.software_id as SoftwareId,
+    slug: row.slug,
+    name: row.software_name,
+    description: row.short_description,
+    bestFor: row.best_for,
+    pricing: row.pricing,
+    hasFreePlan: row.free_plan ?? false,
+    hasFreeTrial: row.free_trial ?? false,
+    websiteUrl: row.website_url,
+    vendor: {
+      id: row.vendors?.vendor_id ?? null,
+      name: row.vendors?.vendor_name ?? row.vendor,
+      slug: row.vendors?.slug ?? null,
+      websiteUrl: row.vendors?.website_url ?? null,
+    },
   };
 }
 
@@ -85,23 +110,57 @@ export async function listPublishedSoftware(
     return { status: "empty", items: [] };
   }
 
-  const items: SoftwareCatalogItem[] = data.map((row) => ({
-    id: row.software_id as SoftwareId,
-    slug: row.slug,
-    name: row.software_name,
-    description: row.short_description,
-    bestFor: row.best_for,
-    pricing: row.pricing,
-    hasFreePlan: row.free_plan ?? false,
-    hasFreeTrial: row.free_trial ?? false,
-    websiteUrl: row.website_url,
-    vendor: {
-      id: row.vendors?.vendor_id ?? null,
-      name: row.vendors?.vendor_name ?? row.vendor,
-      slug: row.vendors?.slug ?? null,
-      websiteUrl: row.vendors?.website_url ?? null,
-    },
-  }));
+  const items = data.map(mapSoftwareCatalogItem);
 
   return { status: "success", items };
+}
+
+export async function listPublishedSoftwareByIds(
+  softwareIds: string[],
+  client: SupabaseClient<Database> = createServerSupabaseClient(),
+): Promise<PublishedSoftwareResult> {
+  if (softwareIds.length === 0) {
+    return { status: "empty", items: [] };
+  }
+
+  const { data, error } = await client
+    .from("software")
+    .select(SOFTWARE_CATALOG_SELECT)
+    .in("software_id", softwareIds)
+    .eq("publication_status", "published")
+    .order("software_name", { ascending: true })
+    .overrideTypes<SoftwareCatalogQueryRow[], { merge: false }>();
+
+  if (error) {
+    return { status: "error", error: toRepositoryError(error) };
+  }
+
+  if (!data || data.length === 0) {
+    return { status: "empty", items: [] };
+  }
+
+  return { status: "success", items: data.map(mapSoftwareCatalogItem) };
+}
+
+export async function getPublishedSoftwareBySlug(
+  slug: string,
+  client: SupabaseClient<Database> = createServerSupabaseClient(),
+): Promise<PublishedSoftwareDetailResult> {
+  const { data, error } = await client
+    .from("software")
+    .select(SOFTWARE_CATALOG_SELECT)
+    .eq("slug", slug)
+    .eq("publication_status", "published")
+    .maybeSingle()
+    .overrideTypes<SoftwareCatalogQueryRow | null, { merge: false }>();
+
+  if (error) {
+    return { status: "error", error: toRepositoryError(error) };
+  }
+
+  if (!data) {
+    return { status: "not_found" };
+  }
+
+  return { status: "success", item: mapSoftwareCatalogItem(data) };
 }
