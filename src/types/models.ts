@@ -1,3 +1,5 @@
+import type { PublicationStatus, VerificationStatus } from "./database";
+
 declare const applicationIdBrand: unique symbol;
 
 export type ApplicationId<Entity extends string> = string & {
@@ -30,4 +32,32 @@ export interface SoftwareCatalogItem {
     slug: string | null;
     websiteUrl: string | null;
   };
+}
+
+export interface AdminSoftwareReviewItem {
+  id: SoftwareId;
+  slug: string;
+  name: string;
+  vendorName: string;
+  publicationStatus: PublicationStatus;
+  verificationStatus: VerificationStatus | null;
+}
+
+export interface AdminCategoryReviewItem {
+  id: CategoryId;
+  slug: string;
+  name: string;
+  publicationStatus: PublicationStatus;
+}
+
+export interface AdminDashboardModel {
+  summary: {
+    softwareInReview: number;
+    softwarePublished: number;
+    softwareNeedsVerification: number;
+    categoriesInReview: number;
+    categoriesPublished: number;
+  };
+  softwareQueue: AdminSoftwareReviewItem[];
+  categoryQueue: AdminCategoryReviewItem[];
 }
