@@ -566,3 +566,45 @@ h1 {
 .admin-publication-form {
   margin-top: 0.65rem;
 }
+
+.admin-verification-form {
+  background: #f7f9fc;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  display: grid;
+  gap: 0.65rem;
+  margin-top: 0.75rem;
+  max-width: 42rem;
+  padding: 0.85rem;
+}
+
+.admin-verification-form label {
+  color: var(--navy);
+  display: grid;
+  font-size: 0.9rem;
+  font-weight: 650;
+  gap: 0.3rem;
+}
+
+.admin-verification-form input,
+.admin-verification-form textarea {
+  background: white;
+  border: 1px solid #8795aa;
+  border-radius: 0.4rem;
+  color: var(--navy);
+  font: inherit;
+  padding: 0.6rem;
+  width: 100%;
+}
+
+.admin-verification-form input:focus-visible,
+.admin-verification-form textarea:focus-visible {
+  outline: 3px solid var(--blue);
+  outline-offset: 2px;
+}
+
+@media (max-width: 36rem) {
+  .admin-verification-form {
+    padding: 0.7rem;
+  }
+}

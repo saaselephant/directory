@@ -7,6 +7,10 @@ import {
   returnCategoryToReview,
   returnSoftwareToReview,
 } from "@/lib/commands/publication-actions";
+import {
+  returnSoftwareToVerificationAction,
+  verifySoftwareAction,
+} from "@/lib/commands/verification-actions";
 import type {
   AdminCategoryReviewItem,
   AdminDashboardModel,
@@ -45,6 +49,41 @@ function SoftwareList({
           >
             Verification: {item.verificationStatus?.replaceAll("_", " ") ?? "not set"}
           </span>
+          {item.verificationStatus === "verified" ? (
+            <form action={returnSoftwareToVerificationAction} className="admin-verification-form">
+              <input type="hidden" name="record_id" value={item.id} />
+              <label>
+                Reason for returning to verification
+                <textarea name="reason" required maxLength={2000} rows={2} />
+              </label>
+              <button className="admin-action-button" type="submit">
+                Return to verification
+              </button>
+            </form>
+          ) : item.verificationStatus === "needs_verification" ||
+            item.verificationStatus === "failed" ||
+            item.verificationStatus === "stale" ? (
+            <form action={verifySoftwareAction} className="admin-verification-form">
+              <input type="hidden" name="record_id" value={item.id} />
+              <label>
+                Official evidence URL
+                <input type="url" name="source_url" required maxLength={2048} />
+              </label>
+              <label>
+                Source reference (optional)
+                <input type="text" name="source_reference" maxLength={500} />
+              </label>
+              <label>
+                Notes (optional)
+                <textarea name="notes" maxLength={2000} rows={2} />
+              </label>
+              <button className="admin-action-button" type="submit">
+                Verify
+              </button>
+            </form>
+          ) : (
+            <span>Verification action unavailable.</span>
+          )}
           <form action={action} className="admin-publication-form">
             <input type="hidden" name="record_id" value={item.id} />
             <button className="admin-action-button" type="submit">

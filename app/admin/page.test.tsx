@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { renderToStaticMarkup } from "react-dom/server";
 
 const mocks = vi.hoisted(() => ({
   requireAdmin: vi.fn(),
@@ -48,5 +49,27 @@ describe("AdminPage access boundary", () => {
     });
     await AdminPage();
     expect(mocks.getAdminDashboard).toHaveBeenCalledWith(client);
+  });
+
+  it.each([
+    ["verified", "Software verified."],
+    ["reopened", "Software returned to verification."],
+    ["verification_invalid", "Verification data was invalid."],
+    ["verification_stale", "The item changed before this action completed."],
+    ["verification_unavailable", "Verification is unavailable."],
+  ])("renders only fixed verification feedback for %s", async (result, message) => {
+    mocks.requireAdmin.mockResolvedValue({ status: "authorized", client: {} });
+    mocks.getAdminDashboard.mockResolvedValue({
+      status: "success",
+      dashboard: {
+        summary: {},
+        softwareInReview: [],
+        softwarePublished: [],
+        categoriesInReview: [],
+        categoriesPublished: [],
+      },
+    });
+    const page = await AdminPage({ searchParams: Promise.resolve({ result }) });
+    expect(renderToStaticMarkup(page)).toContain(message);
   });
 });

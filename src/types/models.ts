@@ -43,6 +43,12 @@ export interface AdminSoftwareReviewItem {
   verificationStatus: VerificationStatus | null;
 }
 
+export interface SoftwareVerificationEvidence {
+  sourceUrl: string;
+  sourceReference?: string | null;
+  notes?: string | null;
+}
+
 export interface AdminCategoryReviewItem {
   id: CategoryId;
   slug: string;

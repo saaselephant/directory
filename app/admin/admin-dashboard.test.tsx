@@ -71,10 +71,18 @@ describe("AdminDashboard", () => {
     expect(html).toContain('href="/categories">View category directory');
     expect(html).not.toMatch(/returnUrl|callback|token=/i);
     expect(html).toContain("needs verification");
+    expect(html).toContain("Official evidence URL");
+    expect(html).toContain('name="source_url"');
+    expect(html).toContain('name="source_reference"');
+    expect(html).toContain('name="notes"');
+    expect(html).toContain(">Verify</button>");
+    expect(html).toContain("Reason for returning to verification");
+    expect(html).toContain('name="reason"');
+    expect(html).toContain(">Return to verification</button>");
     expect(html).toContain("Publish");
     expect(html).toContain("Return to review");
     expect(html.match(/class="admin-publication-form"/g)).toHaveLength(4);
-    expect(html.match(/class="admin-action-button"/g)).toHaveLength(5);
+    expect(html.match(/class="admin-action-button"/g)).toHaveLength(7);
     expect(html.match(/>Publish<\/button>/g)).toHaveLength(2);
     expect(html.match(/>Return to review<\/button>/g)).toHaveLength(2);
     expect(html).not.toContain(">software-secret-id<");
@@ -82,6 +90,9 @@ describe("AdminDashboard", () => {
     expect(html).not.toContain("checkbox");
     expect(html).not.toContain("Delete");
     expect(html).not.toContain("Edit verification");
+    expect(html).not.toContain('name="verification_status"');
+    expect(html).not.toContain('name="target"');
+    expect(html).not.toContain('name="entity"');
     expect(html).not.toContain("role control");
     expect(html).not.toContain("affiliate");
   });
@@ -94,5 +105,7 @@ describe("AdminDashboard", () => {
     expect(css).toMatch(/\.admin-action-button\s*\{[^}]*display: inline-flex/s);
     expect(css).toMatch(/\.admin-action-button:focus-visible\s*\{[^}]*outline:/s);
     expect(css).toMatch(/\.admin-action-button:disabled\s*\{[^}]*color: white/s);
+    expect(css).toMatch(/\.admin-verification-form\s*\{[^}]*display: grid/s);
+    expect(css).toMatch(/\.admin-verification-form input:focus-visible[\s\S]*outline:/s);
   });
 });

@@ -15,6 +15,11 @@ const RESULT_MESSAGES: Record<string, string> = {
   returned: "The item was returned to review.",
   stale: "That item changed before the action completed. Refresh and try again.",
   unavailable: "We couldn’t complete that action. Please try again.",
+  verified: "Software verified.",
+  reopened: "Software returned to verification.",
+  verification_invalid: "Verification data was invalid.",
+  verification_stale: "The item changed before this action completed.",
+  verification_unavailable: "Verification is unavailable.",
 };
 
 export default async function AdminPage({

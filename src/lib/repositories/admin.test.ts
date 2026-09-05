@@ -77,6 +77,13 @@ describe("admin repository", () => {
     expect(from).not.toHaveBeenCalledWith("affiliate_programs");
     expect(from).not.toHaveBeenCalledWith("affiliate_links");
     expect(from).not.toHaveBeenCalledWith("user_roles");
+    const selectedColumns = from.mock.results
+      .map((result) => result.value.select.mock.calls)
+      .flat()
+      .map((call) => call[0])
+      .filter((value) => typeof value === "string");
+    expect(selectedColumns.some((columns) => columns.includes("verification_status"))).toBe(true);
+    expect(selectedColumns.every((columns) => !columns.includes("verified_at"))).toBe(true);
   });
 
   it("returns a typed error without throwing database details", async () => {

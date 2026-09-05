@@ -353,6 +353,19 @@ export interface Database {
     };
     Views: Record<string, never>;
     Functions: {
+      saaselephant_verify_software: {
+        Args: {
+          p_software_id: SoftwareId;
+          p_source_url: string;
+          p_source_reference?: string | null;
+          p_notes?: string | null;
+        };
+        Returns: string;
+      };
+      saaselephant_return_software_to_verification: {
+        Args: { p_software_id: SoftwareId; p_reason: string };
+        Returns: string;
+      };
       saaselephant_select_verified_affiliate_link: {
         Args: { requested_software_id: SoftwareId; at_time?: string };
         Returns: AffiliateLinkRow[];
