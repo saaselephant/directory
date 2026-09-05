@@ -46,7 +46,9 @@ export default async function AdminSignInPage({ searchParams }: SignInPageProps)
             maxLength={1024}
             required
           />
-          <button type="submit">Sign in</button>
+          <button className="admin-action-button" type="submit">
+            Sign in
+          </button>
         </form>
       </section>
     </main>

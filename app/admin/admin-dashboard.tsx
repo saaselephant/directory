@@ -45,7 +45,7 @@ function SoftwareList({
           </span>
           <form action={action} className="admin-publication-form">
             <input type="hidden" name="record_id" value={item.id} />
-            <button className="admin-publication-button" type="submit">
+            <button className="admin-action-button" type="submit">
               {actionLabel}
             </button>
           </form>
@@ -78,7 +78,7 @@ function CategoryList({
           </span>
           <form action={action} className="admin-publication-form">
             <input type="hidden" name="record_id" value={item.id} />
-            <button className="admin-publication-button" type="submit">
+            <button className="admin-action-button" type="submit">
               {actionLabel}
             </button>
           </form>
@@ -100,7 +100,9 @@ export function AdminDashboard({ dashboard }: { dashboard: AdminDashboardModel }
   return (
     <>
       <form action={signOutAdmin} className="admin-sign-out">
-        <button type="submit">Sign out</button>
+        <button className="admin-action-button" type="submit">
+          Sign out
+        </button>
       </form>
       <section className="admin-summary" aria-label="Editorial summary">
         {summaries.map(([label, value]) => (

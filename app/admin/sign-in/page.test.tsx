@@ -25,6 +25,8 @@ describe("AdminSignInPage", () => {
     const html = renderToStaticMarkup(await AdminSignInPage({ searchParams: Promise.resolve({}) }));
     expect(html).toContain('type="email"');
     expect(html).toContain('type="password"');
+    expect(html).toContain('class="admin-action-button"');
+    expect(html).toContain(">Sign in</button>");
     expect(html).not.toMatch(/sign up|register|role selector|oauth/i);
   });
 
