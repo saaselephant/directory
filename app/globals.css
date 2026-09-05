@@ -25,6 +25,87 @@ a {
   color: inherit;
 }
 
+.public-shell {
+  min-height: 100vh;
+}
+
+.public-header,
+.public-footer {
+  border-bottom: 1px solid var(--border);
+  background: white;
+}
+
+.public-nav,
+.public-footer {
+  align-items: center;
+  display: flex;
+  gap: 1.5rem;
+  justify-content: space-between;
+  margin-inline: auto;
+  max-width: 72rem;
+  padding: 1rem 1.5rem;
+}
+
+.public-brand {
+  color: var(--navy);
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.public-nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.public-nav a,
+.public-footer a,
+.admin-preview-links a {
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.public-nav a:hover,
+.public-footer a:hover,
+.admin-preview-links a:hover {
+  text-decoration: underline;
+}
+
+.public-nav a:focus-visible,
+.public-footer a:focus-visible,
+.admin-preview-links a:focus-visible {
+  outline: 3px solid var(--blue);
+  outline-offset: 3px;
+}
+
+.public-footer {
+  border-bottom: 0;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  margin-top: 2rem;
+}
+
+.public-footer p {
+  margin: 0;
+}
+
+.public-footer nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+@media (max-width: 36rem) {
+  .public-nav,
+  .public-footer {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
 .hero,
 .placeholder-page,
 .foundation {
@@ -444,6 +525,17 @@ h1 {
 .admin-sign-out {
   display: flex;
   justify-content: flex-end;
+}
+
+.admin-preview-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.admin-preview-links a {
+  color: var(--blue);
 }
 
 .admin-action-feedback {

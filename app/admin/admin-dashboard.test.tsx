@@ -65,6 +65,11 @@ describe("AdminDashboard", () => {
     expect(html).toContain("Software published");
     expect(html).toContain("Categories awaiting review");
     expect(html).toContain("Categories published");
+    expect(html).toContain('aria-label="Public site previews"');
+    expect(html).toContain('href="/">View public homepage');
+    expect(html).toContain('href="/software">View software catalogue');
+    expect(html).toContain('href="/categories">View category directory');
+    expect(html).not.toMatch(/returnUrl|callback|token=/i);
     expect(html).toContain("needs verification");
     expect(html).toContain("Publish");
     expect(html).toContain("Return to review");

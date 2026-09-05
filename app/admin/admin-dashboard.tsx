@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import { signOutAdmin } from "@/lib/auth/actions";
 import {
   publishCategory,
@@ -104,6 +106,11 @@ export function AdminDashboard({ dashboard }: { dashboard: AdminDashboardModel }
           Sign out
         </button>
       </form>
+      <nav className="admin-preview-links" aria-label="Public site previews">
+        <Link href="/">View public homepage</Link>
+        <Link href="/software">View software catalogue</Link>
+        <Link href="/categories">View category directory</Link>
+      </nav>
       <section className="admin-summary" aria-label="Editorial summary">
         {summaries.map(([label, value]) => (
           <article key={label}>

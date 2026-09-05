@@ -14,9 +14,6 @@ export default function HomePage() {
           <Link className="primary" href="/software">
             Browse software
           </Link>
-          <Link className="secondary" href="/admin">
-            Admin preview
-          </Link>
         </div>
       </section>
       <section className="foundation" aria-label="Platform foundation">
