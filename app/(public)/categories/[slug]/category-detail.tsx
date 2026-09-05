@@ -8,8 +8,7 @@ import type { PublicCategory } from "@/types/models";
 export function buildCategoryMetadata(category: PublicCategory): Metadata {
   return {
     title: category.name,
-    description:
-      category.description ?? `Browse published ${category.name} software on SaaSElephant.`,
+    description: category.description ?? `Browse ${category.name} software on SaaSElephant.`,
   };
 }
 
@@ -39,12 +38,21 @@ export function CategoryDetail({
         <h1>{result.category.name}</h1>
         {result.category.description ? <p className="lede">{result.category.description}</p> : null}
       </header>
+      <div className="section-heading">
+        <h2>Software in this category</h2>
+        <Link className="text-link" href="/software">
+          Browse all software →
+        </Link>
+      </div>
       {result.items.length > 0 ? (
         <SoftwareCatalog result={{ status: "success", items: result.items }} />
       ) : (
         <section className="catalog-state">
           <h2>We&apos;re preparing recommendations for this category.</h2>
-          <p>Check back soon.</p>
+          <p>Explore the wider directory while this collection takes shape.</p>
+          <Link className="secondary" href="/software">
+            Browse software
+          </Link>
         </section>
       )}
     </main>

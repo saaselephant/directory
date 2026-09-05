@@ -638,3 +638,450 @@ h1 {
   outline: 3px solid var(--blue);
   outline-offset: 2px;
 }
+
+/* Public launch presentation. Admin workflow styles remain independent. */
+.public-shell {
+  background: #fff;
+  line-height: 1.6;
+}
+.public-shell h1,
+.public-shell h2,
+.public-shell h3 {
+  color: #102a55;
+  line-height: 1.15;
+}
+.public-shell h1 {
+  font-size: clamp(2.4rem, 5.2vw, 4.65rem);
+}
+.public-shell h2 {
+  font-size: clamp(1.5rem, 3vw, 2.3rem);
+  letter-spacing: -0.035em;
+}
+.public-shell h3 {
+  font-size: 1.25rem;
+  letter-spacing: -0.02em;
+}
+.public-shell .eyebrow {
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+}
+.public-shell a:focus-visible,
+.public-shell input:focus-visible,
+.public-shell select:focus-visible {
+  outline: 3px solid var(--blue);
+  outline-offset: 4px;
+}
+.public-shell .primary,
+.public-shell .secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  min-height: 3rem;
+  padding: 0.85rem 1.25rem;
+}
+.public-shell .primary {
+  background: #123a73;
+  border: 1px solid #123a73;
+}
+.public-shell .primary:hover {
+  background: #0d2b57;
+}
+.public-shell .secondary:hover {
+  border-color: #123a73;
+}
+.public-shell .public-nav {
+  min-height: 5.5rem;
+}
+.public-shell .public-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-size: 1.35rem;
+  letter-spacing: -0.05em;
+}
+.brand-mark {
+  background: #123a73;
+  color: white;
+  border-radius: 0.6rem;
+  padding: 0.3rem 0.5rem;
+  font-size: 1rem;
+  letter-spacing: -0.07em;
+}
+.public-shell .public-nav ul {
+  gap: clamp(1rem, 3vw, 2.5rem);
+}
+.public-shell .public-nav li a {
+  display: inline-block;
+  padding-block: 0.4rem;
+}
+.skip-link {
+  position: absolute;
+  top: -6rem;
+  left: 1rem;
+  z-index: 10;
+  background: white;
+  padding: 0.75rem;
+}
+.skip-link:focus {
+  top: 1rem;
+}
+.launch-hero,
+.launch-section {
+  max-width: 72rem;
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}
+.launch-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  gap: clamp(2rem, 5vw, 5rem);
+  align-items: center;
+  padding-block: clamp(3rem, 7vw, 6rem);
+}
+.launch-hero h1 {
+  margin-bottom: 1.5rem;
+  max-width: 44rem;
+}
+.launch-hero h1 > span {
+  color: #1769e8;
+}
+.hero-description {
+  color: var(--muted);
+  max-width: 35rem;
+}
+.hero-note {
+  margin: 1rem 0 0;
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+.discovery-note {
+  background: #eef4fc;
+  border: 1px solid #dce5f1;
+  border-radius: 1rem;
+  padding: clamp(1.5rem, 3vw, 2.5rem);
+}
+.discovery-note h2 {
+  font-size: 1.9rem;
+}
+.discovery-note ol {
+  list-style: none;
+  padding: 0;
+  margin: 2rem 0 0;
+  counter-reset: discovery;
+}
+.discovery-note li {
+  counter-increment: discovery;
+  position: relative;
+  padding: 1.1rem 0 1.1rem 2.7rem;
+  border-top: 1px solid #d3dfef;
+}
+.discovery-note li::before {
+  content: "0" counter(discovery);
+  position: absolute;
+  left: 0;
+  color: #1769e8;
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+.discovery-note strong,
+.discovery-note li span {
+  display: block;
+}
+.discovery-note li span {
+  color: var(--muted);
+  margin-top: 0.3rem;
+  font-size: 0.925rem;
+}
+.launch-section {
+  padding-block: 3.5rem;
+}
+.section-heading {
+  display: flex;
+  gap: 1.25rem;
+  align-items: end;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+}
+.section-heading h2 {
+  margin-bottom: 0;
+}
+.section-intro {
+  color: var(--muted);
+  max-width: 42rem;
+  margin-bottom: 2rem;
+}
+.text-link {
+  color: #123a73;
+  font-weight: 700;
+  text-underline-offset: 0.25em;
+}
+.how-it-works {
+  border-top: 1px solid var(--border);
+}
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+.step-number {
+  color: #1769e8;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+.steps-grid h3 {
+  margin-top: 0.75rem;
+}
+.steps-grid p {
+  color: var(--muted);
+}
+.why-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  background: #102a55;
+  border-radius: 1rem;
+  padding: 3rem;
+  margin-block: 1rem 4rem;
+  max-width: 69rem;
+  color: #e3ecfa;
+}
+.public-shell .why-section h2,
+.public-shell .why-section h3 {
+  color: white;
+}
+.public-shell .why-section .eyebrow {
+  color: #adccff;
+}
+.why-section .secondary {
+  color: #123a73;
+  margin-top: 1rem;
+}
+.why-points article + article {
+  border-top: 1px solid #385070;
+  padding-top: 1.25rem;
+}
+.why-points h3 {
+  margin: 0 0 0.5rem;
+}
+.public-shell .public-footer {
+  max-width: none;
+  padding: 2.5rem max(1.5rem, calc((100% - 69rem) / 2));
+  background: #f4f7fb;
+  gap: 2rem;
+  margin-top: 0;
+}
+.footer-description {
+  max-width: 32rem;
+}
+.footer-description p {
+  margin: 0.75rem 0;
+}
+.public-shell .catalog-page {
+  padding-block: 3.5rem 5rem;
+  min-height: 65vh;
+}
+.public-shell .catalog-header {
+  max-width: 52rem;
+  margin-bottom: 2rem;
+}
+.public-shell .catalog-header h1 {
+  margin-bottom: 1.25rem;
+}
+.public-shell .catalog-filters {
+  background: #f4f7fb;
+  border-color: #dce5f1;
+}
+.public-shell .catalog-filters input,
+.public-shell .catalog-filters select {
+  background: white;
+  border-color: #b5c4d8;
+  min-width: 0;
+}
+.public-shell .catalog-filters label {
+  font-size: 0.875rem;
+}
+.filter-notice {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+.catalog-result-summary {
+  font-size: 0.925rem;
+  color: var(--muted);
+  margin-bottom: 1.5rem;
+}
+.public-shell .catalog-grid,
+.public-shell .category-grid {
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr));
+  gap: 1.5rem;
+}
+.public-shell .catalog-card,
+.public-shell .category-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 1.75rem;
+  border-radius: 0.85rem;
+  box-shadow: 0 3px 12px #102a5505;
+}
+.public-shell .catalog-card:hover,
+.public-shell .category-card:hover {
+  border-color: #94abc9;
+}
+.public-shell .catalog-card h2,
+.public-shell .category-card h2 {
+  font-size: 1.45rem;
+}
+.public-shell .catalog-card .catalog-detail-link,
+.public-shell .category-card .catalog-detail-link {
+  margin-top: auto;
+  padding-top: 1.5rem;
+}
+.public-shell .catalog-vendor {
+  font-size: 0.925rem;
+}
+.public-shell .catalog-options {
+  flex-wrap: wrap;
+}
+.public-shell .catalog-options li {
+  font-size: 0.875rem;
+  color: #123a73;
+}
+.public-shell .catalog-state {
+  padding: clamp(2rem, 6vw, 4rem);
+  background: #f4f7fb;
+  text-align: center;
+  border-style: dashed;
+}
+.public-shell .catalog-state h2 {
+  font-size: 1.65rem;
+}
+.public-shell .catalog-state p {
+  max-width: 38rem;
+  margin: 0 auto 1.5rem;
+}
+.public-shell .software-detail-page {
+  max-width: 72rem;
+}
+.public-shell .software-detail-card {
+  border: 0;
+  padding: 0;
+}
+.software-profile-heading {
+  max-width: 52rem;
+}
+.public-shell .software-detail-description {
+  margin-block: 1.5rem;
+  font-size: 1.25rem;
+}
+.software-profile-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  gap: 3rem;
+  margin-top: 3rem;
+}
+.public-shell .software-profile-body h2 {
+  font-size: 1.6rem;
+}
+.public-shell .software-detail-facts {
+  grid-template-columns: 1fr;
+}
+.product-guidance {
+  color: var(--muted);
+}
+.vendor-next-step {
+  background: #f0f5fc;
+  border: 1px solid var(--border);
+  padding: 1.75rem;
+  border-radius: 0.85rem;
+  align-self: start;
+}
+.vendor-next-step p {
+  color: var(--muted);
+}
+.vendor-responsibility {
+  font-size: 0.875rem;
+  margin: 1.25rem 0 0;
+}
+.category-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+.category-tags a {
+  border: 1px solid var(--border);
+  border-radius: 2rem;
+  padding: 0.3rem 0.8rem;
+  font-size: 0.875rem;
+  text-decoration: none;
+}
+.public-shell p,
+.public-shell h1,
+.public-shell h2,
+.public-shell h3,
+.public-shell dd,
+.public-shell a {
+  overflow-wrap: anywhere;
+}
+.admin-review-history {
+  list-style: none;
+  padding-left: 0;
+}
+@media (max-width: 60rem) {
+  .launch-hero {
+    grid-template-columns: 1fr;
+  }
+  .hero-break {
+    display: none;
+  }
+  .discovery-note ol {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+  }
+  .discovery-note li {
+    padding-left: 0;
+    padding-top: 2.5rem;
+  }
+  .discovery-note li::before {
+    top: 0.75rem;
+  }
+  .why-section {
+    margin-inline: 1.5rem;
+  }
+  .software-profile-body {
+    gap: 1.5rem;
+  }
+}
+@media (max-width: 40rem) {
+  .launch-hero,
+  .launch-section {
+    padding-block: 2.5rem;
+  }
+  .steps-grid,
+  .why-section,
+  .software-profile-body,
+  .discovery-note ol {
+    grid-template-columns: 1fr;
+  }
+  .section-heading {
+    align-items: start;
+    flex-direction: column;
+  }
+  .why-section {
+    padding: 1.75rem;
+    gap: 1.5rem;
+  }
+  .public-shell .catalog-page {
+    padding-top: 2.5rem;
+  }
+  .public-shell .software-detail-page {
+    padding-top: 2.5rem;
+  }
+  .public-shell .actions > a {
+    width: 100%;
+  }
+}

@@ -5,7 +5,11 @@ import type { Database } from "@/types/database";
 
 vi.mock("server-only", () => ({}));
 
-import { getPublicCategoryBySlug, listPublicCategories } from "./categories";
+import {
+  getPublicCategoryBySlug,
+  listPublicCategories,
+  listPublicCategoriesForSoftware,
+} from "./categories";
 
 function createClient(response: { data: unknown; error: unknown }) {
   const overrideTypes = vi.fn().mockResolvedValue(response);
@@ -49,5 +53,72 @@ describe("category repository", () => {
     });
     expect(eq).toHaveBeenNthCalledWith(1, "slug", "hidden");
     expect(eq).toHaveBeenNthCalledWith(2, "publication_status", "published");
+  });
+});
+
+describe("public category context for software", () => {
+  function categoryClient(relationships: unknown[], relationshipError: unknown = null) {
+    const relationResult = { data: relationships, error: relationshipError };
+    const categoryResult = {
+      data: [
+        {
+          category_id: "internal-category",
+          slug: "communication",
+          category_name: "Communication",
+          description: null,
+        },
+      ],
+      error: null,
+    };
+    const eq = vi.fn();
+    const inFilter = vi.fn();
+    const categoryQuery = {
+      eq,
+      in: inFilter,
+      order: vi.fn(() => ({ overrideTypes: vi.fn().mockResolvedValue(categoryResult) })),
+    };
+    eq.mockReturnValue(categoryQuery);
+    inFilter.mockReturnValue(categoryQuery);
+    const relationEq = vi.fn(() => ({ overrideTypes: vi.fn().mockResolvedValue(relationResult) }));
+    const from = vi.fn((table: string) => ({
+      select: vi.fn(() => (table === "software_categories" ? { eq: relationEq } : categoryQuery)),
+    }));
+    return {
+      scoped: { from } as unknown as SupabaseClient<Database>,
+      eq,
+      relationEq,
+      inFilter,
+      from,
+    };
+  }
+  it("restricts joins to the requested software and published categories and strips internal IDs", async () => {
+    const { scoped, eq, relationEq, inFilter } = categoryClient([
+      { category_id: "internal-category" },
+    ]);
+    expect(await listPublicCategoriesForSoftware("software-1", scoped)).toEqual({
+      status: "success",
+      categories: [{ slug: "communication", name: "Communication", description: null }],
+    });
+    expect(relationEq).toHaveBeenCalledWith("software_id", "software-1");
+    expect(inFilter).toHaveBeenCalledWith("category_id", ["internal-category"]);
+    expect(eq).toHaveBeenCalledWith("publication_status", "published");
+  });
+  it("does not broaden an empty or denied relationship lookup", async () => {
+    const empty = categoryClient([]);
+    expect(await listPublicCategoriesForSoftware("hidden", empty.scoped)).toEqual({
+      status: "empty",
+      categories: [],
+    });
+    expect(empty.from).toHaveBeenCalledTimes(1);
+    const denied = categoryClient([], {
+      code: "denied",
+      message: "private",
+      details: null,
+      hint: null,
+    });
+    expect(await listPublicCategoriesForSoftware("hidden", denied.scoped)).toMatchObject({
+      status: "error",
+    });
+    expect(denied.from).toHaveBeenCalledTimes(1);
   });
 });

@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { getPublishedSoftwareBySlug } from "@/lib/repositories/software";
+import { listPublicCategoriesForSoftware } from "@/lib/repositories/categories";
 
 import { buildSoftwareMetadata, SoftwareDetail } from "./software-detail";
 
@@ -33,5 +34,7 @@ export default async function SoftwareDetailPage({ params }: SoftwareDetailPageP
     notFound();
   }
 
-  return <SoftwareDetail result={result} />;
+  const categories =
+    result.status === "success" ? await listPublicCategoriesForSoftware(result.item.id) : undefined;
+  return <SoftwareDetail result={result} categories={categories} />;
 }

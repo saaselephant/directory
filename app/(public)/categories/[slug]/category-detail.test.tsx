@@ -47,7 +47,7 @@ describe("CategoryDetail", () => {
   it("uses conservative metadata when description is unavailable", () => {
     expect(buildCategoryMetadata({ ...category, description: null })).toEqual({
       title: "CRM",
-      description: "Browse published CRM software on SaaSElephant.",
+      description: "Browse CRM software on SaaSElephant.",
     });
   });
 });

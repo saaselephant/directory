@@ -122,3 +122,27 @@ export async function listPublicCategorySoftwareIds(
   if (error) return { status: "error", error: toCategoryError(error) };
   return { status: "success", softwareIds: (data ?? []).map((row) => row.software_id) };
 }
+
+/** Reads only public category relationships; existing RLS also requires published software. */
+export async function listPublicCategoriesForSoftware(
+  softwareId: string,
+  client: SupabaseClient<Database> = createServerSupabaseClient(),
+): Promise<PublicCategoriesResult> {
+  const { data: relationships, error: relationshipError } = await client
+    .from("software_categories")
+    .select("category_id")
+    .eq("software_id", softwareId)
+    .overrideTypes<Array<{ category_id: string }>, { merge: false }>();
+  if (relationshipError) return { status: "error", error: toCategoryError(relationshipError) };
+  if (!relationships?.length) return { status: "empty", categories: [] };
+  const { data, error } = await client
+    .from("categories")
+    .select(PUBLIC_CATEGORY_SELECT)
+    .in("category_id", [...new Set(relationships.map((row) => row.category_id))])
+    .eq("publication_status", "published")
+    .order("category_name", { ascending: true })
+    .overrideTypes<PublicCategoryQueryRow[], { merge: false }>();
+  if (error) return { status: "error", error: toCategoryError(error) };
+  if (!data?.length) return { status: "empty", categories: [] };
+  return { status: "success", categories: data.map(mapCategory) };
+}

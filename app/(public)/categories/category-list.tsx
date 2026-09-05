@@ -16,7 +16,13 @@ export function CategoryList({ result }: { result: PublicCategoriesResult }) {
     return (
       <section className="catalog-state">
         <h2>We&apos;re preparing the first software categories.</h2>
-        <p>Check back soon.</p>
+        <p>
+          Our opening collection is taking shape. Category pages will bring related tools together
+          as they become available.
+        </p>
+        <Link className="text-link" href="/software">
+          Browse software →
+        </Link>
       </section>
     );
   }
@@ -29,6 +35,12 @@ export function CategoryList({ result }: { result: PublicCategoriesResult }) {
             <Link href={`/categories/${encodeURIComponent(category.slug)}`}>{category.name}</Link>
           </h2>
           {category.description ? <p>{category.description}</p> : null}
+          <Link
+            className="catalog-detail-link"
+            href={`/categories/${encodeURIComponent(category.slug)}`}
+          >
+            Explore category <span aria-hidden="true">→</span>
+          </Link>
         </article>
       ))}
     </section>

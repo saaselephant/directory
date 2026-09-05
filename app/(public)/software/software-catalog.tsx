@@ -24,6 +24,9 @@ export function SoftwareCatalog({ result, filtered = false }: SoftwareCatalogPro
         <section className="catalog-state" aria-labelledby="catalog-empty-title">
           <h2 id="catalog-empty-title">That category isn&apos;t available.</h2>
           <p>Try another category or clear the filters.</p>
+          <Link className="secondary" href="/software">
+            Browse all software
+          </Link>
         </section>
       );
     }
@@ -32,7 +35,10 @@ export function SoftwareCatalog({ result, filtered = false }: SoftwareCatalogPro
       return (
         <section className="catalog-state" aria-labelledby="catalog-empty-title">
           <h2 id="catalog-empty-title">No software found.</h2>
-          <p>Try a different search or category.</p>
+          <p>Try a broader search, a vendor name or a different category.</p>
+          <Link className="secondary" href="/software">
+            Clear filters
+          </Link>
         </section>
       );
     }
@@ -40,13 +46,19 @@ export function SoftwareCatalog({ result, filtered = false }: SoftwareCatalogPro
     return (
       <section className="catalog-state" aria-labelledby="catalog-empty-title">
         <h2 id="catalog-empty-title">We&apos;re preparing the first software recommendations.</h2>
-        <p>Check back soon for thoughtfully selected tools.</p>
+        <p>
+          Our opening collection is being prepared. Soon you’ll be able to explore product details
+          and find tools for your business.
+        </p>
+        <Link className="text-link" href="/categories">
+          Explore categories →
+        </Link>
       </section>
     );
   }
 
   return (
-    <section aria-label="Published software" className="catalog-grid">
+    <section aria-label="Software results" className="catalog-grid">
       {result.items.map((item) => (
         <article className="catalog-card" key={item.id}>
           <div className="catalog-card-heading">
@@ -54,10 +66,10 @@ export function SoftwareCatalog({ result, filtered = false }: SoftwareCatalogPro
               <h2>
                 <Link href={`/software/${encodeURIComponent(item.slug)}`}>{item.name}</Link>
               </h2>
-              <p className="catalog-vendor">by {item.vendor.name}</p>
+              {item.vendor.name ? <p className="catalog-vendor">by {item.vendor.name}</p> : null}
             </div>
           </div>
-          <p>{item.description}</p>
+          {item.description ? <p className="catalog-description">{item.description}</p> : null}
           {item.bestFor ? (
             <p className="catalog-detail">
               <strong>Best for:</strong> {item.bestFor}

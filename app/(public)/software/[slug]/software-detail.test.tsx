@@ -88,3 +88,31 @@ describe("SoftwareDetail", () => {
     expect(html).not.toContain("affiliate");
   });
 });
+
+describe("public detail launch presentation", () => {
+  it("shows only public category labels and safe internal category links", () => {
+    const html = renderToStaticMarkup(
+      <SoftwareDetail
+        result={{ status: "success", item }}
+        categories={{
+          status: "success",
+          categories: [{ slug: "communication", name: "Communication", description: null }],
+        }}
+      />,
+    );
+    expect(html).toContain('href="/categories/communication"');
+    expect(html).toContain("handled directly by the vendor");
+    expect(html).not.toMatch(/internal-software-id|internal-vendor-id|verification|affiliate/);
+  });
+  it("omits unsafe official website destinations instead of making them clickable", () => {
+    for (const websiteUrl of [
+      "javascript:alert(1)",
+      "https://user@vendor.example",
+      "Generated after approval",
+    ]) {
+      const html = render({ status: "success", item: { ...item, websiteUrl } });
+      expect(html).toContain("official website link is currently unavailable");
+      expect(html).not.toContain(websiteUrl);
+    }
+  });
+});

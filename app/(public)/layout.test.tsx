@@ -18,6 +18,8 @@ describe("public application shell", () => {
     expect(html).toContain('href="/software"');
     expect(html).toContain('href="/categories"');
     expect(html).toContain("Route content");
+    expect(html).toContain(String(new Date().getFullYear()));
+    expect(html).toContain("Skip to content");
     expect(html).not.toMatch(/href="\/admin|Admin preview/);
   });
 

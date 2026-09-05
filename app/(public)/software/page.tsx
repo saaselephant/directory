@@ -28,11 +28,19 @@ export default async function SoftwareIndexPage({ searchParams }: SoftwareIndexP
   return (
     <main className="catalog-page">
       <header className="catalog-header">
-        <p className="eyebrow">Catalog</p>
+        <p className="eyebrow">Find your next tool</p>
         <h1>Software directory</h1>
-        <p className="lede">Clear, practical software recommendations for growing teams.</p>
+        <p className="lede">
+          Explore software for your business. Search by name, vendor or the work you need to do.
+        </p>
       </header>
       <SoftwareFilters categories={categories} filters={result.filters} />
+      {result.status === "success" ? (
+        <p className="catalog-result-summary" role="status">
+          {result.items.length} {result.items.length === 1 ? "tool" : "tools"} to explore
+          {filtered ? " matching your search" : ""}
+        </p>
+      ) : null}
       <SoftwareCatalog filtered={filtered} result={result} />
     </main>
   );

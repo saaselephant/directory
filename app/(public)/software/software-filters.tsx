@@ -43,6 +43,11 @@ export function SoftwareFilters({ categories, filters }: SoftwareFiltersProps) {
           Clear
         </Link>
       </div>
+      {categories.status === "error" ? (
+        <p className="filter-notice">
+          Category filters are temporarily unavailable. You can still search by name or use case.
+        </p>
+      ) : null}
     </form>
   );
 }

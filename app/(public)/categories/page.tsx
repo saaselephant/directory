@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Software categories",
-  description: "Browse published software recommendations by category.",
+  description: "Find business software by category and explore tools for the work you do.",
 };
 
 export default async function CategoriesPage() {
