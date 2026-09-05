@@ -22,6 +22,8 @@ describe("public application shell", () => {
     expect(html).toContain("Route content");
     expect(html).toContain(String(new Date().getFullYear()));
     expect(html).toContain("Skip to content");
+    expect(html).toContain("saaselephant-logo.png");
+    expect(html).not.toContain("brand-mark");
     expect(html).toContain("through certain links, at no additional cost to you");
     expect(html).not.toMatch(/href="\/admin|Admin preview/);
   });

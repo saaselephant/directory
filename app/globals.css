@@ -702,14 +702,6 @@ h1 {
   font-size: 1.6rem;
   letter-spacing: -0.05em;
 }
-.brand-mark {
-  background: #123a73;
-  color: white;
-  border-radius: 0.6rem;
-  padding: 0.3rem 0.5rem;
-  font-size: 1rem;
-  letter-spacing: -0.07em;
-}
 .public-shell .public-nav ul {
   gap: clamp(1rem, 3vw, 2.5rem);
 }
@@ -1230,5 +1222,53 @@ h1 {
   }
   .public-shell .public-footer {
     gap: 1.5rem;
+  }
+}
+
+/* Approved artwork retains its original proportions and orientation. */
+.public-shell .brand-logo {
+  display: block;
+  width: 150px;
+  max-width: 100%;
+  height: auto;
+}
+.public-shell .public-nav {
+  padding-block: 0.25rem;
+}
+.public-shell .public-brand {
+  flex-shrink: 0;
+}
+.hero-elephant {
+  display: block;
+  width: 190px;
+  max-width: 100%;
+  height: auto;
+  margin: 0 0 1.25rem;
+}
+.discovery-note:has(.hero-elephant) {
+  background: white;
+}
+@media (max-width: 40rem) {
+  .public-shell .public-nav {
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0;
+  }
+  .public-shell .public-nav ul {
+    width: auto;
+    flex-wrap: wrap;
+  }
+  .public-shell .public-nav .brand-logo {
+    width: 130px;
+  }
+  .hero-elephant {
+    width: 160px;
+  }
+}
+@media (max-width: 28rem) {
+  .public-shell .public-nav ul {
+    width: 100%;
+    padding-bottom: 0.75rem;
   }
 }

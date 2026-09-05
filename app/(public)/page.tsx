@@ -1,3 +1,4 @@
+import Image from "next/image";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { listPublicCategories } from "@/lib/repositories/categories";
@@ -41,6 +42,16 @@ export default async function HomePage() {
           <p className="hero-note">Free to browse. No account needed.</p>
         </div>
         <aside className="discovery-note" aria-label="Choosing your next tool">
+          {/* Integrated Real Final Branding Logo Asset */}
+          <Image
+            className="hero-elephant"
+            src="/SaasElephantLogoFinal.png"
+            alt="SaaSElephant Official Logo"
+            width={280}
+            height={78}
+            style={{ objectFit: "contain", height: "auto", marginBottom: "16px" }}
+            priority
+          />
           <p className="eyebrow">A good choice starts here</p>
           <h2>
             Find the fit.

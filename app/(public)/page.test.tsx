@@ -8,6 +8,7 @@ describe("public homepage", () => {
   it("offers both discovery paths and a complete intentional empty homepage", async () => {
     const html = renderToStaticMarkup(await HomePage());
     expect(html).toContain("Your Elephant-Sized");
+    expect(html).toContain("saaselephant-elephant.png");
     expect(html).toContain("Store of Software");
     expect(html).toContain("Browse Software");
     expect(html).toContain("Browse Categories");
