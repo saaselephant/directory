@@ -25,6 +25,7 @@ function createClient(
     client: { auth: { getUser }, from } as unknown as SupabaseClient<Database>,
     from,
     eq,
+    is,
   };
 }
 
@@ -37,17 +38,19 @@ describe("requireAdmin", () => {
 
   it("denies an authenticated user without an active platform_admin role", async () => {
     const user = { id: "user-1" } as User;
-    const { client, eq } = createClient(user, null);
+    const { client, eq, is } = createClient(user, null);
     await expect(requireAdmin(client)).resolves.toEqual({ status: "forbidden" });
     expect(eq).toHaveBeenCalledWith("user_id", "user-1");
     expect(eq).toHaveBeenCalledWith("role", "platform_admin");
+    expect(is).toHaveBeenCalledWith("revoked_at", null);
   });
 
   it("denies a revoked platform administrator because no active role is RLS-visible", async () => {
     const user = { id: "user-1" } as User;
-    const { client, eq } = createClient(user, null);
+    const { client, eq, is } = createClient(user, null);
     await expect(requireAdmin(client)).resolves.toEqual({ status: "forbidden" });
     expect(eq).toHaveBeenCalledWith("role", "platform_admin");
+    expect(is).toHaveBeenCalledWith("revoked_at", null);
   });
 
   it("allows an authenticated user through a database-backed active role", async () => {

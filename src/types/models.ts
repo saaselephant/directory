@@ -69,3 +69,35 @@ export interface AdminDashboardModel {
   categoriesInReview: AdminCategoryReviewItem[];
   categoriesPublished: AdminCategoryReviewItem[];
 }
+
+export interface SoftwareReview {
+  id: string;
+  name: string;
+  slug: string | null;
+  vendorName: string | null;
+  legacyVendor: string | null;
+  websiteUrl: string | null;
+  shortDescription: string | null;
+  fullDescription: string | null;
+  bestFor: string | null;
+  pricing: string | null;
+  freePlan: boolean | null;
+  freeTrial: boolean | null;
+  publicationStatus: PublicationStatus | null;
+  verificationStatus: VerificationStatus | null;
+  verifiedAt: string | null;
+  categories: Array<{
+    id: string;
+    name: string;
+    slug: string | null;
+    publicationStatus: PublicationStatus | null;
+  }>;
+}
+export interface SoftwareReviewEvent {
+  result: VerificationStatus;
+  verifiedAt: string;
+  sourceUrl: string | null;
+  sourceReference: string | null;
+  notes: string | null;
+  reason: string | null;
+}

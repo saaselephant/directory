@@ -353,6 +353,14 @@ export interface Database {
     };
     Views: Record<string, never>;
     Functions: {
+      saaselephant_get_software_review: {
+        Args: { p_software_id: string };
+        Returns: SoftwareReviewRow[];
+      };
+      saaselephant_get_software_verification_history: {
+        Args: { p_software_id: string };
+        Returns: SoftwareReviewHistoryRow[];
+      };
       saaselephant_verify_software: {
         Args: {
           p_software_id: SoftwareId;
@@ -380,4 +388,34 @@ export interface Database {
     };
     CompositeTypes: Record<string, never>;
   };
+}
+
+export interface SoftwareReviewRow {
+  software_id: string;
+  software_name: string;
+  slug: string | null;
+  vendor_name: string | null;
+  legacy_vendor: string | null;
+  website_url: string | null;
+  short_description: string | null;
+  full_description: string | null;
+  best_for: string | null;
+  pricing: string | null;
+  free_plan: boolean | null;
+  free_trial: boolean | null;
+  publication_status: PublicationStatus | null;
+  verification_status: VerificationStatus | null;
+  verified_at: string | null;
+  category_id: string | null;
+  category_name: string | null;
+  category_slug: string | null;
+  category_publication_status: PublicationStatus | null;
+}
+export interface SoftwareReviewHistoryRow {
+  result: VerificationStatus;
+  verified_at: string;
+  source_url: string | null;
+  source_reference: string | null;
+  notes: string | null;
+  reason: string | null;
 }

@@ -26,8 +26,10 @@ The starter routes are available at `/`, `/software`, `/admin`, and `/api/health
 
 - `NEXT_PUBLIC_SUPABASE_URL`: public Supabase project URL.
 - `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`: browser-safe Supabase publishable key.
-- `SUPABASE_SERVICE_ROLE_KEY`: reserved for future server-only operations. It is not
-  required by this phase and must never be exposed to the browser.
+
+Application runtime uses only public Supabase configuration and authenticated user sessions.
+There is no service-role key or alternative privileged runtime secret. Private software
+review/history uses fixed database functions that authorize the active platform administrator.
 
 ## Quality checks
 

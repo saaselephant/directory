@@ -36,6 +36,7 @@ function SoftwareList({
         <li key={item.id}>
           <div className="admin-record-heading">
             <strong>{item.name}</strong> by {item.vendorName}
+            <Link href={`/admin/software/${encodeURIComponent(item.id)}`}>Review details</Link>
           </div>
           <span className="admin-record-status">
             Current state: {item.publicationStatus.replaceAll("_", " ")}

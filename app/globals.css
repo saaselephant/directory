@@ -608,3 +608,33 @@ h1 {
     padding: 0.7rem;
   }
 }
+
+.admin-record-heading a {
+  display: inline-block;
+  margin-left: 0.75rem;
+}
+.admin-software-review {
+  max-width: 60rem;
+}
+.admin-software-review section {
+  margin-top: 2rem;
+}
+.admin-software-review dl > div {
+  margin: 0.8rem 0;
+}
+.admin-software-review dt {
+  font-weight: 700;
+}
+.admin-software-review dd {
+  margin: 0.25rem 0 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.admin-review-history > li {
+  border-top: 1px solid var(--border);
+  padding: 1rem 0;
+}
+.admin-software-review a:focus-visible {
+  outline: 3px solid var(--blue);
+  outline-offset: 2px;
+}

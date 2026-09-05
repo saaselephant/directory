@@ -71,6 +71,9 @@ describe("AdminDashboard", () => {
     expect(html).toContain('href="/categories">View category directory');
     expect(html).not.toMatch(/returnUrl|callback|token=/i);
     expect(html).toContain("needs verification");
+    expect(html).toContain('href="/admin/software/software-secret-id"');
+    expect(html).toContain('href="/admin/software/software-published-id"');
+    expect(html.match(/>Review details<\/a>/g)).toHaveLength(2);
     expect(html).toContain("Official evidence URL");
     expect(html).toContain('name="source_url"');
     expect(html).toContain('name="source_reference"');
