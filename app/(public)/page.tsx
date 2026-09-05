@@ -1,8 +1,14 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { listPublicCategories } from "@/lib/repositories/categories";
 import { CategoryList } from "./categories/category-list";
 
 export const dynamic = "force-dynamic";
+export const metadata: Metadata = {
+  title: "Business software discovery",
+  description:
+    "Discover, compare and choose software for your business. Explore SaaSElephant by product or category and take your next step with the vendor.",
+};
 
 export default async function HomePage() {
   const categories = await listPublicCategories();

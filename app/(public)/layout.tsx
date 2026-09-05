@@ -1,3 +1,4 @@
+import { PublicNavigation } from "./public-navigation";
 import Link from "next/link";
 const PUBLIC_LINKS = [
   { href: "/", label: "Home" },
@@ -18,13 +19,7 @@ export default function PublicLayout({ children }: Readonly<{ children: React.Re
             </span>
             SaaSElephant
           </Link>
-          <ul>
-            {PUBLIC_LINKS.map((link) => (
-              <li key={link.href}>
-                <Link href={link.href}>{link.label}</Link>
-              </li>
-            ))}
-          </ul>
+          <PublicNavigation />
         </nav>
       </header>
       <div id="public-content" tabIndex={-1}>

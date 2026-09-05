@@ -1,9 +1,11 @@
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { renderToStaticMarkup } from "react-dom/server";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import PublicLayout from "./layout";
+
+vi.mock("next/navigation", () => ({ usePathname: () => "/" }));
 
 describe("public application shell", () => {
   it("renders internal public navigation without advertising Admin", () => {

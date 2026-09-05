@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { listPublicCategories } from "@/lib/repositories/categories";
 import { searchPublishedSoftware } from "@/lib/repositories/search";
 
@@ -5,6 +6,11 @@ import { SoftwareCatalog } from "./software-catalog";
 import { SoftwareFilters } from "./software-filters";
 
 export const dynamic = "force-dynamic";
+export const metadata: Metadata = {
+  title: "Software directory",
+  description:
+    "Browse business software on SaaSElephant. Search by product, vendor or use case and compare pricing and available plans.",
+};
 
 interface SoftwareIndexPageProps {
   searchParams: Promise<{ q?: string | string[]; category?: string | string[] }>;

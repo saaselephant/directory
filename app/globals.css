@@ -651,7 +651,7 @@ h1 {
   line-height: 1.15;
 }
 .public-shell h1 {
-  font-size: clamp(2.4rem, 5.2vw, 4.65rem);
+  font-size: clamp(2.5rem, 4.8vw, 4.5rem);
 }
 .public-shell h2 {
   font-size: clamp(1.5rem, 3vw, 2.3rem);
@@ -667,7 +667,8 @@ h1 {
 }
 .public-shell a:focus-visible,
 .public-shell input:focus-visible,
-.public-shell select:focus-visible {
+.public-shell select:focus-visible,
+.public-shell button:focus-visible {
   outline: 3px solid var(--blue);
   outline-offset: 4px;
 }
@@ -691,13 +692,14 @@ h1 {
   border-color: #123a73;
 }
 .public-shell .public-nav {
-  min-height: 5.5rem;
+  min-height: 6rem;
+  max-width: 80rem;
 }
 .public-shell .public-brand {
   display: inline-flex;
   align-items: center;
   gap: 0.7rem;
-  font-size: 1.35rem;
+  font-size: 1.6rem;
   letter-spacing: -0.05em;
 }
 .brand-mark {
@@ -713,7 +715,8 @@ h1 {
 }
 .public-shell .public-nav li a {
   display: inline-block;
-  padding-block: 0.4rem;
+  padding: 0.65rem 1rem;
+  border-radius: 0.5rem;
 }
 .skip-link {
   position: absolute;
@@ -728,16 +731,16 @@ h1 {
 }
 .launch-hero,
 .launch-section {
-  max-width: 72rem;
+  max-width: 80rem;
   margin-inline: auto;
   padding-inline: 1.5rem;
 }
 .launch-hero {
   display: grid;
-  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
   gap: clamp(2rem, 5vw, 5rem);
   align-items: center;
-  padding-block: clamp(3rem, 7vw, 6rem);
+  padding-block: clamp(3.5rem, 7vw, 6.5rem);
 }
 .launch-hero h1 {
   margin-bottom: 1.5rem;
@@ -794,7 +797,7 @@ h1 {
   font-size: 0.925rem;
 }
 .launch-section {
-  padding-block: 3.5rem;
+  padding-block: 4.5rem;
 }
 .section-heading {
   display: flex;
@@ -844,7 +847,8 @@ h1 {
   border-radius: 1rem;
   padding: 3rem;
   margin-block: 1rem 4rem;
-  max-width: 69rem;
+  max-width: 77rem;
+  width: calc(100% - 3rem);
   color: #e3ecfa;
 }
 .public-shell .why-section h2,
@@ -867,19 +871,20 @@ h1 {
 }
 .public-shell .public-footer {
   max-width: none;
-  padding: 2.5rem max(1.5rem, calc((100% - 69rem) / 2));
+  padding: 2.5rem max(1.5rem, calc((100% - 77rem) / 2));
   background: #f4f7fb;
   gap: 2rem;
   margin-top: 0;
 }
 .footer-description {
-  max-width: 32rem;
+  max-width: 40rem;
 }
 .footer-description p {
   margin: 0.75rem 0;
 }
 .public-shell .catalog-page {
-  padding-block: 3.5rem 5rem;
+  max-width: 80rem;
+  padding-block: 4rem 6rem;
   min-height: 65vh;
 }
 .public-shell .catalog-header {
@@ -923,7 +928,7 @@ h1 {
   display: flex;
   flex-direction: column;
   min-width: 0;
-  padding: 1.75rem;
+  padding: 2rem;
   border-radius: 0.85rem;
   box-shadow: 0 3px 12px #102a5505;
 }
@@ -954,7 +959,7 @@ h1 {
   padding: clamp(2rem, 6vw, 4rem);
   background: #f4f7fb;
   text-align: center;
-  border-style: dashed;
+  border-style: solid;
 }
 .public-shell .catalog-state h2 {
   font-size: 1.65rem;
@@ -964,7 +969,7 @@ h1 {
   margin: 0 auto 1.5rem;
 }
 .public-shell .software-detail-page {
-  max-width: 72rem;
+  max-width: 80rem;
 }
 .public-shell .software-detail-card {
   border: 0;
@@ -979,7 +984,7 @@ h1 {
 }
 .software-profile-body {
   display: grid;
-  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
   gap: 3rem;
   margin-top: 3rem;
 }
@@ -995,7 +1000,7 @@ h1 {
 .vendor-next-step {
   background: #f0f5fc;
   border: 1px solid var(--border);
-  padding: 1.75rem;
+  padding: 2rem;
   border-radius: 0.85rem;
   align-self: start;
 }
@@ -1072,7 +1077,7 @@ h1 {
     flex-direction: column;
   }
   .why-section {
-    padding: 1.75rem;
+    padding: 2rem;
     gap: 1.5rem;
   }
   .public-shell .catalog-page {
@@ -1083,5 +1088,147 @@ h1 {
   }
   .public-shell .actions > a {
     width: 100%;
+  }
+}
+
+/* Public polish: shared scale and comfortable interactive targets. */
+.public-shell .public-nav li a:hover,
+.public-shell .public-nav a[aria-current="page"] {
+  background: #edf3fb;
+  color: #123a73;
+  text-decoration: none;
+}
+.public-shell .public-nav a[aria-current="page"] {
+  box-shadow: inset 0 -2px #123a73;
+}
+.hero-copy .lede {
+  font-size: clamp(1.2rem, 1.7vw, 1.45rem);
+  max-width: 36rem;
+}
+.hero-copy h1 {
+  text-wrap: balance;
+}
+.steps-grid article {
+  border: 1px solid var(--border);
+  border-radius: 0.85rem;
+  padding: 2rem;
+  background: #f8fafd;
+}
+.step-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 0.6rem;
+  background: #e8f0fc;
+  color: #123a73;
+}
+.steps-grid p:last-child {
+  margin-bottom: 0;
+}
+.public-shell .category-card {
+  min-height: 15rem;
+}
+.public-shell .catalog-card:focus-within,
+.public-shell .category-card:focus-within {
+  border-color: #123a73;
+}
+.public-shell .catalog-detail-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  text-underline-offset: 0.2em;
+}
+.public-shell .catalog-filters {
+  padding: 1.75rem;
+  gap: 1.25rem;
+}
+.public-shell .catalog-filters input,
+.public-shell .catalog-filters select {
+  min-height: 3.25rem;
+}
+.catalog-result-summary {
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+.software-profile-heading {
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--border);
+}
+.public-shell .software-detail-facts {
+  margin-top: 1.5rem;
+  gap: 1.5rem;
+}
+.public-shell .software-detail-facts dd {
+  max-width: 44rem;
+  line-height: 1.7;
+}
+.public-shell .vendor-next-step .software-detail-cta {
+  width: 100%;
+}
+.public-shell .category-tags a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding: 0.5rem 1rem;
+}
+.public-shell .category-tags a:hover {
+  background: #edf3fb;
+  border-color: #94abc9;
+}
+.public-shell .public-footer {
+  align-items: flex-start;
+  padding-block: 3.5rem;
+}
+.public-footer nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+}
+.affiliate-disclosure {
+  font-size: 0.925rem;
+  line-height: 1.7;
+}
+@media (max-width: 60rem) {
+  .public-shell .public-nav ul {
+    gap: 0.25rem;
+  }
+  .steps-grid {
+    gap: 1rem;
+  }
+  .steps-grid article {
+    padding: 1.5rem;
+  }
+}
+@media (max-width: 40rem) {
+  .public-shell .public-nav {
+    gap: 0.75rem;
+    padding-block: 1rem;
+  }
+  .public-shell .public-nav ul {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .public-shell .public-nav li a {
+    padding-inline: 0.75rem;
+  }
+  .public-shell .catalog-filters,
+  .public-shell .catalog-card,
+  .public-shell .category-card,
+  .vendor-next-step {
+    padding: 1.5rem;
+  }
+  .public-shell .category-card {
+    min-height: 12rem;
+  }
+  .catalog-filter-actions {
+    flex-wrap: wrap;
+  }
+  .catalog-filter-actions > * {
+    flex: 1;
+  }
+  .public-shell .public-footer {
+    gap: 1.5rem;
   }
 }
