@@ -43,6 +43,13 @@ describe("requireAdmin", () => {
     expect(eq).toHaveBeenCalledWith("role", "platform_admin");
   });
 
+  it("denies a revoked platform administrator because no active role is RLS-visible", async () => {
+    const user = { id: "user-1" } as User;
+    const { client, eq } = createClient(user, null);
+    await expect(requireAdmin(client)).resolves.toEqual({ status: "forbidden" });
+    expect(eq).toHaveBeenCalledWith("role", "platform_admin");
+  });
+
   it("allows an authenticated user through a database-backed active role", async () => {
     const user = { id: "user-1" } as User;
     const { client } = createClient(user, { user_id: "user-1" });

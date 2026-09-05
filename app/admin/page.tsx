@@ -1,5 +1,6 @@
 import { requireAdmin } from "@/lib/auth/admin";
 import { getAdminDashboard } from "@/lib/repositories/admin";
+import { redirect } from "next/navigation";
 
 import { AdminDashboard } from "./admin-dashboard";
 
@@ -9,13 +10,7 @@ export default async function AdminPage() {
   const authorization = await requireAdmin();
 
   if (authorization.status === "unauthenticated") {
-    return (
-      <main className="placeholder-page">
-        <p className="eyebrow">Admin</p>
-        <h1>Sign in required</h1>
-        <p>An authenticated editorial account is required to access this workspace.</p>
-      </main>
-    );
+    redirect("/admin/sign-in");
   }
 
   if (authorization.status === "forbidden") {

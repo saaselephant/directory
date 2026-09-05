@@ -380,3 +380,53 @@ h1 {
   border-top: 1px solid var(--border);
   padding: 0.8rem 0;
 }
+
+.admin-auth-page {
+  display: grid;
+  min-height: 70vh;
+  place-items: center;
+}
+
+.admin-auth-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 0.9rem;
+  max-width: 28rem;
+  padding: 2rem;
+  width: 100%;
+}
+
+.admin-auth-form {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.admin-auth-form input {
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  font: inherit;
+  padding: 0.75rem;
+}
+
+.admin-auth-form button,
+.admin-sign-out button {
+  background: var(--navy);
+  border: 0;
+  border-radius: 0.5rem;
+  color: white;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+  padding: 0.75rem 1rem;
+}
+
+.admin-auth-error {
+  color: #8a1c1c;
+  margin-top: 1rem;
+}
+
+.admin-sign-out {
+  display: flex;
+  justify-content: flex-end;
+}

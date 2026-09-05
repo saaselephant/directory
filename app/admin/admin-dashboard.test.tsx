@@ -1,7 +1,9 @@
 import { renderToStaticMarkup } from "react-dom/server";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import type { CategoryId, SoftwareId } from "@/types/models";
+
+vi.mock("server-only", () => ({}));
 
 import { AdminDashboard } from "./admin-dashboard";
 

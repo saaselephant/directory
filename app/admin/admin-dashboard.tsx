@@ -1,4 +1,5 @@
 import type { AdminDashboardModel } from "@/types/models";
+import { signOutAdmin } from "@/lib/auth/actions";
 
 export function AdminDashboard({ dashboard }: { dashboard: AdminDashboardModel }) {
   const summaries = [
@@ -11,6 +12,9 @@ export function AdminDashboard({ dashboard }: { dashboard: AdminDashboardModel }
 
   return (
     <>
+      <form action={signOutAdmin} className="admin-sign-out">
+        <button type="submit">Sign out</button>
+      </form>
       <section className="admin-summary" aria-label="Editorial summary">
         {summaries.map(([label, value]) => (
           <article key={label}>
