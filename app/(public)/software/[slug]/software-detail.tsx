@@ -83,10 +83,19 @@ export function SoftwareDetail({ result, categories }: SoftwareDetailProps) {
             <p className="eyebrow">Your next step</p>
             <h2>Explore {item.name}</h2>
             <p>Get the latest product information directly from the vendor.</p>
+            <a
+              className="primary software-detail-cta"
+              href={`/go/${encodeURIComponent(item.slug)}`}
+              rel="sponsored nofollow noopener noreferrer"
+            >
+              Visit {item.name} <span aria-hidden="true">↗</span>
+            </a>
             {website ? (
-              <a className="primary software-detail-cta" href={website} rel="noopener noreferrer">
-                Visit {item.name}&apos;s website <span aria-hidden="true">↗</span>
-              </a>
+              <p>
+                <a href={website} rel="noopener noreferrer">
+                  Official website
+                </a>
+              </p>
             ) : (
               <p>The official website link is currently unavailable.</p>
             )}

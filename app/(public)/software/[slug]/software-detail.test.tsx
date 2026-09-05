@@ -86,6 +86,8 @@ describe("SoftwareDetail", () => {
     expect(html).not.toContain("publication_status");
     expect(html).not.toContain("verification_status");
     expect(html).not.toContain("affiliate");
+    expect(html).toContain('href="/go/useful-tool"');
+    expect(html).not.toMatch(/referral|PartnerStack|commission|destination_url/);
   });
 });
 

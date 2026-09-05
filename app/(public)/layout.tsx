@@ -40,6 +40,10 @@ export default function PublicLayout({ children }: Readonly<{ children: React.Re
             <br />
             Explore here. Buy directly from the vendor.
           </p>
+          <p className="affiliate-disclosure">
+            SaaSElephant may earn a commission when you purchase software through certain links, at
+            no additional cost to you.
+          </p>
           <small>© {new Date().getFullYear()} SaaSElephant</small>
         </div>
         <nav aria-label="Footer navigation">

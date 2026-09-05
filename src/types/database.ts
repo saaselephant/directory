@@ -353,6 +353,10 @@ export interface Database {
     };
     Views: Record<string, never>;
     Functions: {
+      saaselephant_software_outbound: {
+        Args: { p_software_slug: string };
+        Returns: undefined;
+      };
       saaselephant_get_software_review: {
         Args: { p_software_id: string };
         Returns: SoftwareReviewRow[];
