@@ -6,7 +6,20 @@ import { AdminDashboard } from "./admin-dashboard";
 
 export const dynamic = "force-dynamic";
 
-export default async function AdminPage() {
+type AdminPageProps = {
+  searchParams?: Promise<{ result?: string | string[] }>;
+};
+
+const RESULT_MESSAGES: Record<string, string> = {
+  published: "Publication status updated.",
+  returned: "The item was returned to review.",
+  stale: "That item changed before the action completed. Refresh and try again.",
+  unavailable: "We couldn’t complete that action. Please try again.",
+};
+
+export default async function AdminPage({
+  searchParams = Promise.resolve({}),
+}: AdminPageProps = {}) {
   const authorization = await requireAdmin();
 
   if (authorization.status === "unauthenticated") {
@@ -34,11 +47,18 @@ export default async function AdminPage() {
   }
 
   const result = await getAdminDashboard(authorization.client);
+  const resultKey = (await searchParams).result;
+  const feedback = typeof resultKey === "string" ? RESULT_MESSAGES[resultKey] : undefined;
 
   return (
     <main className="placeholder-page">
       <p className="eyebrow">Admin</p>
       <h1>Editorial workspace</h1>
+      {feedback ? (
+        <p className="admin-action-feedback" role="status">
+          {feedback}
+        </p>
+      ) : null}
       {result.status === "success" ? (
         <AdminDashboard dashboard={result.dashboard} />
       ) : (

@@ -21,6 +21,7 @@ function createClient(fail = false) {
         };
       }
 
+      const state = table === "software" ? undefined : undefined;
       const data = columns.includes("software_name")
         ? [
             {
@@ -28,7 +29,7 @@ function createClient(fail = false) {
               slug: "tool",
               software_name: "Tool",
               vendor: "Vendor",
-              publication_status: "in_review",
+              publication_status: state ?? "in_review",
               verification_status: "needs_verification",
             },
           ]
@@ -37,13 +38,16 @@ function createClient(fail = false) {
               category_id: "category-1",
               slug: "crm",
               category_name: "CRM",
-              publication_status: "in_review",
+              publication_status: state ?? "in_review",
             },
           ];
       return {
-        eq: vi.fn(() => ({
+        eq: vi.fn((_column: string, stateValue: string) => ({
           order: vi.fn(() => ({
-            overrideTypes: vi.fn().mockResolvedValue({ data, error: null }),
+            overrideTypes: vi.fn().mockResolvedValue({
+              data: data.map((row) => ({ ...row, publication_status: stateValue })),
+              error: null,
+            }),
           })),
         })),
       };
@@ -59,10 +63,20 @@ describe("admin repository", () => {
       status: "success",
       dashboard: {
         summary: { softwareInReview: 43, categoriesInReview: 43 },
-        softwareQueue: [{ name: "Tool", vendorName: "Vendor" }],
-        categoryQueue: [{ name: "CRM" }],
+        softwareInReview: [{ name: "Tool", vendorName: "Vendor", publicationStatus: "in_review" }],
+        softwarePublished: [{ name: "Tool", publicationStatus: "published" }],
+        categoriesInReview: [{ name: "CRM", publicationStatus: "in_review" }],
+        categoriesPublished: [{ name: "CRM", publicationStatus: "published" }],
       },
     });
+  });
+
+  it("selects only the restricted admin fields and no affiliate tables", async () => {
+    const { client, from } = createClient();
+    await getAdminDashboard(client);
+    expect(from).not.toHaveBeenCalledWith("affiliate_programs");
+    expect(from).not.toHaveBeenCalledWith("affiliate_links");
+    expect(from).not.toHaveBeenCalledWith("user_roles");
   });
 
   it("returns a typed error without throwing database details", async () => {

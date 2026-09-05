@@ -17,17 +17,21 @@ const TRANSITION_SOURCE: Record<PublicationTarget, PublicationTarget> = {
   in_review: "published",
 };
 
+export function isPublishableEntity(value: string): value is PublishableEntity {
+  return value === "software" || value === "category";
+}
+
 export function isPublicationTarget(value: string): value is PublicationTarget {
   return value === "in_review" || value === "published";
 }
 
 export async function setPublicationStatus(
-  entity: PublishableEntity,
+  entity: PublishableEntity | string,
   id: string,
   target: PublicationTarget,
   client?: SupabaseClient<Database>,
 ): Promise<PublicationCommandResult> {
-  if (!id || id.length > 200 || !isPublicationTarget(target)) {
+  if (!isPublishableEntity(entity) || !id || id.length > 200 || !isPublicationTarget(target)) {
     return { status: "invalid_transition" };
   }
 

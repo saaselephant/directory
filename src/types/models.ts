@@ -58,6 +58,8 @@ export interface AdminDashboardModel {
     categoriesInReview: number;
     categoriesPublished: number;
   };
-  softwareQueue: AdminSoftwareReviewItem[];
-  categoryQueue: AdminCategoryReviewItem[];
+  softwareInReview: AdminSoftwareReviewItem[];
+  softwarePublished: AdminSoftwareReviewItem[];
+  categoriesInReview: AdminCategoryReviewItem[];
+  categoriesPublished: AdminCategoryReviewItem[];
 }

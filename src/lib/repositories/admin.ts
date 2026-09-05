@@ -59,8 +59,10 @@ export async function getAdminDashboard(
     softwareNeedsVerification,
     categoriesInReview,
     categoriesPublished,
-    softwareQueue,
-    categoryQueue,
+    softwareInReviewQueue,
+    softwarePublishedQueue,
+    categoriesInReviewQueue,
+    categoriesPublishedQueue,
   ] = await Promise.all([
     countRows(client, "software", "publication_status", "in_review"),
     countRows(client, "software", "publication_status", "published"),
@@ -74,9 +76,21 @@ export async function getAdminDashboard(
       .order("software_name")
       .overrideTypes<SoftwareQueueRow[], { merge: false }>(),
     client
+      .from("software")
+      .select("software_id, slug, software_name, vendor, publication_status, verification_status")
+      .eq("publication_status", "published")
+      .order("software_name")
+      .overrideTypes<SoftwareQueueRow[], { merge: false }>(),
+    client
       .from("categories")
       .select("category_id, slug, category_name, publication_status")
       .eq("publication_status", "in_review")
+      .order("category_name")
+      .overrideTypes<CategoryQueueRow[], { merge: false }>(),
+    client
+      .from("categories")
+      .select("category_id, slug, category_name, publication_status")
+      .eq("publication_status", "published")
       .order("category_name")
       .overrideTypes<CategoryQueueRow[], { merge: false }>(),
   ]);
@@ -87,25 +101,27 @@ export async function getAdminDashboard(
     softwareNeedsVerification.error,
     categoriesInReview.error,
     categoriesPublished.error,
-    softwareQueue.error,
-    categoryQueue.error,
+    softwareInReviewQueue.error,
+    softwarePublishedQueue.error,
+    categoriesInReviewQueue.error,
+    categoriesPublishedQueue.error,
   ].find((error): error is PostgrestError => Boolean(error));
   if (firstError) return { status: "error", error: repositoryError(firstError) };
 
-  const softwareItems: AdminSoftwareReviewItem[] = (softwareQueue.data ?? []).map((row) => ({
+  const mapSoftware = (row: SoftwareQueueRow): AdminSoftwareReviewItem => ({
     id: row.software_id as SoftwareId,
     slug: row.slug,
     name: row.software_name,
     vendorName: row.vendor,
     publicationStatus: row.publication_status,
     verificationStatus: row.verification_status,
-  }));
-  const categoryItems: AdminCategoryReviewItem[] = (categoryQueue.data ?? []).map((row) => ({
+  });
+  const mapCategory = (row: CategoryQueueRow): AdminCategoryReviewItem => ({
     id: row.category_id as CategoryId,
     slug: row.slug,
     name: row.category_name,
     publicationStatus: row.publication_status,
-  }));
+  });
 
   return {
     status: "success",
@@ -117,8 +133,10 @@ export async function getAdminDashboard(
         categoriesInReview: categoriesInReview.count ?? 0,
         categoriesPublished: categoriesPublished.count ?? 0,
       },
-      softwareQueue: softwareItems,
-      categoryQueue: categoryItems,
+      softwareInReview: (softwareInReviewQueue.data ?? []).map(mapSoftware),
+      softwarePublished: (softwarePublishedQueue.data ?? []).map(mapSoftware),
+      categoriesInReview: (categoriesInReviewQueue.data ?? []).map(mapCategory),
+      categoriesPublished: (categoriesPublishedQueue.data ?? []).map(mapCategory),
     },
   };
 }

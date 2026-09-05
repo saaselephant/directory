@@ -40,8 +40,10 @@ describe("AdminPage access boundary", () => {
       status: "success",
       dashboard: {
         summary: {},
-        softwareQueue: [],
-        categoryQueue: [],
+        softwareInReview: [],
+        softwarePublished: [],
+        categoriesInReview: [],
+        categoriesPublished: [],
       },
     });
     await AdminPage();
