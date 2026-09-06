@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -12,6 +13,24 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
+      <head>
+        {/* Global Site Tag (gtag.js) - Google Analytics */}
+        <Script
+          src="https://googletagmanager.com"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function g() { dataLayer.push(arguments); }
+            window.gtag = g;
+            g('js', new Date());
+            g('config', 'G-0SSQ26C8J3', {
+              page_path: window.location.pathname,
+            });
+          `}
+        </Script>
+      </head>
       <body>{children}</body>
     </html>
   );
