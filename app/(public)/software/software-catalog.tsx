@@ -59,38 +59,53 @@ export function SoftwareCatalog({ result, filtered = false }: SoftwareCatalogPro
 
   return (
     <section aria-label="Software results" className="catalog-grid">
-      {result.items.map((item) => (
-        <article className="catalog-card" key={item.id}>
-          <div className="catalog-card-heading">
-            <div>
-              <h2>
-                <Link href={`/software/${encodeURIComponent(item.slug)}`}>{item.name}</Link>
-              </h2>
-              {item.vendor.name ? <p className="catalog-vendor">by {item.vendor.name}</p> : null}
+      {result.items.map((rawItem: any) => {
+        // Safe mapping adapter layer to capture both direct schemas and lookup object definitions flawlessly
+        const item = {
+          id: rawItem.software_id || rawItem.id || "",
+          name: rawItem.software_name || rawItem.name || "",
+          slug: rawItem.slug || "",
+          vendor: typeof rawItem.vendor === "object" ? (rawItem.vendor.name || "") : (rawItem.vendor || ""),
+          description: rawItem.short_description || rawItem.description || "",
+          bestFor: rawItem.best_for || rawItem.bestFor || "",
+          pricing: rawItem.pricing || "",
+          hasFreePlan: rawItem.free_plan !== undefined ? rawItem.free_plan : rawItem.hasFreePlan,
+          hasFreeTrial: rawItem.free_trial !== undefined ? rawItem.free_trial : rawItem.hasFreeTrial
+        };
+
+        return (
+          <article className="catalog-card" key={item.id}>
+            <div className="catalog-card-heading">
+              <div>
+                <h2>
+                  <Link href={`/software/${encodeURIComponent(item.slug)}`}>{item.name}</Link>
+                </h2>
+                {item.vendor ? <p className="catalog-vendor">by {item.vendor}</p> : null}
+              </div>
             </div>
-          </div>
-          {item.description ? <p className="catalog-description">{item.description}</p> : null}
-          {item.bestFor ? (
-            <p className="catalog-detail">
-              <strong>Best for:</strong> {item.bestFor}
-            </p>
-          ) : null}
-          {item.pricing ? (
-            <p className="catalog-detail">
-              <strong>Pricing:</strong> {item.pricing}
-            </p>
-          ) : null}
-          {item.hasFreePlan || item.hasFreeTrial ? (
-            <ul className="catalog-options" aria-label="Available options">
-              {item.hasFreePlan ? <li>Free plan</li> : null}
-              {item.hasFreeTrial ? <li>Free trial</li> : null}
-            </ul>
-          ) : null}
-          <Link className="catalog-detail-link" href={`/software/${encodeURIComponent(item.slug)}`}>
-            View software
-          </Link>
-        </article>
-      ))}
+            {item.description ? <p className="catalog-description">{item.description}</p> : null}
+            {item.bestFor ? (
+              <p className="catalog-detail">
+                <strong>Best for:</strong> {item.bestFor}
+              </p>
+            ) : null}
+            {item.pricing ? (
+              <p className="catalog-detail">
+                <strong>Pricing:</strong> {item.pricing}
+              </p>
+            ) : null}
+            {item.hasFreePlan || item.hasFreeTrial ? (
+              <ul className="catalog-options" aria-label="Available options">
+                {item.hasFreePlan ? <li>Free plan</li> : null}
+                {item.hasFreeTrial ? <li>Free trial</li> : null}
+              </ul>
+            ) : null}
+            <Link className="catalog-detail-link" href={`/software/${encodeURIComponent(item.slug)}`}>
+              View software
+            </Link>
+          </article>
+        );
+      })}
     </section>
   );
 }
