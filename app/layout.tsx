@@ -22,10 +22,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <Script id="google-analytics" strategy="afterInteractive">
           {`
             window.dataLayer = window.dataLayer || [];
-            function g() { dataLayer.push(arguments); }
-            window.gtag = g;
-            g('js', new Date());
-            g('config', 'G-0SSQ26C8J3', {
+            window.gtag = function gtag(){window.dataLayer.push(arguments);}
+            window.gtag('js', new Date());
+            window.gtag('config', 'G-0SSQ26C8J3', {
               page_path: window.location.pathname,
             });
           `}
