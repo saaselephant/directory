@@ -34,7 +34,12 @@ export type PublicCategoryResult =
   | { status: "error"; error: PublicCategoryError };
 
 export type PublishedSoftwareByCategoryResult =
-  | { status: "success"; category: PublicCategory; items: SoftwareCatalogItem[] }
+  | {
+      status: "success";
+      category: PublicCategory;
+      items: SoftwareCatalogItem[];
+      total?: number;
+    }
   | { status: "not_found" }
   | { status: "error"; error: PublicCategoryError };
 
@@ -81,14 +86,23 @@ export async function getPublicCategoryBySlug(
 export async function listPublishedSoftwareByCategorySlug(
   slug: string,
   client: SupabaseClient<Database> = createServerSupabaseClient(),
+  pagination?: { page: number; pageSize: number },
 ): Promise<PublishedSoftwareByCategoryResult> {
   const categoryResult = await getPublicCategoryBySlug(slug, client);
   if (categoryResult.status !== "success") return categoryResult;
 
-  const { data, error } = await client
+  let relationshipQuery = client
     .from("software_categories")
-    .select("software_id")
+    .select("software_id", pagination ? { count: "exact" } : undefined)
     .eq("category_id", categoryResult.categoryId)
+    .order("software_id", { ascending: true });
+
+  if (pagination) {
+    const from = (pagination.page - 1) * pagination.pageSize;
+    relationshipQuery = relationshipQuery.range(from, from + pagination.pageSize - 1);
+  }
+
+  const { data, error, count } = await relationshipQuery
     .overrideTypes<Array<{ software_id: string }>, { merge: false }>();
 
   if (error) return { status: "error", error: toCategoryError(error) };
@@ -104,6 +118,7 @@ export async function listPublishedSoftwareByCategorySlug(
     status: "success",
     category: categoryResult.category,
     items: softwareResult.status === "success" ? softwareResult.items : [],
+    ...(pagination ? { total: count ?? 0 } : {}),
   };
 }
 

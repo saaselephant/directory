@@ -6,9 +6,18 @@ import type { SoftwareSearchResult } from "@/lib/repositories/search";
 interface SoftwareCatalogProps {
   result: PublishedSoftwareResult | SoftwareSearchResult;
   filtered?: boolean;
+  returnTo?: string;
+  contextLabel?: string;
+  compact?: boolean;
 }
 
-export function SoftwareCatalog({ result, filtered = false }: SoftwareCatalogProps) {
+export function SoftwareCatalog({
+  result,
+  filtered = false,
+  returnTo = "/software",
+  contextLabel,
+  compact = false,
+}: SoftwareCatalogProps) {
   if (result.status === "error") {
     return (
       <section className="catalog-state" aria-labelledby="catalog-error-title">
@@ -58,41 +67,68 @@ export function SoftwareCatalog({ result, filtered = false }: SoftwareCatalogPro
   }
 
   return (
-    <section aria-label="Software results" className="catalog-grid">
-      {result.items.map((rawItem: any) => {
-        // Safe mapping adapter layer to capture both direct schemas and lookup object definitions flawlessly
-        const item = {
-          id: rawItem.software_id || rawItem.id || "",
-          name: rawItem.software_name || rawItem.name || "",
-          slug: rawItem.slug || "",
-          vendor: typeof rawItem.vendor === "object" ? (rawItem.vendor.name || "") : (rawItem.vendor || ""),
-          description: rawItem.short_description || rawItem.description || "",
-          bestFor: rawItem.best_for || rawItem.bestFor || "",
-          pricing: rawItem.pricing || "",
-          hasFreePlan: rawItem.free_plan !== undefined ? rawItem.free_plan : rawItem.hasFreePlan,
-          hasFreeTrial: rawItem.free_trial !== undefined ? rawItem.free_trial : rawItem.hasFreeTrial
-        };
-
+    <section
+      aria-label="Software results"
+      className={`catalog-grid${compact ? " catalog-grid-compact" : ""}`}
+    >
+      {result.items.map((item) => {
+        const href = `/software/${encodeURIComponent(item.slug)}?from=${encodeURIComponent(returnTo)}`;
+        if (compact) {
+          const compactSupport =
+            item.vendor.name &&
+            item.vendor.name.trim().toLocaleLowerCase() !== item.name.trim().toLocaleLowerCase()
+              ? item.vendor.name
+              : (item.bestFor ?? item.description);
+          return (
+            <article className="catalog-card catalog-card-compact" key={item.id}>
+              <div className="catalog-card-heading">
+                <span className="product-monogram" aria-hidden="true">
+                  {item.name.slice(0, 1)}
+                </span>
+                <div>
+                  <h2>
+                    <Link href={href}>{item.name}</Link>
+                  </h2>
+                  <p className="compact-product-support">{compactSupport}</p>
+                  <Link className="catalog-detail-link" href={href}>
+                    <span>Explore</span>
+                    <span aria-hidden="true">→</span>
+                  </Link>
+                </div>
+              </div>
+            </article>
+          );
+        }
         return (
           <article className="catalog-card" key={item.id}>
+            {contextLabel ? <p className="catalog-context">{contextLabel}</p> : null}
             <div className="catalog-card-heading">
+              <span className="product-monogram" aria-hidden="true">
+                {item.name.slice(0, 1)}
+              </span>
               <div>
                 <h2>
-                  <Link href={`/software/${encodeURIComponent(item.slug)}`}>{item.name}</Link>
+                  <Link href={href}>{item.name}</Link>
                 </h2>
-                {item.vendor ? <p className="catalog-vendor">by {item.vendor}</p> : null}
+                {item.vendor.name ? <p className="catalog-vendor">by {item.vendor.name}</p> : null}
               </div>
             </div>
             {item.description ? <p className="catalog-description">{item.description}</p> : null}
-            {item.bestFor ? (
-              <p className="catalog-detail">
-                <strong>Best for:</strong> {item.bestFor}
-              </p>
-            ) : null}
-            {item.pricing ? (
-              <p className="catalog-detail">
-                <strong>Pricing:</strong> {item.pricing}
-              </p>
+            {item.bestFor || item.pricing ? (
+              <dl className="catalog-metadata">
+                {item.bestFor ? (
+                  <div>
+                    <dt>Best for</dt>
+                    <dd>{item.bestFor}</dd>
+                  </div>
+                ) : null}
+                {item.pricing ? (
+                  <div>
+                    <dt>Pricing</dt>
+                    <dd>{item.pricing}</dd>
+                  </div>
+                ) : null}
+              </dl>
             ) : null}
             {item.hasFreePlan || item.hasFreeTrial ? (
               <ul className="catalog-options" aria-label="Available options">
@@ -100,8 +136,9 @@ export function SoftwareCatalog({ result, filtered = false }: SoftwareCatalogPro
                 {item.hasFreeTrial ? <li>Free trial</li> : null}
               </ul>
             ) : null}
-            <Link className="catalog-detail-link" href={`/software/${encodeURIComponent(item.slug)}`}>
-              View software
+            <Link className="catalog-detail-link" href={href}>
+              <span>Explore {item.name}</span>
+              <span aria-hidden="true">→</span>
             </Link>
           </article>
         );

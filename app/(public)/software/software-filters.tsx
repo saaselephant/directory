@@ -40,7 +40,7 @@ export function SoftwareFilters({ categories, filters }: SoftwareFiltersProps) {
           Search
         </button>
         <Link className="secondary" href="/software">
-          Clear
+          Reset
         </Link>
       </div>
       {categories.status === "error" ? (

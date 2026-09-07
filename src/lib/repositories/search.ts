@@ -20,6 +20,8 @@ const CATEGORY_SLUG_MAX_LENGTH = 200;
 export interface SoftwareSearchParams {
   query?: string | null;
   categorySlug?: string | null;
+  page?: number;
+  pageSize?: number;
 }
 
 export interface NormalizedSoftwareSearchParams {
@@ -28,10 +30,16 @@ export interface NormalizedSoftwareSearchParams {
 }
 
 export type SoftwareSearchResult =
-  | { status: "success"; items: SoftwareCatalogItem[]; filters: NormalizedSoftwareSearchParams }
+  | {
+      status: "success";
+      items: SoftwareCatalogItem[];
+      total?: number;
+      filters: NormalizedSoftwareSearchParams;
+    }
   | {
       status: "empty";
       items: [];
+      total?: number;
       reason: "no_matches" | "category_unavailable";
       filters: NormalizedSoftwareSearchParams;
     }
@@ -71,7 +79,13 @@ export async function searchPublishedSoftware(
   }
 
   const result = await listPublishedSoftwareMatching(
-    { query: filters.query || undefined, softwareIds },
+    {
+      query: filters.query || undefined,
+      softwareIds,
+      ...(params.page !== undefined && params.pageSize !== undefined
+        ? { page: params.page, pageSize: params.pageSize }
+        : {}),
+    },
     client,
   );
   if (result.status === "error") return { ...result, filters };

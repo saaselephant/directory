@@ -1,4 +1,7 @@
 import Link from "next/link";
+import { Breadcrumbs, DiscoveryNext, safeReturnPath } from "../../discovery";
+import { SoftwareCatalog } from "../software-catalog";
+import type { SoftwareCatalogItem } from "@/types/models";
 import type { Metadata } from "next";
 import type { PublishedSoftwareDetailResult } from "@/lib/repositories/software";
 import type { PublicCategoriesResult } from "@/lib/repositories/categories";
@@ -7,13 +10,20 @@ import { safeReviewUrl } from "@/lib/security/review-url";
 interface SoftwareDetailProps {
   result: Exclude<PublishedSoftwareDetailResult, { status: "not_found" }>;
   categories?: PublicCategoriesResult;
+  returnTo?: string;
+  related?: SoftwareCatalogItem[];
 }
 
-export function buildSoftwareMetadata(item: any): Metadata {
-  return { title: item.software_name || item.name, description: item.short_description || item.description };
+export function buildSoftwareMetadata(item: SoftwareCatalogItem): Metadata {
+  return { title: item.name, description: item.description };
 }
 
-export function SoftwareDetail({ result, categories }: SoftwareDetailProps) {
+export function SoftwareDetail({
+  result,
+  categories,
+  returnTo,
+  related = [],
+}: SoftwareDetailProps) {
   if (result.status === "error")
     return (
       <main className="software-detail-page">
@@ -25,31 +35,56 @@ export function SoftwareDetail({ result, categories }: SoftwareDetailProps) {
       </main>
     );
 
-  // Cast the item directly to any to bypass static interface validation flags cleanly
-  const item = (result as any).item || {};
-  const softwareName = item.software_name || item.name || "";
-  const shortDescription = item.short_description || item.description || "";
-  const bestFor = item.best_for || item.bestFor || "";
-  const pricing = item.pricing || "";
-  const freePlan = item.free_plan !== undefined ? item.free_plan : item.hasFreePlan;
-  const freeTrial = item.free_trial !== undefined ? item.free_trial : item.hasFreeTrial;
-  const websiteUrl = item.website_url || item.websiteUrl || "";
-  const vendorName = typeof item.vendor === "object" ? (item.vendor?.name || "") : (item.vendor || "");
-
+  const item = result.item;
+  const softwareName = item.name;
+  const shortDescription = item.description;
+  const bestFor = item.bestFor;
+  const pricing = item.pricing;
+  const freePlan = item.hasFreePlan;
+  const freeTrial = item.hasFreeTrial;
+  const websiteUrl = item.websiteUrl;
+  const vendorName = item.vendor.name;
+  const category =
+    categories?.status === "success"
+      ? (categories.categories.find(
+          (c) => returnTo === `/categories/${encodeURIComponent(c.slug)}`,
+        ) ?? categories.categories[0])
+      : undefined;
+  const back = safeReturnPath(
+    returnTo ?? (category ? `/categories/${encodeURIComponent(category.slug)}` : undefined),
+  );
+  const backLabel =
+    back.startsWith("/categories/") && category
+      ? category.name
+      : back.includes("?")
+        ? "Search results"
+        : "Software directory";
   const website = safeReviewUrl(websiteUrl);
 
   return (
     <main className="software-detail-page">
-      <Link className="software-detail-back" href="/software">
-        ← Software directory
+      <Breadcrumbs
+        items={[
+          { label: "Software", href: "/software" },
+          ...(category
+            ? [{ label: category.name, href: `/categories/${encodeURIComponent(category.slug)}` }]
+            : []),
+          { label: softwareName },
+        ]}
+      />
+      <Link className="software-detail-back" href={back}>
+        ← Back to {backLabel}
       </Link>
       <article className="software-detail-card">
         <header className="software-profile-heading">
           <p className="eyebrow">Software overview</p>
-          <h1>{softwareName}</h1>
-          {vendorName ? (
-            <p className="software-detail-vendor">by {vendorName}</p>
-          ) : null}
+          <div className="product-title">
+            <span className="product-monogram" aria-hidden="true">
+              {softwareName.slice(0, 1)}
+            </span>
+            <h1>{softwareName}</h1>
+          </div>
+          {vendorName ? <p className="software-detail-vendor">by {vendorName}</p> : null}
           <p className="software-detail-description">{shortDescription}</p>
           {categories?.status === "success" && categories.categories.length > 0 ? (
             <nav className="category-tags" aria-label="Software categories">
@@ -63,9 +98,19 @@ export function SoftwareDetail({ result, categories }: SoftwareDetailProps) {
           {categories?.status === "error" ? (
             <p className="catalog-detail">Category information is temporarily unavailable.</p>
           ) : null}
+          <a
+            className="primary"
+            href={`/go/${encodeURIComponent(item.slug)}`}
+            rel="sponsored nofollow noopener noreferrer"
+          >
+            Visit {softwareName} ↗
+          </a>
+          <a className="text-link profile-explore" href="#product-essentials">
+            Explore the essentials ↓
+          </a>
         </header>
         <div className="software-profile-body">
-          <section aria-label="Product essentials">
+          <section id="product-essentials" aria-label="Product essentials">
             <h2>Is {softwareName} a fit for your business?</h2>
             <dl className="software-detail-facts">
               {bestFor ? (
@@ -118,6 +163,17 @@ export function SoftwareDetail({ result, categories }: SoftwareDetailProps) {
           </aside>
         </div>
       </article>
+      {related.length > 0 && (
+        <section className="related-section">
+          <p className="eyebrow">Consider your options</p>
+          <h2>Other tools in the same categories</h2>
+          <p className="section-intro">
+            Explore these related tools to understand how each fits your requirements.
+          </p>
+          <SoftwareCatalog result={{ status: "success", items: related }} returnTo={back} />
+        </section>
+      )}
+      <DiscoveryNext />
     </main>
   );
 }

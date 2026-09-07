@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { categoryGroup } from "../discovery";
 
 import type { PublicCategoriesResult } from "@/lib/repositories/categories";
 
@@ -27,22 +28,50 @@ export function CategoryList({ result }: { result: PublicCategoriesResult }) {
     );
   }
 
+  const groups = ["Run your business", "Grow your business", "Work smarter", "Create & manage"];
+  const descriptions: Record<string, string> = {
+    "Run your business": "Organize the people, resources and processes behind your business.",
+    "Grow your business": "Build your audience and develop customer relationships.",
+    "Work smarter": "Simplify everyday work and bring your team together.",
+    "Create & manage": "Explore tools for your ideas and specialized business needs.",
+  };
   return (
-    <section className="category-grid" aria-label="Software categories">
-      {result.categories.map((category) => (
-        <article className="category-card" key={category.slug}>
-          <h2>
-            <Link href={`/categories/${encodeURIComponent(category.slug)}`}>{category.name}</Link>
-          </h2>
-          {category.description ? <p>{category.description}</p> : null}
-          <Link
-            className="catalog-detail-link"
-            href={`/categories/${encodeURIComponent(category.slug)}`}
+    <div className="category-collections">
+      {groups.map((group) => {
+        const members = result.categories.filter((category) => categoryGroup(category) === group);
+        if (!members.length) return null;
+        return (
+          <section
+            className="category-collection"
+            id={group.toLowerCase().replaceAll(" ", "-")}
+            key={group}
           >
-            Explore category <span aria-hidden="true">→</span>
-          </Link>
-        </article>
-      ))}
-    </section>
+            <header>
+              <p className="eyebrow">Explore a business need</p>
+              <h2>{group}</h2>
+              <p>{descriptions[group]}</p>
+            </header>
+            <div className="category-grid" aria-label="Software categories">
+              {members.map((category) => (
+                <article className="category-card" key={category.slug}>
+                  <h2>
+                    <Link href={`/categories/${encodeURIComponent(category.slug)}`}>
+                      {category.name}
+                    </Link>
+                  </h2>
+                  {category.description ? <p>{category.description}</p> : null}
+                  <Link
+                    className="catalog-detail-link"
+                    href={`/categories/${encodeURIComponent(category.slug)}`}
+                  >
+                    Explore category <span aria-hidden="true">→</span>
+                  </Link>
+                </article>
+              ))}
+            </div>
+          </section>
+        );
+      })}
+    </div>
   );
 }

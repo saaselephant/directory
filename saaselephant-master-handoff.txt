@@ -1,0 +1,273 @@
+======================================================================
+SAASELEPHANT MARKETPLACE UX MILESTONE HANDOFF
+======================================================================
+
+[PROJECT]
+- Repository: saaselephant/directory
+- Local root: C:\SaaSElephant
+- Active application: top-level app/
+- Stack: Next.js App Router, React, TypeScript, Supabase
+- Production branch: v1-platform
+- Vercel production branch: v1-platform
+- Primary domain: https://saaselephant.com
+
+======================================================================
+[BRAND — LOCKED]
+- Approved asset: public/SaaSElephantLogo2026.png
+- Visual sequence: SAAS followed by a full-grown adult African elephant on the right.
+- Do not edit, crop, re-save, recolor, redraw, recreate or replace the PNG.
+- The logo acts as the Home link.
+- Exact visitor-facing tagline: Your Elephant-Sized Store of Software
+- The tagline has no final period.
+- Do not introduce standalone textual "Elephant" as company branding outside approved
+  tagline/context. Internal SaaSElephant identifiers remain unchanged.
+- The header trims verified transparent edge space at render time. The source PNG remains
+  unchanged, and the tagline aligns to the visible SAAS artwork.
+
+======================================================================
+[PUBLIC HEADER]
+Desktop composition:
+- approved logo and tagline
+- Manage Projects & Teams dropdown
+- Sales & Automation dropdown
+- SEO & Content dropdown
+- Workflow & Automation dropdown
+- All Softwares dropdown
+
+Current behavior and constraints:
+- No separate Home item; the logo is Home.
+- No header Find Software CTA.
+- No old generic Software dropdown.
+- The desktop header uses one compact, start-aligned navigation flow.
+- Category triggers and All Softwares share consistent height, baseline, typography,
+  padding, radius and chevron language.
+- Wide desktop includes a restrained far-right pale-cyan fade and faint blue-violet radial
+  glow. It is CSS-only, pointer-events none, behind navigation and disabled below the
+  desktop breakpoint.
+- Current alignment is acceptable for this milestone. Do not restart repeated tiny
+  margin-adjustment loops without a clear visual reason.
+
+======================================================================
+[CATEGORY DROPDOWNS]
+- The four desktop categories come from real published category data.
+- Each preview uses existing category/software relationships and can show up to five real
+  software names.
+- Each menu ends with View all in [Category].
+- No pagination is used in these small preview menus.
+
+Interaction:
+- mouse hover opens
+- leaving schedules closure after approximately 150ms
+- an invisible hover bridge covers the trigger/menu gap
+- re-entry cancels closure
+- moving to another category switches menus
+- click/tap toggles
+- click-away closes
+- Escape closes and restores trigger focus
+- Enter/Space and Tab work through native controls
+- aria-expanded stays accurate
+- focus-visible treatment is retained
+
+Below the desktop breakpoint:
+- direct category triggers are hidden
+- the accessible Categories disclosure remains available
+
+======================================================================
+[ALL SOFTWARES A-Z INDEX]
+- Exact trigger label: All Softwares
+- Desktop trigger uses the same compact navigation and chevron family as categories.
+- Desktop opens a lightweight software-index dropdown containing:
+  - ALL plus A-Z controls
+  - real published software-name links
+  - Previous / Page X of Y / Next
+  - View all softwares -> linking to /software
+- ALL is the default.
+- Letter matching is case-insensitive against the display-name initial.
+- Changing the letter resets the dropdown to page 1.
+- Initials with no matching published software are disabled.
+- The dropdown page size is 6.
+- Previous is disabled on page 1; Next is disabled on the final page.
+- Paging and alphabet filtering keep the dropdown open.
+- No product cards, descriptions, pricing, ratings, reviews or badges are loaded/rendered.
+
+Interaction uses the same proven model as category dropdowns:
+- hover open
+- approximately 150ms delayed close
+- hover bridge and re-entry cancellation
+- click toggle and click-away close
+- Escape with focus restoration
+- Enter/Space, Tab and accurate aria-expanded
+
+Responsive behavior:
+- the desktop A-Z index is hidden below the existing desktop breakpoint
+- a direct accessible /software link remains available
+- the mobile Categories disclosure remains unchanged
+
+Data architecture:
+- API route: app/api/software-index/route.ts
+- Repository: src/lib/repositories/software.ts
+- Requests are lazy and return only id, slug and display name.
+- Filtering, exact count and six-item range pagination run in Supabase.
+- Alphabet availability uses count-only queries and is requested only on initial load.
+- Responses use short public/CDN cache headers.
+- Do not load hundreds of complete software records into the header.
+
+======================================================================
+[HOMEPAGE ARCHITECTURE — LOCKED]
+The homepage is the software marketplace, not a conventional giant marketing page.
+
+Current order:
+1. public header/navigation
+2. integrated discovery/process workspace
+3. compact Featured Software shelf
+4. compact footer
+
+Intentionally absent:
+- permanent desktop category sidebar
+- giant conventional hero
+- separate goal-card section
+- standalone homepage category-tile section
+- redundant closing CTA
+- duplicate catalog-wide Featured CTA
+
+Categories are primarily accessed through persistent header navigation.
+
+======================================================================
+[DISCOVERY / SEARCH WORKSPACE]
+- Desktop uses approximately a 70/30 search/process split.
+- The layout stacks below 68rem.
+
+Left:
+- SOFTWARE DISCOVERY, BUILT AROUND YOU
+- Find the right software for your business.
+- supporting discovery copy
+- compact search label, field and Find software button
+- Search by product, vendor or use case.
+
+The headline maximum is approximately 2.65rem. Search controls remain compact. The main
+Find software action stays inside the search experience.
+
+Right:
+- centered heading: A CLEAR PATH FORWARD
+- left-aligned process steps:
+  01 Discover
+  Search by product, vendor or use case.
+
+  02 Compare essentials
+  Review the details that matter to your team.
+
+  03 Choose with the vendor
+  Confirm current plans and take the next step.
+
+The former standalone process strip was removed and must not be duplicated.
+
+Trust chips:
+- Free to browse
+- No account required
+- No spam, ever
+- Buy directly from the vendor
+
+They use a compact 2x2 desktop treatment and responsive narrow-layout fallback. Do not
+restore the old long trust sentence.
+
+======================================================================
+[FEATURED SOFTWARE]
+- Heading remains INSIDE THE DIRECTORY / Software worth a closer look.
+- Six real published products are shown using existing ordering.
+- Homepage tiles are compact app-style tiles, approximately 188x81px on desktop.
+- Identity tile is approximately 44px.
+- Tiles contain identity, product name, compact vendor/fallback descriptor and Explore ->.
+- The homepage-only Best for block was removed.
+- Full directory cards remain unchanged.
+
+Featured shelf:
+- horizontally scrollable
+- native touch/trackpad scrolling
+- compact accessible left/right controls
+- controls appear only when that direction can scroll
+- smooth approximately one-card scrolling
+- no page-level horizontal overflow
+- no dots or numbered pagination
+- no catalog-wide Explore all software CTA
+
+Component: app/(public)/featured-software-shelf.tsx
+
+======================================================================
+[FULL DIRECTORY AND CATEGORY PAGINATION]
+- /software, filtered software results and category listings use repository-level
+  pagination.
+- Page size: 12 products.
+- Page 1 uses the canonical URL; later pages use ?page=N.
+- Controls: Previous, nearby numbered pages, ellipses and Next.
+- Search/filter parameters and category route context are preserved.
+- Out-of-range PostgREST PGRST103 responses are handled safely.
+- The All Softwares dropdown's six-item pagination is independent and must not replace or
+  alter this full-page pagination.
+
+Reusable component: app/(public)/pagination.tsx
+
+======================================================================
+[FOOTER]
+- Footer is intentionally compact with no navigation.
+- Left: modest approved logo and constrained Affiliate Disclosure beneath it.
+- Disclosure: We may earn a commission when you purchase software through certain links,
+  at no additional cost to you.
+- Redundant positioning copy was removed and should not be restored without a clear reason.
+- Right:
+  © 2026 SaaSElephant. All rights reserved.
+  Powered by Pralka Tech AI.
+- Desktop uses left brand/disclosure and right legal columns.
+- Mobile stacks cleanly.
+
+======================================================================
+[VISUAL DIRECTION]
+Target:
+- modern commercial software marketplace
+- professional, compact, software-first and easy to scan
+- graphite/navy authority with SaaS blue/cyan, white and restrained blue-violet accents
+- real software identity and clear interaction hierarchy
+
+Avoid:
+- giant generic heroes
+- oversized cards and empty marketing sections
+- permanent category sidebar
+- duplicate navigation/CTAs
+- generic template or admin-dashboard appearance
+- repeated broad CSS rewrites framed only as "premium"
+
+Next meaningful visual improvement:
+- a dedicated real software-logo/product-identity asset and data pass
+- do not begin this during the milestone checkpoint
+
+======================================================================
+[AFFILIATE AND INFRASTRUCTURE — PROTECTED]
+- Secure outbound route: app/go/[slug]/route.ts
+- Never recreate src/app/go/[slug]/route.ts.
+- Pipedrive affiliate flow is active and verified.
+- Pipedrive software ID: SE002
+- Pipedrive affiliate program ID: AF002
+- ClickUp PartnerStack application/network process remains pending/on hold based on the
+  last known status.
+- HubSpot's prior Impact application was rejected while the site appeared under
+  development; revisit only after traction.
+- Do not claim affiliate approvals without evidence.
+- Catalog growth is independent of affiliate approval.
+
+Do not casually modify:
+- Supabase schema, RLS, grants or authentication
+- Pipedrive flow or affiliate routing
+- sitemap or robots
+- GA4 or Google Search Console setup
+- GoDaddy www redirect
+- Vercel production configuration
+- environment variables
+
+Never add SUPABASE_SERVICE_ROLE_KEY to Vercel.
+
+======================================================================
+[MILESTONE VALIDATION]
+- Type-check passed.
+- Production build passed.
+- git diff --check passed.
+- Blockers: none.
+======================================================================

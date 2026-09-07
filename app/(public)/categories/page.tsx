@@ -1,3 +1,4 @@
+import { Breadcrumbs, DiscoveryNext } from "../discovery";
 import type { Metadata } from "next";
 
 import { listPublicCategories } from "@/lib/repositories/categories";
@@ -16,12 +17,14 @@ export default async function CategoriesPage() {
 
   return (
     <main className="catalog-page">
+      <Breadcrumbs items={[{ label: "Categories" }]} />
       <header className="catalog-header">
         <p className="eyebrow">Categories</p>
-        <h1>Browse software by category</h1>
+        <h1>Start with the work you want to do.</h1>
         <p className="lede">Explore software grouped around practical business needs.</p>
       </header>
       <CategoryList result={result} />
+      <DiscoveryNext title="Have a specific tool in mind?" />
     </main>
   );
 }

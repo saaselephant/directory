@@ -3,7 +3,10 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { getPublishedSoftwareBySlug } from "@/lib/repositories/software";
-import { listPublicCategoriesForSoftware } from "@/lib/repositories/categories";
+import {
+  listPublicCategoriesForSoftware,
+  listPublishedSoftwareByCategorySlug,
+} from "@/lib/repositories/categories";
 
 import { buildSoftwareMetadata, SoftwareDetail } from "./software-detail";
 
@@ -11,6 +14,7 @@ export const dynamic = "force-dynamic";
 
 interface SoftwareDetailPageProps {
   params: Promise<{ slug: string }>;
+  searchParams?: Promise<{ from?: string | string[] }>;
 }
 
 const getSoftware = cache(getPublishedSoftwareBySlug);
@@ -23,19 +27,13 @@ export async function generateMetadata({ params }: SoftwareDetailPageProps): Pro
     return { title: "Software directory" };
   }
 
-  const catalogItem = {
-    software_name: result.item.name || '',
-    short_description: result.item.description || '',
-    software_id: result.item.id || '',
-    slug: result.item.slug || '',
-    vendor: typeof result.item.vendor === 'object' ? ((result.item.vendor as any)?.name || '') : (result.item.vendor || ''),
-    website_url: result.item.websiteUrl || ''
-  };
-
-  return buildSoftwareMetadata(catalogItem);
+  return buildSoftwareMetadata(result.item);
 }
 
-export default async function SoftwareDetailPage({ params }: SoftwareDetailPageProps) {
+export default async function SoftwareDetailPage({
+  params,
+  searchParams,
+}: SoftwareDetailPageProps) {
   const { slug } = await params;
   const result = await getSoftware(slug);
 
@@ -43,24 +41,32 @@ export default async function SoftwareDetailPage({ params }: SoftwareDetailPageP
     notFound();
   }
 
-  let normalizedResult = { ...result } as any;
-  if (result.status === "success" && result.item) {
-    normalizedResult.item = {
-      software_id: result.item.id,
-      software_name: result.item.name,
-      slug: result.item.slug,
-      vendor: typeof result.item.vendor === 'object' ? ((result.item.vendor as any)?.name || '') : (result.item.vendor || ''),
-      website_url: result.item.websiteUrl,
-      short_description: result.item.description,
-      best_for: result.item.bestFor,
-      pricing: result.item.pricing,
-      free_plan: result.item.hasFreePlan,
-      free_trial: result.item.hasFreeTrial
-    };
-  }
-
   const categories =
     result.status === "success" ? await listPublicCategoriesForSoftware(result.item.id) : undefined;
 
-  return <SoftwareDetail result={normalizedResult} categories={categories} />;
+  const from = (await searchParams)?.from;
+  const relatedResults =
+    categories?.status === "success"
+      ? await Promise.all(
+          categories.categories
+            .slice(0, 3)
+            .map((category) => listPublishedSoftwareByCategorySlug(category.slug)),
+        )
+      : [];
+  const related = [
+    ...new Map(
+      relatedResults
+        .flatMap((group) => (group.status === "success" ? group.items : []))
+        .filter((item) => result.status === "success" && item.id !== result.item.id)
+        .map((item) => [item.id, item]),
+    ).values(),
+  ].slice(0, 3);
+  return (
+    <SoftwareDetail
+      result={result}
+      categories={categories}
+      returnTo={Array.isArray(from) ? from[0] : from}
+      related={related}
+    />
+  );
 }
