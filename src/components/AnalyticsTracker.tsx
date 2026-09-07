@@ -1,15 +1,16 @@
 'use client';
 
 import { usePathname, useSearchParams } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, Suspense } from 'react';
 
-export default function AnalyticsTracker() {
+function AnalyticsTrackerComponent() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
   useEffect(() => {
     if (typeof window !== 'undefined' && (window as any).gtag) {
-      const url = pathname + (searchParams.toString() ? `?${searchParams.toString()}` : '');
+      const currentSearch = searchParams.toString();
+      const url = pathname + (currentSearch ? `?${currentSearch}` : '');
       (window as any).gtag('config', 'G-0SSQ26C8J3', {
         page_path: url,
       });
@@ -17,4 +18,12 @@ export default function AnalyticsTracker() {
   }, [pathname, searchParams]);
 
   return null;
+}
+
+export default function AnalyticsTracker() {
+  return (
+    <Suspense fallback={null}>
+      <AnalyticsTrackerComponent />
+    </Suspense>
+  );
 }
