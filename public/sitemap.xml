@@ -1,7 +1,27 @@
-<?xml version="1.0" encoding="UTF-8"?> 
-<urlset xmlns="http://sitemaps.org"> 
-  <url> 
-    <loc>https://saaselephant.com</loc> 
-    <priority>1.0</priority> 
-  </url> 
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://sitemaps.org">
+  <url><loc>https://saaselephant.com/</loc></url>
+  <url><loc>https://saaselephant.com/software</loc></url>
+  <url><loc>https://saaselephant.com/software/1password</loc></url>
+  <url><loc>https://saaselephant.com/software/activecampaign</loc></url>
+  <url><loc>https://saaselephant.com/software/ahrefs</loc></url>
+  <url><loc>https://saaselephant.com/software/canva</loc></url>
+  <url><loc>https://saaselephant.com/software/clickup</loc></url>
+  <url><loc>https://saaselephant.com/software/freshbooks</loc></url>
+  <url><loc>https://saaselephant.com/software/freshbooks-accounting</loc></url>
+  <url><loc>https://saaselephant.com/software/hubspot</loc></url>
+  <url><loc>https://saaselephant.com/software/hubspot-crm</loc></url>
+  <url><loc>https://saaselephant.com/software/make</loc></url>
+  <url><loc>https://saaselephant.com/software/monday</loc></url>
+  <url><loc>https://saaselephant.com/software/monday-work-os</loc></url>
+  <url><loc>https://saaselephant.com/software/notion</loc></url>
+  <url><loc>https://saaselephant.com/software/pipedrive</loc></url>
+  <url><loc>https://saaselephant.com/software/semrush</loc></url>
+  <url><loc>https://saaselephant.com/software/slack</loc></url>
+  <url><loc>https://saaselephant.com/software/zapier</loc></url>
+  <url><loc>https://saaselephant.com/categories</loc></url>
+  <url><loc>https://saaselephant.com/categories/manage-projects-teams</loc></url>
+  <url><loc>https://saaselephant.com/categories/sales-automation</loc></url>
+  <url><loc>https://saaselephant.com/categories/seo-content</loc></url>
+  <url><loc>https://saaselephant.com/categories/workflow-automation</loc></url>
 </urlset>
