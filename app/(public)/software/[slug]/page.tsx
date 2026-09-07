@@ -23,17 +23,16 @@ export async function generateMetadata({ params }: SoftwareDetailPageProps): Pro
     return { title: "Software directory" };
   }
 
-  // Safely translate the object parameters to satisfy metadata compilation
   const catalogItem = {
     software_name: result.item.name || '',
     short_description: result.item.description || '',
     software_id: result.item.id || '',
     slug: result.item.slug || '',
-    vendor: typeof result.item.vendor === 'object' ? (result.item.vendor.name || '') : (result.item.vendor || ''),
+    vendor: typeof result.item.vendor === 'object' ? ((result.item.vendor as any)?.name || '') : (result.item.vendor || ''),
     website_url: result.item.websiteUrl || ''
   };
 
-  return buildSoftwareMetadata(catalogItem as any);
+  return buildSoftwareMetadata(catalogItem);
 }
 
 export default async function SoftwareDetailPage({ params }: SoftwareDetailPageProps) {
@@ -44,25 +43,24 @@ export default async function SoftwareDetailPage({ params }: SoftwareDetailPageP
     notFound();
   }
 
-  // If the query returns a legacy item mapping shell, normalize the internal item parameters safely
-  let normalizedResult = { ...result };
+  let normalizedResult = { ...result } as any;
   if (result.status === "success" && result.item) {
     normalizedResult.item = {
       software_id: result.item.id,
       software_name: result.item.name,
       slug: result.item.slug,
-      vendor: typeof result.item.vendor === 'object' ? (result.item.vendor.name || '') : (result.item.vendor || ''),
+      vendor: typeof result.item.vendor === 'object' ? ((result.item.vendor as any)?.name || '') : (result.item.vendor || ''),
       website_url: result.item.websiteUrl,
       short_description: result.item.description,
       best_for: result.item.bestFor,
       pricing: result.item.pricing,
       free_plan: result.item.hasFreePlan,
       free_trial: result.item.hasFreeTrial
-    } as any;
+    };
   }
 
   const categories =
     result.status === "success" ? await listPublicCategoriesForSoftware(result.item.id) : undefined;
 
-  return <SoftwareDetail result={normalizedResult as any} categories={categories} />;
+  return <SoftwareDetail result={normalizedResult} categories={categories} />;
 }
