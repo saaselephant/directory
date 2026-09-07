@@ -20,12 +20,12 @@ export default function PublicLayout({ children }: Readonly<{ children: React.Re
           <Link className="public-brand" href="/" aria-label="SaaSElephant home">
             {/* Real Logo Asset with fixed layout boundaries */}
             <Image
-              className="brand-logo-img"
+              className="brand-logo-img header-logo-img"
               src="/SaasElephantLogoFinal.png"
               alt="SaaSElephant"
-              width={160}
-              height={44}
-              style={{ objectFit: "contain", height: "auto" }}
+              width={64}
+              height={55}
+              style={{ objectFit: "contain" }}
               priority
             />
           </Link>
@@ -42,12 +42,12 @@ export default function PublicLayout({ children }: Readonly<{ children: React.Re
           <Link className="public-brand" href="/" aria-label="SaaSElephant home">
             {/* Real Logo Asset preserved in footer */}
             <Image
-              className="brand-logo-img"
+              className="brand-logo-img footer-logo-img"
               src="/SaasElephantLogoFinal.png"
               alt="SaaSElephant"
-              width={140}
-              height={38}
-              style={{ objectFit: "contain", height: "auto" }}
+              width={56}
+              height={48}
+              style={{ objectFit: "contain" }}
             />
           </Link>
           <p>

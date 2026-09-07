@@ -47,9 +47,9 @@ export default async function HomePage() {
             className="hero-elephant"
             src="/SaasElephantLogoFinal.png"
             alt="SaaSElephant Official Logo"
-            width={280}
-            height={78}
-            style={{ objectFit: "contain", height: "auto", marginBottom: "16px" }}
+            width={220}
+            height={187}
+            style={{ objectFit: "contain", marginBottom: "16px" }}
             priority
           />
           <p className="eyebrow">A good choice starts here</p>
