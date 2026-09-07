@@ -17,7 +17,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <head>
         {/* Global Site Tag (gtag.js) - Google Analytics */}
         <Script
-          src="https://googletagmanager.com"
+          src="https://www.googletagmanager.com/gtag/js?id=G-0SSQ26C8J3"
           strategy="afterInteractive"
         />
         <Script id="google-analytics" strategy="afterInteractive">
