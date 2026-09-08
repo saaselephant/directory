@@ -22,6 +22,7 @@ describe("SoftwareLogo", () => {
 
     expect(html).toContain('src="/software-logos/useful-tool.svg"');
     expect(html).toContain('alt="Useful Tool logo"');
+    expect(html).toContain('decoding="async"');
     expect(html).not.toContain(">U<");
   });
 

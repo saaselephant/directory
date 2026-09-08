@@ -1,0 +1,176 @@
+# SaaSElephant Logo Factory V1
+
+## Summary
+
+- Products considered: 507
+- Successful local logos: 353 (69.6%)
+- Product-specific: 138
+- Vendor-level: 3
+- Favicon-derived: 212
+- Fallbacks retained: 154
+- Ambiguous identity: 53
+- Blocked: 17
+- HTTP failures: 9
+- Invalid candidates: 115
+- HTTP 403: 17
+- HTTP 429: 0
+- Stored asset bytes: 4592628
+
+Successful source URLs and asset hashes are retained in `docs/software-logo-factory-result.json`.
+
+## Fallbacks
+
+- **15Five** (`15five`): invalid_assets — All identity-safe candidates failed image validation or acquisition.
+- **6sense** (`6sense`): blocked — Official page returned HTTP 403.
+- **ActiveCampaign** (`activecampaign`): invalid_assets — All identity-safe candidates failed image validation or acquisition.
+- **Ada** (`ada`): blocked — Official page returned HTTP 403.
+- **Adobe Acrobat Sign** (`adobe-acrobat-sign`): no_candidates — No first-party logo candidates were declared by the official page.
+- **airSlate SignNow** (`airslate-signnow`): ambiguous_identity — Declared assets did not safely identify this product rather than a sibling vendor.
+- **Airtable** (`airtable`): invalid_assets — All identity-safe candidates failed image validation or acquisition.
+- **AiSensy** (`aisensy`): invalid_assets — All identity-safe candidates failed image validation or acquisition.
+- **Atlas** (`atlas`): no_candidates — No first-party logo candidates were declared by the official page.
+- **Automation Anywhere** (`automation-anywhere`): invalid_assets — All identity-safe candidates failed image validation or acquisition.
+- **Backlog** (`backlog`): ambiguous_identity — Declared assets did not safely identify this product rather than a sibling vendor.
+- **Boomi** (`boomi`): invalid_assets — All identity-safe candidates failed image validation or acquisition.
+- **Breezy HR** (`breezy-hr`): blocked — Official page returned HTTP 403.
+- **Cal.com** (`cal-com`): http_failure — Response exceeds the allowed size.
+- **Camunda** (`camunda`): invalid_assets — All identity-safe candidates failed image validation or acquisition.
+- **Canva** (`canva`): blocked — Official page returned HTTP 403.
+- **Capsule CRM** (`capsule-crm`): ambiguous_identity — Declared assets did not safely identify this product rather than a sibling vendor.
+- **Celonis** (`celonis`): invalid_assets — All identity-safe candidates failed image validation or acquisition.
+- **ClearTax** (`cleartax`): invalid_assets — All identity-safe candidates failed image validation or acquisition.
+- **Clipchamp** (`clipchamp`): ambiguous_identity — Declared assets did not safely identify this product rather than a sibling vendor.
+- **Cloudflare** (`cloudflare`): invalid_assets — All identity-safe candidates failed image validation or acquisition.
+- **Coda** (`coda`): http_failure — getaddrinfo ENOTFOUND coda.io
+- **Cognigy** (`cognigy`): invalid_assets — All identity-safe candidates failed image validation or acquisition.
+- **Confluence** (`confluence`): http_failure — This operation was aborted
+- **Contently** (`contently`): invalid_assets — All identity-safe candidates failed image validation or acquisition.
+- **Copper CRM** (`copper-crm`): ambiguous_identity — Declared assets did not safely identify this product rather than a sibling vendor.
+- **CoSchedule** (`coschedule`): invalid_assets — All identity-safe candidates failed image validation or acquisition.
+- **Crazy Egg** (`crazy-egg`): invalid_assets — All identity-safe candidates failed image validation or acquisition.
+- **Creatio** (`creatio`): http_failure — Response exceeds the allowed size.
+- **Customer.io** (`customer-io`): no_candidates — No first-party logo candidates were declared by the official page.
+- **Demandbase** (`demandbase`): invalid_assets — All identity-safe candidates failed image validation or acquisition.
+- **Descript** (`descript`): invalid_assets — All identity-safe candidates failed image validation or acquisition.
+- **Deskpro** (`deskpro`): invalid_assets — All identity-safe candidates failed image validation or acquisition.
+- **Dext** (`dext`): invalid_assets — All identity-safe candidates failed image validation or acquisition.
+- **Digio** (`digio`): invalid_assets — All identity-safe candidates failed image validation or acquisition.
+- **Directus** (`directus`): invalid_assets — All identity-safe candidates failed image validation or acquisition.
+- **Docusign** (`docusign`): invalid_assets — All identity-safe candidates failed image validation or acquisition.
+- **Docyt** (`docyt`): invalid_assets — All identity-safe candidates failed image validation or acquisition.
+- **Doppler** (`doppler`): invalid_assets — All identity-safe candidates failed image validation or acquisition.
+- **Draup** (`draup`): invalid_assets — All identity-safe candidates failed image validation or acquisition.
+- **Dripify** (`dripify`): http_failure — Response exceeds the allowed size.
+- **Dropbox Sign** (`dropbox-sign`): invalid_assets — All identity-safe candidates failed image validation or acquisition.
+- **Duda** (`duda`): no_candidates — No first-party logo candidates were declared by the official page.
+- **Elementor** (`elementor`): invalid_assets — All identity-safe candidates failed image validation or acquisition.
+- **Ema** (`ema`): ambiguous_identity — Declared assets did not safely identify this product rather than a sibling vendor.
+- **Employment Hero** (`employment-hero`): no_candidates — No first-party logo candidates were declared by the official page.
+- **Encharge** (`encharge`): blocked — Official page returned HTTP 403.
+- **Flozic (formerly Appy Pie Connect)** (`flozic-formerly-appy-pie-connect`): ambiguous_identity — Declared assets did not safely identify this product rather than a sibling vendor.
+- **Foxit PDF Editor** (`foxit-pdf-editor`): http_failure — Response exceeds the allowed size.
+- **FreshBooks Accounting** (`freshbooks-accounting`): ambiguous_identity — Declared assets did not safely identify this product rather than a sibling vendor.
+- **Freshchat** (`freshchat`): ambiguous_identity — Declared assets did not safely identify this product rather than a sibling vendor.
+- **Freshdesk** (`freshdesk`): invalid_assets — All identity-safe candidates failed image validation or acquisition.
+- **Freshmarketer** (`freshmarketer`): ambiguous_identity — Declared assets did not safely identify this product rather than a sibling vendor.
+- **Freshsales** (`freshsales`): ambiguous_identity — Declared assets did not safely identify this product rather than a sibling vendor.
+- **Freshservice** (`freshservice`): invalid_assets — All identity-safe candidates failed image validation or acquisition.
+- **FullEnrich** (`fullenrich`): invalid_assets — All identity-safe candidates failed image validation or acquisition.
+- **Gamma** (`gamma`): blocked — Official page returned HTTP 403.
+- **Ghost** (`ghost`): no_candidates — No first-party logo candidates were declared by the official page.
+- **GitBook** (`gitbook`): invalid_assets — All identity-safe candidates failed image validation or acquisition.
+- **GitLab** (`gitlab`): ambiguous_identity — Declared assets did not safely identify this product rather than a sibling vendor.
+- **Grammarly Business** (`grammarly-business`): ambiguous_identity — Declared assets did not safely identify this product rather than a sibling vendor.
+- **Hemingway Editor** (`hemingway-editor`): ambiguous_identity — Declared assets did not safely identify this product rather than a sibling vendor.
+- **Hive** (`hive`): invalid_assets — All identity-safe candidates failed image validation or acquisition.
+- **Honeycomb** (`honeycomb`): ambiguous_identity — Declared assets did not safely identify this product rather than a sibling vendor.
+- **Hotjar** (`hotjar`): ambiguous_identity — Declared assets did not safely identify this product rather than a sibling vendor.
+- **HubSpot CRM** (`hubspot-crm`): ambiguous_identity — Declared assets did not safely identify this product rather than a sibling vendor.
+- **Icertis** (`icertis`): invalid_assets — All identity-safe candidates failed image validation or acquisition.
+- **Insightly** (`insightly`): blocked — Official page returned HTTP 403.
+- **InstaSafe** (`instasafe`): ambiguous_identity — Declared assets did not safely identify this product rather than a sibling vendor.
+- **Interakt** (`interakt`): invalid_assets — All identity-safe candidates failed image validation or acquisition.
+- **Jira** (`jira`): no_candidates — No first-party logo candidates were declared by the official page.
+- **Kameleoon** (`kameleoon`): invalid_assets — All identity-safe candidates failed image validation or acquisition.
+- **Katana Cloud Manufacturing** (`katana-cloud-manufacturing`): ambiguous_identity — Declared assets did not safely identify this product rather than a sibling vendor.
+- **Keka** (`keka`): http_failure — fetch failed
+- **Kit** (`kit`): blocked — Official page returned HTTP 403.
+- **Knowlarity** (`knowlarity`): http_failure — fetch failed
+- **Kore.ai** (`kore-ai`): invalid_assets — All identity-safe candidates failed image validation or acquisition.
+- **Landbot** (`landbot`): invalid_assets — All identity-safe candidates failed image validation or acquisition.
+- **LeadSquared** (`leadsquared`): blocked — Official page returned HTTP 403.
+- **Lucidchart** (`lucidchart`): ambiguous_identity — Declared assets did not safely identify this product rather than a sibling vendor.
+- **Lucidspark** (`lucidspark`): ambiguous_identity — Declared assets did not safely identify this product rather than a sibling vendor.
+- **Mailmodo** (`mailmodo`): invalid_assets — All identity-safe candidates failed image validation or acquisition.
+- **Make** (`make`): ambiguous_identity — Declared assets did not safely identify this product rather than a sibling vendor.
+- **Manychat** (`manychat`): blocked — Official page returned HTTP 403.
+- **Marketing 360** (`marketing-360`): no_candidates — No first-party logo candidates were declared by the official page.
+- **Mercer | Mettl** (`mercer-mettl`): ambiguous_identity — Declared assets did not safely identify this product rather than a sibling vendor.
+- **Middleware** (`middleware`): invalid_assets — All identity-safe candidates failed image validation or acquisition.
+- **Monday.com Work OS** (`monday-work-os`): ambiguous_identity — Declared assets did not safely identify this product rather than a sibling vendor.
+- **mParticle** (`mparticle`): invalid_assets — All identity-safe candidates failed image validation or acquisition.
+- **MSG91** (`msg91`): invalid_assets — All identity-safe candidates failed image validation or acquisition.
+- **n8n** (`n8n`): invalid_assets — All identity-safe candidates failed image validation or acquisition.
+- **Netcore Cloud** (`netcore-cloud`): invalid_assets — All identity-safe candidates failed image validation or acquisition.
+- **NetHunt CRM** (`nethunt-crm`): ambiguous_identity — Declared assets did not safely identify this product rather than a sibling vendor.
+- **Nextiva** (`nextiva`): invalid_assets — All identity-safe candidates failed image validation or acquisition.
+- **Nightwatch** (`nightwatch`): invalid_assets — All identity-safe candidates failed image validation or acquisition.
+- **Pabbly Connect** (`pabbly-connect`): ambiguous_identity — Declared assets did not safely identify this product rather than a sibling vendor.
+- **PagerDuty** (`pagerduty`): invalid_assets — All identity-safe candidates failed image validation or acquisition.
+- **Pipedream** (`pipedream`): ambiguous_identity — Declared assets did not safely identify this product rather than a sibling vendor.
+- **Plausible Analytics** (`plausible-analytics`): ambiguous_identity — Declared assets did not safely identify this product rather than a sibling vendor.
+- **Podio** (`podio`): ambiguous_identity — Declared assets did not safely identify this product rather than a sibling vendor.
+- **Postman** (`postman`): invalid_assets — All identity-safe candidates failed image validation or acquisition.
+- **POWR** (`powr`): invalid_assets — All identity-safe candidates failed image validation or acquisition.
+- **QuickBooks Time** (`quickbooks-time`): ambiguous_identity — Declared assets did not safely identify this product rather than a sibling vendor.
+- **QuillBot** (`quillbot`): blocked — Official page returned HTTP 403.
+- **Ramp** (`ramp`): http_failure — Official page returned text/markdown; charset=utf-8.
+- **Rapid7** (`rapid7`): invalid_assets — All identity-safe candidates failed image validation or acquisition.
+- **RazorpayX Payroll** (`razorpayx-payroll`): ambiguous_identity — Declared assets did not safely identify this product rather than a sibling vendor.
+- **Reply** (`reply`): blocked — Official page returned HTTP 403.
+- **Repurpose.io** (`repurpose-io`): blocked — Official page returned HTTP 403.
+- **Restream** (`restream`): ambiguous_identity — Declared assets did not safely identify this product rather than a sibling vendor.
+- **Riverside** (`riverside`): invalid_assets — All identity-safe candidates failed image validation or acquisition.
+- **RUN Powered by ADP** (`run-powered-by-adp`): ambiguous_identity — Declared assets did not safely identify this product rather than a sibling vendor.
+- **Sage Intacct** (`sage-intacct`): blocked — Official page returned HTTP 403.
+- **Salesforce Sales Cloud** (`salesforce-sales-cloud`): no_candidates — No first-party logo candidates were declared by the official page.
+- **Salesmsg** (`salesmsg`): invalid_assets — All identity-safe candidates failed image validation or acquisition.
+- **SAP Signavio** (`sap-signavio`): ambiguous_identity — Declared assets did not safely identify this product rather than a sibling vendor.
+- **Screaming Frog SEO Spider** (`screaming-frog-seo-spider`): ambiguous_identity — Declared assets did not safely identify this product rather than a sibling vendor.
+- **SentinelOne** (`sentinelone`): invalid_assets — All identity-safe candidates failed image validation or acquisition.
+- **Seqrite** (`seqrite`): ambiguous_identity — Declared assets did not safely identify this product rather than a sibling vendor.
+- **ServiceDesk Plus** (`servicedesk-plus`): ambiguous_identity — Declared assets did not safely identify this product rather than a sibling vendor.
+- **ShipBob** (`shipbob`): ambiguous_identity — Declared assets did not safely identify this product rather than a sibling vendor.
+- **Shopify** (`shopify`): ambiguous_identity — Declared assets did not safely identify this product rather than a sibling vendor.
+- **Sked Social** (`sked-social`): no_candidates — No first-party logo candidates were declared by the official page.
+- **SocialBee** (`socialbee`): no_candidates — No first-party logo candidates were declared by the official page.
+- **Surfer** (`surfer`): no_candidates — No first-party logo candidates were declared by the official page.
+- **TallyPrime** (`tallyprime`): invalid_assets — All identity-safe candidates failed image validation or acquisition.
+- **Talview** (`talview`): invalid_assets — All identity-safe candidates failed image validation or acquisition.
+- **Tray.ai** (`tray-ai`): invalid_assets — All identity-safe candidates failed image validation or acquisition.
+- **Twingate** (`twingate`): invalid_assets — All identity-safe candidates failed image validation or acquisition.
+- **Uberflip** (`uberflip`): ambiguous_identity — Declared assets did not safely identify this product rather than a sibling vendor.
+- **VEED** (`veed`): invalid_assets — All identity-safe candidates failed image validation or acquisition.
+- **Vercel** (`vercel`): invalid_assets — All identity-safe candidates failed image validation or acquisition.
+- **Verloop.io** (`verloop-io`): blocked — Official page returned HTTP 403.
+- **Volza** (`volza`): blocked — Official page returned HTTP 403.
+- **Vonage** (`vonage`): blocked — Official page returned HTTP 403.
+- **Vtiger CRM** (`vtiger-crm`): invalid_assets — All identity-safe candidates failed image validation or acquisition.
+- **Wati** (`wati`): invalid_assets — All identity-safe candidates failed image validation or acquisition.
+- **Wincher** (`wincher`): invalid_assets — All identity-safe candidates failed image validation or acquisition.
+- **Wistia** (`wistia`): no_candidates — No first-party logo candidates were declared by the official page.
+- **Wiz** (`wiz`): ambiguous_identity — Declared assets did not safely identify this product rather than a sibling vendor.
+- **Wordtune** (`wordtune`): ambiguous_identity — Declared assets did not safely identify this product rather than a sibling vendor.
+- **Zoho Cliq** (`zoho-cliq`): ambiguous_identity — Declared assets did not safely identify this product rather than a sibling vendor.
+- **Zoho CRM** (`zoho-crm`): ambiguous_identity — Declared assets did not safely identify this product rather than a sibling vendor.
+- **Zoho Flow** (`zoho-flow`): ambiguous_identity — Declared assets did not safely identify this product rather than a sibling vendor.
+- **Zoho Meeting** (`zoho-meeting`): ambiguous_identity — Declared assets did not safely identify this product rather than a sibling vendor.
+- **Zoho People** (`zoho-people`): invalid_assets — All identity-safe candidates failed image validation or acquisition.
+- **Zoho Projects** (`zoho-projects`): ambiguous_identity — Declared assets did not safely identify this product rather than a sibling vendor.
+- **Zoho Recruit** (`zoho-recruit`): ambiguous_identity — Declared assets did not safely identify this product rather than a sibling vendor.
+- **Zoho Sign** (`zoho-sign`): ambiguous_identity — Declared assets did not safely identify this product rather than a sibling vendor.
+- **Zoho Social** (`zoho-social`): ambiguous_identity — The same byte-identical asset was selected for multiple canonical products.
+- **Zoho Sprints** (`zoho-sprints`): ambiguous_identity — Declared assets did not safely identify this product rather than a sibling vendor.
+- **Zoho Vault** (`zoho-vault`): ambiguous_identity — The same byte-identical asset was selected for multiple canonical products.
+- **Zoho WorkDrive** (`zoho-workdrive`): ambiguous_identity — Declared assets did not safely identify this product rather than a sibling vendor.
+- **ZoomInfo** (`zoominfo`): invalid_assets — All identity-safe candidates failed image validation or acquisition.

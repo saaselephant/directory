@@ -22,6 +22,7 @@ export function SoftwareLogo({ name, logo }: SoftwareLogoProps) {
           className="software-logo-image"
           src={logoSrc}
           alt={logo?.alt ?? ""}
+          decoding="async"
           loading="lazy"
           onError={() => setFailedSrc(logoSrc ?? null)}
         />

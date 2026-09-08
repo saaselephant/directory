@@ -3,8 +3,14 @@ import "server-only";
 import type { PostgrestError, SupabaseClient } from "@supabase/supabase-js";
 
 import { createServerSupabaseClient } from "@/lib/supabase/server";
+import softwareLogoManifest from "@/generated/software-logo-manifest.json";
 import type { Database } from "@/types/database";
 import type { SoftwareCatalogItem, SoftwareId } from "@/types/models";
+
+const SOFTWARE_LOGOS = softwareLogoManifest.logos as Record<
+  string,
+  { src: string; alt: string | null }
+>;
 
 const SOFTWARE_CATALOG_SELECT = `
   software_id,
@@ -102,10 +108,12 @@ function toRepositoryError(error: PostgrestError): PublishedSoftwareError {
 }
 
 function mapSoftwareCatalogItem(row: SoftwareCatalogQueryRow): SoftwareCatalogItem {
+  const logo = SOFTWARE_LOGOS[row.slug];
   return {
     id: row.software_id as SoftwareId,
     slug: row.slug,
     name: row.software_name,
+    logo: logo ?? null,
     description: row.short_description,
     bestFor: row.best_for,
     pricing: row.pricing,
@@ -156,8 +164,10 @@ export async function listPublishedSoftwareMatching(
     orderedQuery = orderedQuery.range(from, from + filters.pageSize! - 1);
   }
 
-  const { data, error, count } = await orderedQuery
-    .overrideTypes<SoftwareCatalogQueryRow[], { merge: false }>();
+  const { data, error, count } = await orderedQuery.overrideTypes<
+    SoftwareCatalogQueryRow[],
+    { merge: false }
+  >();
 
   if (error) {
     return { status: "error", error: toRepositoryError(error) };

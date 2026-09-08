@@ -1,0 +1,1417 @@
+{
+  "version": 1,
+  "logos": {
+    "1password": {
+      "src": "/software-logos/1password.png",
+      "alt": "1Password logo"
+    },
+    "accelo": {
+      "src": "/software-logos/accelo.png",
+      "alt": "Accelo logo"
+    },
+    "accuranker": {
+      "src": "/software-logos/accuranker.png",
+      "alt": "AccuRanker logo"
+    },
+    "act-on": {
+      "src": "/software-logos/act-on.webp",
+      "alt": "Act-On logo"
+    },
+    "acuity-scheduling": {
+      "src": "/software-logos/acuity-scheduling.ico",
+      "alt": "Acuity Scheduling logo"
+    },
+    "adverity": {
+      "src": "/software-logos/adverity.webp",
+      "alt": "Adverity logo"
+    },
+    "agencyanalytics": {
+      "src": "/software-logos/agencyanalytics.ico",
+      "alt": "AgencyAnalytics logo"
+    },
+    "agorapulse": {
+      "src": "/software-logos/agorapulse.png",
+      "alt": "Agorapulse logo"
+    },
+    "ahrefs": {
+      "src": "/software-logos/ahrefs.png",
+      "alt": "Ahrefs logo"
+    },
+    "aircall": {
+      "src": "/software-logos/aircall.webp",
+      "alt": "Aircall logo"
+    },
+    "airwallex": {
+      "src": "/software-logos/airwallex.png",
+      "alt": "Airwallex logo"
+    },
+    "aisdr": {
+      "src": "/software-logos/aisdr.webp",
+      "alt": "AiSDR logo"
+    },
+    "aisera": {
+      "src": "/software-logos/aisera.webp",
+      "alt": "Aisera logo"
+    },
+    "albacross": {
+      "src": "/software-logos/albacross.png",
+      "alt": "Albacross logo"
+    },
+    "almanac": {
+      "src": "/software-logos/almanac.jpg",
+      "alt": "Almanac logo"
+    },
+    "ameyo": {
+      "src": "/software-logos/ameyo.png",
+      "alt": "Ameyo logo"
+    },
+    "amplemarket": {
+      "src": "/software-logos/amplemarket.png",
+      "alt": "Amplemarket logo"
+    },
+    "amplitude": {
+      "src": "/software-logos/amplitude.png",
+      "alt": "Amplitude logo"
+    },
+    "assembly": {
+      "src": "/software-logos/assembly.png",
+      "alt": "Assembly logo"
+    },
+    "async": {
+      "src": "/software-logos/async.png",
+      "alt": "Async logo"
+    },
+    "auth0": {
+      "src": "/software-logos/auth0.png",
+      "alt": "Auth0 logo"
+    },
+    "avaza": {
+      "src": "/software-logos/avaza.webp",
+      "alt": "Avaza logo"
+    },
+    "basecamp": {
+      "src": "/software-logos/basecamp.png",
+      "alt": "Basecamp logo"
+    },
+    "beautiful-ai": {
+      "src": "/software-logos/beautiful-ai.webp",
+      "alt": "Beautiful.ai logo"
+    },
+    "betterworks": {
+      "src": "/software-logos/betterworks.png",
+      "alt": "Betterworks logo"
+    },
+    "bill": {
+      "src": "/software-logos/bill.png",
+      "alt": "BILL logo"
+    },
+    "bizagi": {
+      "src": "/software-logos/bizagi.png",
+      "alt": "Bizagi logo"
+    },
+    "blue-prism": {
+      "src": "/software-logos/blue-prism.jpg",
+      "alt": "Blue Prism logo"
+    },
+    "bombora": {
+      "src": "/software-logos/bombora.png",
+      "alt": "Bombora logo"
+    },
+    "bonusly": {
+      "src": "/software-logos/bonusly.png",
+      "alt": "Bonusly logo"
+    },
+    "brand24": {
+      "src": "/software-logos/brand24.png",
+      "alt": "Brand24 logo"
+    },
+    "braze": {
+      "src": "/software-logos/braze.ico",
+      "alt": "Braze logo"
+    },
+    "brevo": {
+      "src": "/software-logos/brevo.ico",
+      "alt": "Brevo logo"
+    },
+    "brex": {
+      "src": "/software-logos/brex.ico",
+      "alt": "Brex logo"
+    },
+    "bright-data": {
+      "src": "/software-logos/bright-data.png",
+      "alt": "Bright Data logo"
+    },
+    "browserstack": {
+      "src": "/software-logos/browserstack.png",
+      "alt": "BrowserStack logo"
+    },
+    "builder-io": {
+      "src": "/software-logos/builder-io.png",
+      "alt": "Builder.io logo"
+    },
+    "buzzsprout": {
+      "src": "/software-logos/buzzsprout.ico",
+      "alt": "Buzzsprout logo"
+    },
+    "calendly": {
+      "src": "/software-logos/calendly.png",
+      "alt": "Calendly logo"
+    },
+    "callhippo": {
+      "src": "/software-logos/callhippo.webp",
+      "alt": "CallHippo logo"
+    },
+    "callrail": {
+      "src": "/software-logos/callrail.png",
+      "alt": "CallRail logo"
+    },
+    "campaign-monitor": {
+      "src": "/software-logos/campaign-monitor.webp",
+      "alt": "Campaign Monitor logo"
+    },
+    "celigo": {
+      "src": "/software-logos/celigo.webp",
+      "alt": "Celigo logo"
+    },
+    "celoxis": {
+      "src": "/software-logos/celoxis.png",
+      "alt": "Celoxis logo"
+    },
+    "cflow": {
+      "src": "/software-logos/cflow.webp",
+      "alt": "Cflow logo"
+    },
+    "chartmogul": {
+      "src": "/software-logos/chartmogul.png",
+      "alt": "ChartMogul logo"
+    },
+    "chili-piper": {
+      "src": "/software-logos/chili-piper.png",
+      "alt": "Chili Piper logo"
+    },
+    "circle": {
+      "src": "/software-logos/circle.jpg",
+      "alt": "Circle logo"
+    },
+    "circleci": {
+      "src": "/software-logos/circleci.png",
+      "alt": "CircleCI logo"
+    },
+    "claap": {
+      "src": "/software-logos/claap.png",
+      "alt": "Claap logo"
+    },
+    "clevertap": {
+      "src": "/software-logos/clevertap.webp",
+      "alt": "CleverTap logo"
+    },
+    "clickpost": {
+      "src": "/software-logos/clickpost.webp",
+      "alt": "ClickPost logo"
+    },
+    "clickup": {
+      "src": "/software-logos/clickup.png",
+      "alt": "ClickUp logo"
+    },
+    "clockify": {
+      "src": "/software-logos/clockify.webp",
+      "alt": "Clockify logo"
+    },
+    "close": {
+      "src": "/software-logos/close.png",
+      "alt": "Close logo"
+    },
+    "closely": {
+      "src": "/software-logos/closely.png",
+      "alt": "Closely logo"
+    },
+    "cloudsek": {
+      "src": "/software-logos/cloudsek.webp",
+      "alt": "CloudSEK logo"
+    },
+    "coast": {
+      "src": "/software-logos/coast.webp",
+      "alt": "Coast logo"
+    },
+    "cognism": {
+      "src": "/software-logos/cognism.webp",
+      "alt": "Cognism logo"
+    },
+    "cometchat": {
+      "src": "/software-logos/cometchat.png",
+      "alt": "CometChat logo"
+    },
+    "configcat": {
+      "src": "/software-logos/configcat.png",
+      "alt": "ConfigCat logo"
+    },
+    "conga": {
+      "src": "/software-logos/conga.ico",
+      "alt": "Conga logo"
+    },
+    "connecteam": {
+      "src": "/software-logos/connecteam.png",
+      "alt": "Connecteam logo"
+    },
+    "consensus": {
+      "src": "/software-logos/consensus.webp",
+      "alt": "Consensus logo"
+    },
+    "contentstudio": {
+      "src": "/software-logos/contentstudio.png",
+      "alt": "ContentStudio logo"
+    },
+    "convert": {
+      "src": "/software-logos/convert.webp",
+      "alt": "Convert logo"
+    },
+    "convin": {
+      "src": "/software-logos/convin.png",
+      "alt": "Convin logo"
+    },
+    "crowdstrike": {
+      "src": "/software-logos/crowdstrike.png",
+      "alt": "CrowdStrike logo"
+    },
+    "culture-amp": {
+      "src": "/software-logos/culture-amp.webp",
+      "alt": "Culture Amp logo"
+    },
+    "cyware": {
+      "src": "/software-logos/cyware.ico",
+      "alt": "Cyware logo"
+    },
+    "darwinbox": {
+      "src": "/software-logos/darwinbox.webp",
+      "alt": "Darwinbox logo"
+    },
+    "databox": {
+      "src": "/software-logos/databox.png",
+      "alt": "Databox logo"
+    },
+    "deel": {
+      "src": "/software-logos/deel.png",
+      "alt": "Deel logo"
+    },
+    "disprz": {
+      "src": "/software-logos/disprz.png",
+      "alt": "Disprz logo"
+    },
+    "document360": {
+      "src": "/software-logos/document360.webp",
+      "alt": "Document360 logo"
+    },
+    "doodle": {
+      "src": "/software-logos/doodle.png",
+      "alt": "Doodle logo"
+    },
+    "dropbox": {
+      "src": "/software-logos/dropbox.ico",
+      "alt": "Dropbox logo"
+    },
+    "easyecom": {
+      "src": "/software-logos/easyecom.png",
+      "alt": "EasyEcom logo"
+    },
+    "ecwid": {
+      "src": "/software-logos/ecwid.png",
+      "alt": "Ecwid logo"
+    },
+    "elevenlabs": {
+      "src": "/software-logos/elevenlabs.ico",
+      "alt": "ElevenLabs logo"
+    },
+    "engagebay": {
+      "src": "/software-logos/engagebay.png",
+      "alt": "EngageBay logo"
+    },
+    "envoy": {
+      "src": "/software-logos/envoy.png",
+      "alt": "Envoy logo"
+    },
+    "everhour": {
+      "src": "/software-logos/everhour.png",
+      "alt": "Everhour logo"
+    },
+    "exotel": {
+      "src": "/software-logos/exotel.ico",
+      "alt": "Exotel logo"
+    },
+    "factohr": {
+      "src": "/software-logos/factohr.png",
+      "alt": "factoHR logo"
+    },
+    "fareye": {
+      "src": "/software-logos/fareye.png",
+      "alt": "FarEye logo"
+    },
+    "favro": {
+      "src": "/software-logos/favro.png",
+      "alt": "Favro logo"
+    },
+    "feedvisor": {
+      "src": "/software-logos/feedvisor.webp",
+      "alt": "Feedvisor logo"
+    },
+    "filevine": {
+      "src": "/software-logos/filevine.png",
+      "alt": "Filevine logo"
+    },
+    "fireflies-ai": {
+      "src": "/software-logos/fireflies-ai.png",
+      "alt": "Fireflies.ai logo"
+    },
+    "flagsmith": {
+      "src": "/software-logos/flagsmith.png",
+      "alt": "Flagsmith logo"
+    },
+    "float": {
+      "src": "/software-logos/float.png",
+      "alt": "Float logo"
+    },
+    "folk": {
+      "src": "/software-logos/folk.png",
+      "alt": "folk logo"
+    },
+    "framer": {
+      "src": "/software-logos/framer.png",
+      "alt": "Framer logo"
+    },
+    "frase": {
+      "src": "/software-logos/frase.png",
+      "alt": "Frase logo"
+    },
+    "freedcamp": {
+      "src": "/software-logos/freedcamp.png",
+      "alt": "Freedcamp logo"
+    },
+    "freightify": {
+      "src": "/software-logos/freightify.webp",
+      "alt": "Freightify logo"
+    },
+    "freshbooks": {
+      "src": "/software-logos/freshbooks.ico",
+      "alt": "FreshBooks logo"
+    },
+    "ganttpro": {
+      "src": "/software-logos/ganttpro.webp",
+      "alt": "GanttPRO logo"
+    },
+    "getaccept": {
+      "src": "/software-logos/getaccept.webp",
+      "alt": "GetAccept logo"
+    },
+    "glide": {
+      "src": "/software-logos/glide.png",
+      "alt": "Glide logo"
+    },
+    "gong": {
+      "src": "/software-logos/gong.png",
+      "alt": "Gong logo"
+    },
+    "gorgias": {
+      "src": "/software-logos/gorgias.png",
+      "alt": "Gorgias logo"
+    },
+    "grafana": {
+      "src": "/software-logos/grafana.webp",
+      "alt": "Grafana logo"
+    },
+    "greenhouse": {
+      "src": "/software-logos/greenhouse.png",
+      "alt": "Greenhouse logo"
+    },
+    "greythr": {
+      "src": "/software-logos/greythr.png",
+      "alt": "greytHR logo"
+    },
+    "gumlet": {
+      "src": "/software-logos/gumlet.ico",
+      "alt": "Gumlet logo"
+    },
+    "gupshup": {
+      "src": "/software-logos/gupshup.png",
+      "alt": "Gupshup logo"
+    },
+    "guru": {
+      "src": "/software-logos/guru.png",
+      "alt": "Guru logo"
+    },
+    "hackerearth": {
+      "src": "/software-logos/hackerearth.png",
+      "alt": "HackerEarth logo"
+    },
+    "hackerrank": {
+      "src": "/software-logos/hackerrank.png",
+      "alt": "HackerRank logo"
+    },
+    "haloitsm": {
+      "src": "/software-logos/haloitsm.webp",
+      "alt": "HaloITSM logo"
+    },
+    "haptik": {
+      "src": "/software-logos/haptik.webp",
+      "alt": "Haptik logo"
+    },
+    "harvest": {
+      "src": "/software-logos/harvest.png",
+      "alt": "Harvest logo"
+    },
+    "heap": {
+      "src": "/software-logos/heap.png",
+      "alt": "Heap logo"
+    },
+    "help-scout": {
+      "src": "/software-logos/help-scout.png",
+      "alt": "Help Scout logo"
+    },
+    "heygen": {
+      "src": "/software-logos/heygen.ico",
+      "alt": "HeyGen logo"
+    },
+    "hg-insights": {
+      "src": "/software-logos/hg-insights.webp",
+      "alt": "HG Insights logo"
+    },
+    "hibob": {
+      "src": "/software-logos/hibob.webp",
+      "alt": "HiBob logo"
+    },
+    "highspot": {
+      "src": "/software-logos/highspot.webp",
+      "alt": "Highspot logo"
+    },
+    "hightouch": {
+      "src": "/software-logos/hightouch.ico",
+      "alt": "Hightouch logo"
+    },
+    "hrone": {
+      "src": "/software-logos/hrone.webp",
+      "alt": "HROne logo"
+    },
+    "hubspot": {
+      "src": "/software-logos/hubspot.webp",
+      "alt": "HubSpot logo"
+    },
+    "hubstaff": {
+      "src": "/software-logos/hubstaff.webp",
+      "alt": "Hubstaff logo"
+    },
+    "hunter": {
+      "src": "/software-logos/hunter.png",
+      "alt": "Hunter logo"
+    },
+    "iconosquare": {
+      "src": "/software-logos/iconosquare.jpg",
+      "alt": "Iconosquare logo"
+    },
+    "imocha": {
+      "src": "/software-logos/imocha.webp",
+      "alt": "iMocha logo"
+    },
+    "increff": {
+      "src": "/software-logos/increff.png",
+      "alt": "Increff logo"
+    },
+    "instantly": {
+      "src": "/software-logos/instantly.png",
+      "alt": "Instantly logo"
+    },
+    "instapage": {
+      "src": "/software-logos/instapage.png",
+      "alt": "Instapage logo"
+    },
+    "interact": {
+      "src": "/software-logos/interact.png",
+      "alt": "Interact logo"
+    },
+    "invgate": {
+      "src": "/software-logos/invgate.ico",
+      "alt": "InvGate logo"
+    },
+    "invideo": {
+      "src": "/software-logos/invideo.png",
+      "alt": "InVideo logo"
+    },
+    "invoca": {
+      "src": "/software-logos/invoca.png",
+      "alt": "Invoca logo"
+    },
+    "involve-me": {
+      "src": "/software-logos/involve-me.png",
+      "alt": "involve.me logo"
+    },
+    "iterable": {
+      "src": "/software-logos/iterable.png",
+      "alt": "Iterable logo"
+    },
+    "jasper": {
+      "src": "/software-logos/jasper.png",
+      "alt": "Jasper logo"
+    },
+    "jobvite": {
+      "src": "/software-logos/jobvite.png",
+      "alt": "Jobvite logo"
+    },
+    "jotform": {
+      "src": "/software-logos/jotform.png",
+      "alt": "Jotform logo"
+    },
+    "jumpcloud": {
+      "src": "/software-logos/jumpcloud.png",
+      "alt": "JumpCloud logo"
+    },
+    "kaleyra": {
+      "src": "/software-logos/kaleyra.png",
+      "alt": "Kaleyra logo"
+    },
+    "kaltura": {
+      "src": "/software-logos/kaltura.png",
+      "alt": "Kaltura logo"
+    },
+    "kantata": {
+      "src": "/software-logos/kantata.png",
+      "alt": "Kantata logo"
+    },
+    "kaspr": {
+      "src": "/software-logos/kaspr.webp",
+      "alt": "Kaspr logo"
+    },
+    "keap": {
+      "src": "/software-logos/keap.png",
+      "alt": "Keap logo"
+    },
+    "keeper-security": {
+      "src": "/software-logos/keeper-security.png",
+      "alt": "Keeper Security logo"
+    },
+    "kissflow": {
+      "src": "/software-logos/kissflow.png",
+      "alt": "Kissflow logo"
+    },
+    "kixie": {
+      "src": "/software-logos/kixie.webp",
+      "alt": "Kixie logo"
+    },
+    "klaviyo": {
+      "src": "/software-logos/klaviyo.png",
+      "alt": "Klaviyo logo"
+    },
+    "klenty": {
+      "src": "/software-logos/klenty.ico",
+      "alt": "Klenty logo"
+    },
+    "koala": {
+      "src": "/software-logos/koala.png",
+      "alt": "Koala logo"
+    },
+    "kommo": {
+      "src": "/software-logos/kommo.png",
+      "alt": "Kommo logo"
+    },
+    "kredily": {
+      "src": "/software-logos/kredily.png",
+      "alt": "Kredily logo"
+    },
+    "kylas": {
+      "src": "/software-logos/kylas.png",
+      "alt": "Kylas logo"
+    },
+    "later": {
+      "src": "/software-logos/later.png",
+      "alt": "Later logo"
+    },
+    "launchdarkly": {
+      "src": "/software-logos/launchdarkly.png",
+      "alt": "LaunchDarkly logo"
+    },
+    "leadpages": {
+      "src": "/software-logos/leadpages.png",
+      "alt": "Leadpages logo"
+    },
+    "leapsome": {
+      "src": "/software-logos/leapsome.png",
+      "alt": "Leapsome logo"
+    },
+    "learnworlds": {
+      "src": "/software-logos/learnworlds.png",
+      "alt": "LearnWorlds logo"
+    },
+    "leegality": {
+      "src": "/software-logos/leegality.png",
+      "alt": "Leegality logo"
+    },
+    "leena-ai": {
+      "src": "/software-logos/leena-ai.ico",
+      "alt": "Leena AI logo"
+    },
+    "lemlist": {
+      "src": "/software-logos/lemlist.ico",
+      "alt": "lemlist logo"
+    },
+    "lever": {
+      "src": "/software-logos/lever.png",
+      "alt": "Lever logo"
+    },
+    "lindy": {
+      "src": "/software-logos/lindy.webp",
+      "alt": "Lindy logo"
+    },
+    "linear": {
+      "src": "/software-logos/linear.png",
+      "alt": "Linear logo"
+    },
+    "livestorm": {
+      "src": "/software-logos/livestorm.png",
+      "alt": "Livestorm logo"
+    },
+    "loginext": {
+      "src": "/software-logos/loginext.webp",
+      "alt": "LogiNext logo"
+    },
+    "loom": {
+      "src": "/software-logos/loom.png",
+      "alt": "Loom logo"
+    },
+    "loomly": {
+      "src": "/software-logos/loomly.png",
+      "alt": "Loomly logo"
+    },
+    "lusha": {
+      "src": "/software-logos/lusha.webp",
+      "alt": "Lusha logo"
+    },
+    "m-files": {
+      "src": "/software-logos/m-files.webp",
+      "alt": "M-Files logo"
+    },
+    "majestic": {
+      "src": "/software-logos/majestic.png",
+      "alt": "Majestic logo"
+    },
+    "mangools": {
+      "src": "/software-logos/mangools.png",
+      "alt": "Mangools logo"
+    },
+    "marketmuse": {
+      "src": "/software-logos/marketmuse.png",
+      "alt": "MarketMuse logo"
+    },
+    "matomo": {
+      "src": "/software-logos/matomo.jpg",
+      "alt": "Matomo logo"
+    },
+    "meetgeek": {
+      "src": "/software-logos/meetgeek.png",
+      "alt": "MeetGeek logo"
+    },
+    "metricool": {
+      "src": "/software-logos/metricool.webp",
+      "alt": "Metricool logo"
+    },
+    "mindtickle": {
+      "src": "/software-logos/mindtickle.ico",
+      "alt": "Mindtickle logo"
+    },
+    "mixpanel": {
+      "src": "/software-logos/mixpanel.png",
+      "alt": "Mixpanel logo"
+    },
+    "moengage": {
+      "src": "/software-logos/moengage.png",
+      "alt": "MoEngage logo"
+    },
+    "monday": {
+      "src": "/software-logos/monday.png",
+      "alt": "monday.com logo"
+    },
+    "moosend": {
+      "src": "/software-logos/moosend.webp",
+      "alt": "Moosend logo"
+    },
+    "motion": {
+      "src": "/software-logos/motion.ico",
+      "alt": "Motion logo"
+    },
+    "moveworks": {
+      "src": "/software-logos/moveworks.png",
+      "alt": "Moveworks logo"
+    },
+    "moz": {
+      "src": "/software-logos/moz.png",
+      "alt": "Moz logo"
+    },
+    "myoperator": {
+      "src": "/software-logos/myoperator.webp",
+      "alt": "MyOperator logo"
+    },
+    "napoleoncat": {
+      "src": "/software-logos/napoleoncat.png",
+      "alt": "NapoleonCat logo"
+    },
+    "navan": {
+      "src": "/software-logos/navan.ico",
+      "alt": "Navan logo"
+    },
+    "nectar": {
+      "src": "/software-logos/nectar.png",
+      "alt": "Nectar logo"
+    },
+    "netlify": {
+      "src": "/software-logos/netlify.png",
+      "alt": "Netlify logo"
+    },
+    "nifty": {
+      "src": "/software-logos/nifty.png",
+      "alt": "Nifty logo"
+    },
+    "nintex": {
+      "src": "/software-logos/nintex.png",
+      "alt": "Nintex logo"
+    },
+    "notion": {
+      "src": "/software-logos/notion.png",
+      "alt": "Notion logo"
+    },
+    "notta": {
+      "src": "/software-logos/notta.png",
+      "alt": "Notta logo"
+    },
+    "nutshell": {
+      "src": "/software-logos/nutshell.webp",
+      "alt": "Nutshell logo"
+    },
+    "observe-ai": {
+      "src": "/software-logos/observe-ai.jpg",
+      "alt": "Observe.AI logo"
+    },
+    "oncrawl": {
+      "src": "/software-logos/oncrawl.png",
+      "alt": "OnCrawl logo"
+    },
+    "openproject": {
+      "src": "/software-logos/openproject.png",
+      "alt": "OpenProject logo"
+    },
+    "optinmonster": {
+      "src": "/software-logos/optinmonster.png",
+      "alt": "OptinMonster logo"
+    },
+    "otter-ai": {
+      "src": "/software-logos/otter-ai.png",
+      "alt": "Otter.ai logo"
+    },
+    "outgrow": {
+      "src": "/software-logos/outgrow.png",
+      "alt": "Outgrow logo"
+    },
+    "oyster": {
+      "src": "/software-logos/oyster.png",
+      "alt": "Oyster logo"
+    },
+    "paperform": {
+      "src": "/software-logos/paperform.png",
+      "alt": "Paperform logo"
+    },
+    "parabola": {
+      "src": "/software-logos/parabola.webp",
+      "alt": "Parabola logo"
+    },
+    "paycor": {
+      "src": "/software-logos/paycor.webp",
+      "alt": "Paycor logo"
+    },
+    "paymo": {
+      "src": "/software-logos/paymo.png",
+      "alt": "Paymo logo"
+    },
+    "pendo": {
+      "src": "/software-logos/pendo.ico",
+      "alt": "Pendo logo"
+    },
+    "peoplebox": {
+      "src": "/software-logos/peoplebox.jpg",
+      "alt": "Peoplebox logo"
+    },
+    "perpetua": {
+      "src": "/software-logos/perpetua.png",
+      "alt": "Perpetua logo"
+    },
+    "picsart": {
+      "src": "/software-logos/picsart.png",
+      "alt": "Picsart logo"
+    },
+    "pictory": {
+      "src": "/software-logos/pictory.webp",
+      "alt": "Pictory logo"
+    },
+    "pingtree": {
+      "src": "/software-logos/pingtree.png",
+      "alt": "Pingtree logo"
+    },
+    "pipedrive": {
+      "src": "/software-logos/pipedrive.webp",
+      "alt": "Pipedrive logo"
+    },
+    "planable": {
+      "src": "/software-logos/planable.webp",
+      "alt": "Planable logo"
+    },
+    "pocket-hrms": {
+      "src": "/software-logos/pocket-hrms.webp",
+      "alt": "Pocket HRMS logo"
+    },
+    "podbean": {
+      "src": "/software-logos/podbean.png",
+      "alt": "Podbean logo"
+    },
+    "posthog": {
+      "src": "/software-logos/posthog.png",
+      "alt": "PostHog logo"
+    },
+    "postscript": {
+      "src": "/software-logos/postscript.ico",
+      "alt": "Postscript logo"
+    },
+    "printify": {
+      "src": "/software-logos/printify.png",
+      "alt": "Printify logo"
+    },
+    "prismic": {
+      "src": "/software-logos/prismic.png",
+      "alt": "Prismic logo"
+    },
+    "process-street": {
+      "src": "/software-logos/process-street.png",
+      "alt": "Process Street logo"
+    },
+    "productboard": {
+      "src": "/software-logos/productboard.png",
+      "alt": "Productboard logo"
+    },
+    "productive": {
+      "src": "/software-logos/productive.png",
+      "alt": "Productive logo"
+    },
+    "productplan": {
+      "src": "/software-logos/productplan.png",
+      "alt": "ProductPlan logo"
+    },
+    "project44": {
+      "src": "/software-logos/project44.png",
+      "alt": "project44 logo"
+    },
+    "projectmanager": {
+      "src": "/software-logos/projectmanager.webp",
+      "alt": "ProjectManager logo"
+    },
+    "proof": {
+      "src": "/software-logos/proof.png",
+      "alt": "Proof logo"
+    },
+    "proofhub": {
+      "src": "/software-logos/proofhub.webp",
+      "alt": "ProofHub logo"
+    },
+    "proposify": {
+      "src": "/software-logos/proposify.webp",
+      "alt": "Proposify logo"
+    },
+    "qandle": {
+      "src": "/software-logos/qandle.png",
+      "alt": "Qandle logo"
+    },
+    "quixy": {
+      "src": "/software-logos/quixy.png",
+      "alt": "Quixy logo"
+    },
+    "quo": {
+      "src": "/software-logos/quo.png",
+      "alt": "Quo logo"
+    },
+    "qwilr": {
+      "src": "/software-logos/qwilr.png",
+      "alt": "Qwilr logo"
+    },
+    "rank-math": {
+      "src": "/software-logos/rank-math.png",
+      "alt": "Rank Math logo"
+    },
+    "reclaim": {
+      "src": "/software-logos/reclaim.png",
+      "alt": "Reclaim logo"
+    },
+    "recruit-crm": {
+      "src": "/software-logos/recruit-crm.png",
+      "alt": "Recruit CRM logo"
+    },
+    "refrens": {
+      "src": "/software-logos/refrens.png",
+      "alt": "Refrens logo"
+    },
+    "remote": {
+      "src": "/software-logos/remote.png",
+      "alt": "Remote logo"
+    },
+    "renderforest": {
+      "src": "/software-logos/renderforest.png",
+      "alt": "Renderforest logo"
+    },
+    "resource-guru": {
+      "src": "/software-logos/resource-guru.png",
+      "alt": "Resource Guru logo"
+    },
+    "respond-io": {
+      "src": "/software-logos/respond-io.webp",
+      "alt": "Respond.io logo"
+    },
+    "ringcentral": {
+      "src": "/software-logos/ringcentral.ico",
+      "alt": "RingCentral logo"
+    },
+    "rudderstack": {
+      "src": "/software-logos/rudderstack.png",
+      "alt": "RudderStack logo"
+    },
+    "runn": {
+      "src": "/software-logos/runn.png",
+      "alt": "Runn logo"
+    },
+    "rytr": {
+      "src": "/software-logos/rytr.ico",
+      "alt": "Rytr logo"
+    },
+    "saleshandy": {
+      "src": "/software-logos/saleshandy.ico",
+      "alt": "Saleshandy logo"
+    },
+    "sanity": {
+      "src": "/software-logos/sanity.png",
+      "alt": "Sanity logo"
+    },
+    "savvycal": {
+      "src": "/software-logos/savvycal.png",
+      "alt": "SavvyCal logo"
+    },
+    "scalenut": {
+      "src": "/software-logos/scalenut.png",
+      "alt": "Scalenut logo"
+    },
+    "scoro": {
+      "src": "/software-logos/scoro.png",
+      "alt": "Scoro logo"
+    },
+    "se-ranking": {
+      "src": "/software-logos/se-ranking.webp",
+      "alt": "SE Ranking logo"
+    },
+    "seamless-ai": {
+      "src": "/software-logos/seamless-ai.png",
+      "alt": "Seamless.AI logo"
+    },
+    "search-atlas": {
+      "src": "/software-logos/search-atlas.ico",
+      "alt": "Search Atlas logo"
+    },
+    "sellfy": {
+      "src": "/software-logos/sellfy.png",
+      "alt": "Sellfy logo"
+    },
+    "semrush": {
+      "src": "/software-logos/semrush.png",
+      "alt": "Semrush logo"
+    },
+    "sendible": {
+      "src": "/software-logos/sendible.webp",
+      "alt": "Sendible logo"
+    },
+    "sendlane": {
+      "src": "/software-logos/sendlane.png",
+      "alt": "Sendlane logo"
+    },
+    "serpstat": {
+      "src": "/software-logos/serpstat.png",
+      "alt": "Serpstat logo"
+    },
+    "sharpspring": {
+      "src": "/software-logos/sharpspring.png",
+      "alt": "SharpSpring logo"
+    },
+    "shiprocket": {
+      "src": "/software-logos/shiprocket.png",
+      "alt": "Shiprocket logo"
+    },
+    "shipsy": {
+      "src": "/software-logos/shipsy.png",
+      "alt": "Shipsy logo"
+    },
+    "shortcut": {
+      "src": "/software-logos/shortcut.png",
+      "alt": "Shortcut logo"
+    },
+    "showpad": {
+      "src": "/software-logos/showpad.png",
+      "alt": "Showpad logo"
+    },
+    "signeasy": {
+      "src": "/software-logos/signeasy.png",
+      "alt": "Signeasy logo"
+    },
+    "simpletexting": {
+      "src": "/software-logos/simpletexting.png",
+      "alt": "SimpleTexting logo"
+    },
+    "simplified": {
+      "src": "/software-logos/simplified.ico",
+      "alt": "Simplified logo"
+    },
+    "site24x7": {
+      "src": "/software-logos/site24x7.ico",
+      "alt": "Site24x7 logo"
+    },
+    "sitebulb": {
+      "src": "/software-logos/sitebulb.png",
+      "alt": "Sitebulb logo"
+    },
+    "slack": {
+      "src": "/software-logos/slack.png",
+      "alt": "Slack logo"
+    },
+    "sling": {
+      "src": "/software-logos/sling.png",
+      "alt": "Sling logo"
+    },
+    "smartlead": {
+      "src": "/software-logos/smartlead.webp",
+      "alt": "Smartlead logo"
+    },
+    "smartrecruiters": {
+      "src": "/software-logos/smartrecruiters.png",
+      "alt": "SmartRecruiters logo"
+    },
+    "smartsheet": {
+      "src": "/software-logos/smartsheet.png",
+      "alt": "Smartsheet logo"
+    },
+    "smartsuite": {
+      "src": "/software-logos/smartsuite.png",
+      "alt": "SmartSuite logo"
+    },
+    "snyk": {
+      "src": "/software-logos/snyk.png",
+      "alt": "Snyk logo"
+    },
+    "softr": {
+      "src": "/software-logos/softr.png",
+      "alt": "Softr logo"
+    },
+    "spendesk": {
+      "src": "/software-logos/spendesk.png",
+      "alt": "Spendesk logo"
+    },
+    "spocket": {
+      "src": "/software-logos/spocket.png",
+      "alt": "Spocket logo"
+    },
+    "squarespace": {
+      "src": "/software-logos/squarespace.png",
+      "alt": "Squarespace logo"
+    },
+    "statsig": {
+      "src": "/software-logos/statsig.png",
+      "alt": "Statsig logo"
+    },
+    "storyblok": {
+      "src": "/software-logos/storyblok.png",
+      "alt": "Storyblok logo"
+    },
+    "storylane": {
+      "src": "/software-logos/storylane.png",
+      "alt": "Storylane logo"
+    },
+    "streak": {
+      "src": "/software-logos/streak.png",
+      "alt": "Streak logo"
+    },
+    "sugarcrm": {
+      "src": "/software-logos/sugarcrm.webp",
+      "alt": "SugarCRM logo"
+    },
+    "sunsama": {
+      "src": "/software-logos/sunsama.png",
+      "alt": "Sunsama logo"
+    },
+    "supermetrics": {
+      "src": "/software-logos/supermetrics.png",
+      "alt": "Supermetrics logo"
+    },
+    "superworks": {
+      "src": "/software-logos/superworks.webp",
+      "alt": "Superworks logo"
+    },
+    "surveymonkey": {
+      "src": "/software-logos/surveymonkey.png",
+      "alt": "SurveyMonkey logo"
+    },
+    "surveysparrow": {
+      "src": "/software-logos/surveysparrow.png",
+      "alt": "SurveySparrow logo"
+    },
+    "survicate": {
+      "src": "/software-logos/survicate.png",
+      "alt": "Survicate logo"
+    },
+    "sysaid": {
+      "src": "/software-logos/sysaid.webp",
+      "alt": "SysAid logo"
+    },
+    "tallyfy": {
+      "src": "/software-logos/tallyfy.webp",
+      "alt": "Tallyfy logo"
+    },
+    "teamgantt": {
+      "src": "/software-logos/teamgantt.webp",
+      "alt": "TeamGantt logo"
+    },
+    "teamgate": {
+      "src": "/software-logos/teamgate.webp",
+      "alt": "Teamgate logo"
+    },
+    "teamwork-com": {
+      "src": "/software-logos/teamwork-com.png",
+      "alt": "Teamwork.com logo"
+    },
+    "tellent-recruitee": {
+      "src": "/software-logos/tellent-recruitee.png",
+      "alt": "Tellent Recruitee logo"
+    },
+    "tenable": {
+      "src": "/software-logos/tenable.png",
+      "alt": "Tenable logo"
+    },
+    "testmu-ai-formerly-lambdatest": {
+      "src": "/software-logos/testmu-ai-formerly-lambdatest.webp",
+      "alt": "TestMu AI (formerly LambdaTest) logo"
+    },
+    "tettra": {
+      "src": "/software-logos/tettra.png",
+      "alt": "Tettra logo"
+    },
+    "textline": {
+      "src": "/software-logos/textline.png",
+      "alt": "Textline logo"
+    },
+    "thinkific": {
+      "src": "/software-logos/thinkific.webp",
+      "alt": "Thinkific logo"
+    },
+    "tidio": {
+      "src": "/software-logos/tidio.png",
+      "alt": "Tidio logo"
+    },
+    "time-doctor": {
+      "src": "/software-logos/time-doctor.png",
+      "alt": "Time Doctor logo"
+    },
+    "tipalti": {
+      "src": "/software-logos/tipalti.webp",
+      "alt": "Tipalti logo"
+    },
+    "todoist": {
+      "src": "/software-logos/todoist.png",
+      "alt": "Todoist logo"
+    },
+    "toggl": {
+      "src": "/software-logos/toggl.png",
+      "alt": "Toggl logo"
+    },
+    "topdesk": {
+      "src": "/software-logos/topdesk.png",
+      "alt": "TOPdesk logo"
+    },
+    "trainual": {
+      "src": "/software-logos/trainual.webp",
+      "alt": "Trainual logo"
+    },
+    "trint": {
+      "src": "/software-logos/trint.png",
+      "alt": "Trint logo"
+    },
+    "troop-messenger": {
+      "src": "/software-logos/troop-messenger.png",
+      "alt": "Troop Messenger logo"
+    },
+    "typeface": {
+      "src": "/software-logos/typeface.ico",
+      "alt": "Typeface logo"
+    },
+    "typeform": {
+      "src": "/software-logos/typeform.png",
+      "alt": "Typeform logo"
+    },
+    "uipath": {
+      "src": "/software-logos/uipath.png",
+      "alt": "UiPath logo"
+    },
+    "uizard": {
+      "src": "/software-logos/uizard.png",
+      "alt": "Uizard logo"
+    },
+    "unbounce": {
+      "src": "/software-logos/unbounce.webp",
+      "alt": "Unbounce logo"
+    },
+    "unicommerce": {
+      "src": "/software-logos/unicommerce.jpg",
+      "alt": "Unicommerce logo"
+    },
+    "uniphore": {
+      "src": "/software-logos/uniphore.webp",
+      "alt": "Uniphore logo"
+    },
+    "unleash": {
+      "src": "/software-logos/unleash.png",
+      "alt": "Unleash logo"
+    },
+    "uplead": {
+      "src": "/software-logos/uplead.png",
+      "alt": "UpLead logo"
+    },
+    "usersnap": {
+      "src": "/software-logos/usersnap.png",
+      "alt": "Usersnap logo"
+    },
+    "vainu": {
+      "src": "/software-logos/vainu.png",
+      "alt": "Vainu logo"
+    },
+    "vanta": {
+      "src": "/software-logos/vanta.png",
+      "alt": "Vanta logo"
+    },
+    "vantage-circle": {
+      "src": "/software-logos/vantage-circle.webp",
+      "alt": "Vantage Circle logo"
+    },
+    "venngage": {
+      "src": "/software-logos/venngage.png",
+      "alt": "Venngage logo"
+    },
+    "verblio": {
+      "src": "/software-logos/verblio.png",
+      "alt": "Verblio logo"
+    },
+    "vev": {
+      "src": "/software-logos/vev.png",
+      "alt": "Vev logo"
+    },
+    "vidyard": {
+      "src": "/software-logos/vidyard.webp",
+      "alt": "Vidyard logo"
+    },
+    "vinculum": {
+      "src": "/software-logos/vinculum.webp",
+      "alt": "Vinculum logo"
+    },
+    "vwo": {
+      "src": "/software-logos/vwo.png",
+      "alt": "VWO logo"
+    },
+    "vyapar": {
+      "src": "/software-logos/vyapar.webp",
+      "alt": "Vyapar logo"
+    },
+    "vymo": {
+      "src": "/software-logos/vymo.png",
+      "alt": "Vymo logo"
+    },
+    "wareiq": {
+      "src": "/software-logos/wareiq.png",
+      "alt": "WareIQ logo"
+    },
+    "warmly": {
+      "src": "/software-logos/warmly.png",
+      "alt": "Warmly logo"
+    },
+    "webengage": {
+      "src": "/software-logos/webengage.png",
+      "alt": "WebEngage logo"
+    },
+    "webflow": {
+      "src": "/software-logos/webflow.png",
+      "alt": "Webflow logo"
+    },
+    "whale": {
+      "src": "/software-logos/whale.png",
+      "alt": "Whale logo"
+    },
+    "whatagraph": {
+      "src": "/software-logos/whatagraph.png",
+      "alt": "Whatagraph logo"
+    },
+    "whatfix": {
+      "src": "/software-logos/whatfix.png",
+      "alt": "Whatfix logo"
+    },
+    "when-i-work": {
+      "src": "/software-logos/when-i-work.png",
+      "alt": "When I Work logo"
+    },
+    "whimsical": {
+      "src": "/software-logos/whimsical.png",
+      "alt": "Whimsical logo"
+    },
+    "woopra": {
+      "src": "/software-logos/woopra.ico",
+      "alt": "Woopra logo"
+    },
+    "workable": {
+      "src": "/software-logos/workable.png",
+      "alt": "Workable logo"
+    },
+    "workato": {
+      "src": "/software-logos/workato.png",
+      "alt": "Workato logo"
+    },
+    "wrike": {
+      "src": "/software-logos/wrike.ico",
+      "alt": "Wrike logo"
+    },
+    "writesonic": {
+      "src": "/software-logos/writesonic.png",
+      "alt": "Writesonic logo"
+    },
+    "yellow-ai": {
+      "src": "/software-logos/yellow-ai.webp",
+      "alt": "Yellow.ai logo"
+    },
+    "zapier": {
+      "src": "/software-logos/zapier.png",
+      "alt": "Zapier logo"
+    },
+    "zenhub": {
+      "src": "/software-logos/zenhub.png",
+      "alt": "Zenhub logo"
+    },
+    "zeotap": {
+      "src": "/software-logos/zeotap.png",
+      "alt": "Zeotap logo"
+    },
+    "zeplin": {
+      "src": "/software-logos/zeplin.png",
+      "alt": "Zeplin logo"
+    },
+    "zimyo": {
+      "src": "/software-logos/zimyo.png",
+      "alt": "Zimyo logo"
+    },
+    "zluri": {
+      "src": "/software-logos/zluri.png",
+      "alt": "Zluri logo"
+    },
+    "zoom": {
+      "src": "/software-logos/zoom.png",
+      "alt": "Zoom logo"
+    }
+  }
+}
