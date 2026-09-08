@@ -2,7 +2,11 @@ import { execFileSync, spawnSync } from "node:child_process";
 import { describe, expect, it } from "vitest";
 import capture from "./fixtures/partnerstack-marketplace.json";
 import inventoryFixture from "./fixtures/software-inventory.json";
-import { createPartnerStackAdapter, parsePartnerStackMarketplace } from "../partnerstack";
+import {
+  createPartnerStackAdapter,
+  parsePartnerStackMarketplace,
+  parsePartnerStackMarketplaceMarkdown,
+} from "../partnerstack";
 import { createBusinessReviewReport, parseSoftwareInventory } from "../report";
 
 const inventory = parseSoftwareInventory(inventoryFixture);
@@ -152,6 +156,103 @@ describe("PartnerStack capture adapter", () => {
   )("rejects unsupported export envelopes: %j", (input) =>
     expect(() => parsePartnerStackMarketplace(input)).toThrow(),
   );
+
+  it("parses a complete All Programs Markdown capture without inventing unavailable fields", () => {
+    const markdown = `**Your programs**
+
+Programs not applied to yet
+
+1
+
+**All programs**3 programs
+
+[image](https://company-images.partnerstack.com/one.png)
+
+**Available Tool**
+
+An available marketplace program.
+
+**Earn 20% recurring commission**
+
+[image](https://company-images.partnerstack.com/two.png)
+
+**Pending Tool**
+
+An application awaiting review.
+
+**$10 per signup**
+
+svgApplication pending
+
+[image](https://company-images.partnerstack.com/three.png)
+
+**Joined Tool**
+
+**Rev Share | 20% of Revenue**
+
+svgJoined`;
+    const candidates = parsePartnerStackMarketplaceMarkdown(markdown);
+
+    expect(candidates).toHaveLength(3);
+    expect(candidates.map((item) => item.providerRelationship)).toEqual([
+      "available",
+      "applied",
+      "approved",
+    ]);
+    expect(candidates[0]).toMatchObject({
+      programName: "Available Tool",
+      description: "An available marketplace program.",
+      externalProgramId: null,
+      commercial: {
+        commissionText: "Earn 20% recurring commission",
+        commissionModel: "unknown",
+        supportsSubIds: null,
+      },
+    });
+    expect(candidates[2].commercial?.commissionModel).toBe("revenue_share");
+  });
+
+  it("does not assign one commission model when Markdown states multiple models", () => {
+    const markdown = `**All programs**1 programs
+
+[image](https://company-images.partnerstack.com/one.png)
+
+**Mixed Model Tool**
+
+**$5 CPL / $100 CPA**`;
+
+    expect(
+      parsePartnerStackMarketplaceMarkdown(markdown)[0].commercial?.commissionModel,
+    ).toBe("unknown");
+  });
+
+  it("preserves a Markdown description when commission terms are absent", () => {
+    const markdown = `**All programs**1 programs
+
+[image](https://company-images.partnerstack.com/one.png)
+
+**No Terms Tool**
+
+The marketplace card has a description but no commission proposition.`;
+
+    expect(parsePartnerStackMarketplaceMarkdown(markdown)[0]).toMatchObject({
+      programName: "No Terms Tool",
+      description: "The marketplace card has a description but no commission proposition.",
+      commercial: { commissionText: null },
+    });
+  });
+
+  it("rejects a partial Markdown capture instead of reporting incomplete business totals", () => {
+    expect(() =>
+      parsePartnerStackMarketplaceMarkdown(`**All programs**2 programs
+
+[image](https://company-images.partnerstack.com/one.png)
+
+**Only Tool**
+
+**Unknown**`),
+    ).toThrow("declared 2 programs but contained 1");
+  });
 });
 
 describe("offline commercial review", () => {

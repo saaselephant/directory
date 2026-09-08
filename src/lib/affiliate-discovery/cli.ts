@@ -1,15 +1,28 @@
 import { readFileSync } from "node:fs";
-import { parsePartnerStackMarketplace } from "./partnerstack";
+import { basename } from "node:path";
+import {
+  parsePartnerStackMarketplace,
+  parsePartnerStackMarketplaceMarkdown,
+} from "./partnerstack";
 import { createBusinessReviewReport, parseSoftwareInventory } from "./report";
 
 /** Local files only. This entry point never loads application/database configuration. */
 export function run(argv: string[]): void {
   if (argv.length !== 2)
-    throw new Error("Usage: node scripts/partnerstack-review.mjs <capture.json> <inventory.json>");
-  const readJson = (path: string): unknown =>
-    JSON.parse(readFileSync(path, "utf8").replace(/^\uFEFF/, ""));
-  const candidates = parsePartnerStackMarketplace(readJson(argv[0]));
-  const inventory = parseSoftwareInventory(readJson(argv[1]));
+    throw new Error(
+      "Usage: node scripts/partnerstack-review.mjs <capture.json|capture.md> <inventory.json>",
+    );
+  const readText = (path: string): string => readFileSync(path, "utf8").replace(/^\uFEFF/, "");
+  const captureText = readText(argv[0]);
+  const candidates = captureText.trimStart().startsWith("{")
+    ? parsePartnerStackMarketplace(JSON.parse(captureText))
+    : parsePartnerStackMarketplaceMarkdown(captureText, {
+        kind: "export",
+        reference: basename(argv[0]),
+        observedAt: null,
+        provenance: "PartnerStack All Programs marketplace Markdown capture",
+      });
+  const inventory = parseSoftwareInventory(JSON.parse(readText(argv[1])));
   const report = createBusinessReviewReport(candidates, inventory);
   process.stdout.write(
     JSON.stringify(

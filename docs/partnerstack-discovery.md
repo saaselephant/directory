@@ -10,13 +10,22 @@ From `C:\SaaSElephant`, with repository dependencies installed:
 node scripts/partnerstack-review.mjs src/lib/affiliate-discovery/__tests__/fixtures/partnerstack-marketplace.json src/lib/affiliate-discovery/__tests__/fixtures/software-inventory.json
 ```
 
-For real inputs, substitute your local capture and current inventory paths. JSON goes to stdout; diagnostics go to stderr and failures exit nonzero. To save UTF-8 output in PowerShell:
+For real inputs, substitute your local capture and current inventory paths. The capture may
+use the JSON contract below or a Markdown capture of the PartnerStack **All programs** page.
+JSON goes to stdout; diagnostics go to stderr and failures exit nonzero. To save UTF-8 output
+in PowerShell:
 
 ```powershell
-node scripts/partnerstack-review.mjs C:\private\marketplace.json C:\private\inventory.json | Set-Content -Encoding utf8 C:\private\review.json
+node scripts/partnerstack-review.mjs C:\private\marketplace.md C:\private\inventory.json | Set-Content -Encoding utf8 C:\private\review.json
 ```
 
 The launcher uses the existing TypeScript dependency to compile only the offline dependency graph into a unique temporary directory, then removes that directory. No new dependency or application build is needed. Keep real captures/reports in a private local directory outside tracked/public assets. The committed fixtures contain synthetic data only.
+
+Markdown ingestion verifies the declared program total against the number of PartnerStack
+program cards and rejects partial captures. It retains card names, descriptions, commission
+propositions and explicit relationship badges. A missing badge is treated as `Not applied`
+only when the page's displayed not-applied count plus its explicit badges exactly equals the
+declared program total. Fields absent from the capture remain unknown.
 
 ## Capture format v1
 

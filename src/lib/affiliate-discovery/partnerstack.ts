@@ -140,8 +140,11 @@ export function createPartnerStackAdapter(
         "not applied": "available",
         applied: "applied",
         pending: "applied",
+        "application pending": "applied",
         approved: "approved",
+        joined: "approved",
         rejected: "rejected",
+        "application declined": "rejected",
         unknown: "unknown",
       };
       let supportsSubIds: boolean | null = null;
@@ -229,4 +232,93 @@ export function parsePartnerStackMarketplace(input: unknown): AffiliateProgramCa
     ...object(envelope.source),
   });
   return envelope.programs.map((program) => adapter.normalize(program));
+}
+
+export function parsePartnerStackMarketplaceMarkdown(
+  input: string,
+  source: AffiliateProgramCandidate["source"] = {
+    kind: "export",
+    reference: null,
+    observedAt: null,
+    provenance: "PartnerStack All Programs marketplace Markdown capture",
+  },
+): AffiliateProgramCandidate[] {
+  const countMatch = input.match(/^\*\*All programs\*\*([\d,]+) programs\s*$/m);
+  if (!countMatch) throw new Error("Expected a PartnerStack All programs count.");
+
+  const expectedCount = Number(countMatch[1].replaceAll(",", ""));
+  const marketplace = input.slice((countMatch.index ?? 0) + countMatch[0].length);
+  const imagePattern =
+    /^\[image\]\(https:\/\/company-images\.partnerstack\.com\/[^)\r\n]+\)\s*$/gm;
+  const images = [...marketplace.matchAll(imagePattern)];
+  if (images.length !== expectedCount) {
+    throw new Error(
+      `PartnerStack capture declared ${expectedCount} programs but contained ${images.length} program cards.`,
+    );
+  }
+
+  const notAppliedMatch = input.match(
+    /Programs not applied to yet\s+(?:\r?\n\s*)*([\d,]+)/i,
+  );
+  const expectedNotApplied = notAppliedMatch
+    ? Number(notAppliedMatch[1].replaceAll(",", ""))
+    : null;
+  const explicitCommissionModel = (value: string | undefined): string | undefined => {
+    if (!value) return undefined;
+    const labels = new Set<string>();
+    const normalized = value.toLocaleLowerCase("en");
+    if (/\b(?:rev(?:enue)? share|revenue sharing)\b/.test(normalized))
+      labels.add("Revenue Share");
+    if (/\b(?:cpl|cost per lead)\b/.test(normalized)) labels.add("CPL");
+    if (/\b(?:cpa|cost per (?:acquisition|action))\b/.test(normalized)) labels.add("CPA");
+    if (/\b(?:cpc|cost per click)\b/.test(normalized)) labels.add("CPC");
+    return labels.size === 1 ? [...labels][0] : undefined;
+  };
+  const records = images.map((image, index): PartnerStackMarketplaceRecord => {
+    const block = marketplace.slice(
+      (image.index ?? 0) + image[0].length,
+      images[index + 1]?.index ?? marketplace.length,
+    );
+    const lines = block
+      .split(/\r?\n/)
+      .map((line) => line.trim())
+      .filter(Boolean);
+    const bold = lines.flatMap((line, lineIndex) => {
+      const match = line.match(/^\*\*(.+)\*\*$/);
+      return match ? [{ lineIndex, value: match[1].trim() }] : [];
+    });
+    const name = bold[0]?.value ?? "";
+    const commission = bold[1]?.value;
+    const relationshipLine = lines.find((line) =>
+      /^svg(?:Application pending|Application declined|Joined)$/i.test(line),
+    );
+    const relationshipIndex = relationshipLine ? lines.indexOf(relationshipLine) : lines.length;
+    const description =
+      bold[0]
+        ? lines
+            .slice(bold[0].lineIndex + 1, bold[1]?.lineIndex ?? relationshipIndex)
+            .filter((line) => line !== "|")
+            .join(" ")
+        : null;
+
+    return {
+      name,
+      description: description || undefined,
+      commission: commission
+        ? { text: commission, model: explicitCommissionModel(commission) }
+        : undefined,
+      relationship: relationshipLine?.replace(/^svg/i, ""),
+    };
+  });
+
+  const explicitRelationships = records.filter((record) => record.relationship).length;
+  if (
+    expectedNotApplied !== null &&
+    expectedNotApplied + explicitRelationships === expectedCount
+  ) {
+    for (const record of records) record.relationship ??= "Not applied";
+  }
+
+  const adapter = createPartnerStackAdapter(source);
+  return records.map((record) => adapter.normalize(record));
 }
