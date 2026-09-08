@@ -148,11 +148,13 @@ async function captureCommand(arguments_: ParsedArguments): Promise<void> {
   let capturedAt = new Date().toISOString();
   let context;
   try {
-    context = await launchPartnerStackBrowser();
-    console.log(
-      "Log in yourself, open the official PartnerStack application form, then return here.",
+    context = await launchPartnerStackBrowser(async () => {
+      console.log("In the dedicated Chrome window, authenticate with PartnerStack normally.");
+      await waitForUser("Press Enter after authentication is complete: ");
+    });
+    await waitForUser(
+      "Open the official application form, then press Enter to capture visible controls: ",
     );
-    await waitForUser("Press Enter to capture visible enabled controls (no values): ");
     capturedAt = new Date().toISOString();
     const page = activePage(context);
     const snapshot = await captureVisibleApplication(page);
@@ -196,12 +198,13 @@ async function captureBatchCommand(arguments_: ParsedArguments): Promise<void> {
   }
 
   await mkdir(outputDirectory, { recursive: true });
-  const context = await launchPartnerStackBrowser();
+  const context = await launchPartnerStackBrowser(async () => {
+    console.log("In the dedicated Chrome window, authenticate with PartnerStack normally.");
+    await waitForUser("Press Enter after authentication is complete: ");
+  });
   const failures: string[] = [];
   try {
-    console.log(
-      "Log in yourself once. For each prompt, open that program's official application form.",
-    );
+    console.log("For each prompt, open that program's official application form.");
     for (let index = 0; index < programs.length; index += 1) {
       const programName = programs[index];
       const output = join(outputDirectory, fileNames[index]);
@@ -262,11 +265,13 @@ async function prefillCommand(arguments_: ParsedArguments): Promise<void> {
     throw new Error("A safe captured PartnerStack application URL is required for prefill.");
   }
 
-  const context = await launchPartnerStackBrowser();
-  try {
+  const context = await launchPartnerStackBrowser(async () => {
     console.log(
-      `Log in yourself and open the official ${capture.programName} PartnerStack application.`,
+      `In the dedicated Chrome window, log in normally and open the official ${capture.programName} PartnerStack application.`,
     );
+    await waitForUser("Press Enter after authentication and navigation are complete: ");
+  });
+  try {
     await waitForUser("Press Enter to apply the reviewed safe prefill plan: ");
     const page = activePage(context);
     const result = await executeApplicationPrefill(

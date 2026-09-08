@@ -34,10 +34,23 @@ submission executor.
 
 ## Browser-assisted PartnerStack helper
 
-The helper uses the installed system Chrome through `playwright-core`; it does not install or
-download a browser. It creates an in-memory browser context and never saves cookies, session
-tokens, credentials, or browser storage. Authentication is always performed by the human in
-visible Chrome and is discarded when the command closes.
+The helper starts the installed system Chrome normally and then attaches through Chrome's
+supported DevTools Protocol on a dynamically allocated localhost-only port. It does not use
+Playwright's automated browser launcher, automation flags, stealth plugins, fingerprint
+spoofing, CAPTCHA solvers, or Cloudflare workarounds.
+
+Chrome uses a dedicated profile at
+`%LOCALAPPDATA%\SaaSElephant\partnerstack-chrome-profile`. This avoids locking or modifying the
+everyday Chrome profile while allowing PartnerStack and Cloudflare session cookies to persist
+normally between helper runs. The profile is outside the repository, and neither its cookies
+nor other browser storage enter capture files. Authentication and any Cloudflare verification
+remain interactive and user-controlled. Do not save a PartnerStack password in this dedicated
+profile.
+
+The helper waits for the user to finish authentication before Playwright attaches to the
+browser. After attachment, it performs only the documented capture or safe-prefill operations.
+When the command finishes, it closes only this dedicated Chrome instance through Chrome's
+supported DevTools protocol so the profile is flushed and can be reused safely.
 
 Create a local output directory, then capture each application independently:
 
@@ -64,8 +77,8 @@ corepack pnpm run affiliate:applications capture-batch --output-dir "$captures" 
 ```
 
 This writes `activecampaign.json`, `1password.json`, `freshbooks.json`, and
-`monday-com.json` in the capture directory without retaining the authenticated session after
-the command exits.
+`monday-com.json` in the capture directory. PartnerStack session state may remain in the
+dedicated OS-local Chrome profile, but never in those capture files or the repository.
 
 Prepare one review report from an explicitly approved profile:
 

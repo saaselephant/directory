@@ -1,3 +1,8 @@
+import { spawn, type ChildProcess } from "node:child_process";
+import { mkdirSync } from "node:fs";
+import { createServer } from "node:net";
+import path from "node:path";
+
 import { chromium, type BrowserContext, type Locator, type Page } from "playwright-core";
 
 import type { ApplicationControlIdentity } from "./application";
@@ -6,21 +11,107 @@ import type { RawApplicationControl, RawApplicationDomSnapshot } from "./applica
 
 export const SYSTEM_CHROME_PATH = String.raw`C:\Program Files\Google\Chrome\Application\chrome.exe`;
 
-export async function launchPartnerStackBrowser(): Promise<BrowserContext> {
-  const browser = await chromium.launch({
-    executablePath: SYSTEM_CHROME_PATH,
-    headless: false,
-    args: ["--start-maximized"],
+export function defaultPartnerStackProfilePath(localAppData = process.env.LOCALAPPDATA): string {
+  if (!localAppData) {
+    throw new Error("LOCALAPPDATA is required to locate the dedicated Chrome profile.");
+  }
+  return path.join(localAppData, "SaaSElephant", "partnerstack-chrome-profile");
+}
+
+export function chromeLaunchArguments(profilePath: string, debuggingPort: number): string[] {
+  return [
+    `--user-data-dir=${profilePath}`,
+    `--remote-debugging-port=${debuggingPort}`,
+    "--remote-debugging-address=127.0.0.1",
+    "--no-first-run",
+    "--no-default-browser-check",
+    "--start-maximized",
+    "about:blank",
+  ];
+}
+
+async function availableLoopbackPort(): Promise<number> {
+  return new Promise((resolve, reject) => {
+    const server = createServer();
+    server.once("error", reject);
+    server.listen(0, "127.0.0.1", () => {
+      const address = server.address();
+      if (!address || typeof address === "string") {
+        server.close();
+        reject(new Error("Unable to allocate a local Chrome debugging port."));
+        return;
+      }
+      server.close((error) => {
+        if (error) reject(error);
+        else resolve(address.port);
+      });
+    });
   });
-  const context = await browser.newContext({ viewport: null });
-  await context.newPage();
-  return context;
+}
+
+async function waitForChromeEndpoint(child: ChildProcess, debuggingPort: number): Promise<string> {
+  const endpoint = `http://127.0.0.1:${debuggingPort}`;
+  const deadline = Date.now() + 20_000;
+  let launchError: Error | null = null;
+  child.once("error", (error) => {
+    launchError = error;
+  });
+  while (Date.now() < deadline) {
+    try {
+      const response = await fetch(`${endpoint}/json/version`, {
+        signal: AbortSignal.timeout(1_000),
+      });
+      if (response.ok) {
+        const version = (await response.json()) as { Browser?: unknown };
+        if (typeof version.Browser === "string" && version.Browser.includes("Chrome/")) {
+          return endpoint;
+        }
+      }
+    } catch {
+      // Chrome may take several seconds to initialize the dedicated profile.
+    }
+    if (launchError) throw launchError;
+    if (child.exitCode !== null) {
+      throw new Error(
+        "Chrome exited before the helper could connect. Close any existing SaaSElephant PartnerStack Chrome window and retry.",
+      );
+    }
+    await new Promise((resolve) => setTimeout(resolve, 200));
+  }
+  throw new Error(
+    "Chrome did not expose its local debugging endpoint. Close any existing SaaSElephant PartnerStack Chrome window and retry.",
+  );
+}
+
+export async function launchPartnerStackBrowser(
+  beforeAttach?: () => Promise<void>,
+): Promise<BrowserContext> {
+  const profilePath = defaultPartnerStackProfilePath();
+  mkdirSync(profilePath, { recursive: true });
+  const debuggingPort = await availableLoopbackPort();
+  const child = spawn(SYSTEM_CHROME_PATH, chromeLaunchArguments(profilePath, debuggingPort), {
+    stdio: "ignore",
+    windowsHide: false,
+  });
+  try {
+    const endpoint = await waitForChromeEndpoint(child, debuggingPort);
+    await beforeAttach?.();
+    const browser = await chromium.connectOverCDP(endpoint);
+    const context = browser.contexts()[0];
+    if (!context) throw new Error("Chrome did not expose its user-controlled browser context.");
+    if (context.pages().length === 0) await context.newPage();
+    return context;
+  } catch (error) {
+    if (child.exitCode === null) child.kill();
+    throw error;
+  }
 }
 
 export async function closePartnerStackBrowser(context: BrowserContext): Promise<void> {
   const browser = context.browser();
-  if (browser) await browser.close();
-  else await context.close();
+  if (!browser || !browser.isConnected()) return;
+  const session = await browser.newBrowserCDPSession();
+  await session.send("Browser.close");
 }
 
 export function activePage(context: BrowserContext): Page {

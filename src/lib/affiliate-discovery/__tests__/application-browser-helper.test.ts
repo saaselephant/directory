@@ -6,7 +6,11 @@ import {
   type AffiliateApplicationProgram,
   type ApplicationControlIdentity,
 } from "../application";
-import { PlaywrightPrefillPrimitives } from "../application-browser";
+import {
+  chromeLaunchArguments,
+  defaultPartnerStackProfilePath,
+  PlaywrightPrefillPrimitives,
+} from "../application-browser";
 import { SYNTHETIC_APPLICATION_PROFILE_FIXTURE } from "../application-fixtures";
 import {
   normalizeApplicationDomSnapshot,
@@ -149,6 +153,25 @@ const snapshot: RawApplicationDomSnapshot = {
 };
 
 describe("PartnerStack application capture normalization", () => {
+  it("uses an isolated OS-local Chrome profile without automation or security-bypass flags", () => {
+    const profile = defaultPartnerStackProfilePath(String.raw`C:\Users\tester\AppData\Local`);
+    const arguments_ = chromeLaunchArguments(profile, 43123);
+
+    expect(profile).toBe(
+      String.raw`C:\Users\tester\AppData\Local\SaaSElephant\partnerstack-chrome-profile`,
+    );
+    expect(arguments_).toContain(`--user-data-dir=${profile}`);
+    expect(arguments_).toContain("--remote-debugging-port=43123");
+    expect(arguments_).toContain("--remote-debugging-address=127.0.0.1");
+    expect(arguments_).not.toEqual(
+      expect.arrayContaining([
+        "--enable-automation",
+        "--disable-blink-features=AutomationControlled",
+        "--remote-allow-origins=*",
+      ]),
+    );
+  });
+
   it("captures supported controls, identity, options, required and legal signals without values", () => {
     const capture = normalizeApplicationDomSnapshot(snapshot, metadata);
 
