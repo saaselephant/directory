@@ -1,4 +1,5 @@
 import {
+  type ApplicationCaptureDiagnostics,
   type AffiliateApplicationProgram,
   type AffiliateApplicationQuestion,
   type ApplicationControlIdentity,
@@ -22,6 +23,12 @@ export interface RawApplicationControl {
   radioGroupLabel?: string | null;
   radioOptionLabel?: string | null;
   radioOptionValue?: string | null;
+  kind?: ApplicationControlIdentity["kind"];
+  role?: ApplicationControlIdentity["role"];
+  ariaName?: string | null;
+  locatorIndex?: number;
+  frameUrl?: string | null;
+  frameIndex?: number;
 }
 
 export interface RawApplicationDomSnapshot {
@@ -30,6 +37,7 @@ export interface RawApplicationDomSnapshot {
   unsupported: boolean;
   unsupportedReason: string | null;
   controls: readonly RawApplicationControl[];
+  diagnostics?: ApplicationCaptureDiagnostics;
 }
 
 export interface CaptureMetadata {
@@ -38,7 +46,6 @@ export interface CaptureMetadata {
   capturedAt: string;
 }
 
-const ALLOWED_TAGS = new Set(["input", "textarea", "select"]);
 const EXCLUDED_INPUT_TYPES = new Set([
   "hidden",
   "password",
@@ -227,13 +234,21 @@ function safeIdentityValue(value: string | null): string | null {
 }
 
 function identity(control: RawApplicationControl): ApplicationControlIdentity {
-  const tagName = control.tagName.toLocaleLowerCase() as ApplicationControlIdentity["tagName"];
+  const tagName = control.tagName.toLocaleLowerCase();
   return {
     id: safeIdentityValue(control.id),
     name: safeIdentityValue(control.name),
     order: control.order,
     tagName,
     inputType: control.inputType?.toLocaleLowerCase() ?? null,
+    ...(control.kind ? { kind: control.kind } : {}),
+    ...(control.role !== undefined ? { role: control.role } : {}),
+    ...(control.ariaName !== undefined ? { ariaName: safeIdentityValue(control.ariaName) } : {}),
+    ...(control.locatorIndex !== undefined ? { locatorIndex: control.locatorIndex } : {}),
+    ...(control.frameUrl !== undefined
+      ? { frameUrl: safePartnerStackUrl(control.frameUrl ?? "") }
+      : {}),
+    ...(control.frameIndex !== undefined ? { frameIndex: control.frameIndex } : {}),
   };
 }
 
@@ -242,7 +257,7 @@ function safeOption(option: ApplicationQuestionOption): ApplicationQuestionOptio
   const value = option.value.trim();
   if (!label || label.length > 300 || value.length > 300) return null;
   if (
-    /(?:eyJ[A-Za-z0-9_-]{10,}\.|bearer\s+|access[_-]?token|refresh[_-]?token|csrf|session[_-]?token)/i.test(
+    /(?:eyJ[A-Za-z0-9_-]{10,}\.|bearer\s+|access[_-]?token|refresh[_-]?token|csrf|session[_-]?token|[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,})/i.test(
       value,
     )
   ) {
@@ -255,7 +270,13 @@ function fieldType(control: RawApplicationControl): QuestionFieldType | null {
   if (control.visible === false || control.enabled === false) return null;
   const tag = control.tagName.toLocaleLowerCase();
   const inputType = (control.inputType ?? "text").toLocaleLowerCase();
-  if (!ALLOWED_TAGS.has(tag)) return null;
+  if (control.kind === "accessible-textbox") {
+    return control.role === "textbox" && control.inputType === "textarea" ? "textarea" : "text";
+  }
+  if (control.kind === "custom-combobox") return "select";
+  if (control.kind === "custom-radio") return "radio";
+  if (control.kind === "custom-checkbox") return "checkbox";
+  if (!["input", "textarea", "select"].includes(tag)) return null;
   if (tag === "textarea") return "textarea";
   if (tag === "select") return "select";
   if (EXCLUDED_INPUT_TYPES.has(inputType) || !SUPPORTED_INPUT_TYPES.has(inputType)) return null;
@@ -371,7 +392,7 @@ function normalizedRadioQuestion(
   const options = controls
     .map((control) => {
       const label = (control.radioOptionLabel || control.label).trim();
-      const value = control.radioOptionValue?.trim() ?? "";
+      const value = control.radioOptionValue?.trim() || label;
       return safeOption({ label, value, domIdentity: identity(control) });
     })
     .filter((item): item is ApplicationQuestionOption => item !== null);
@@ -445,12 +466,16 @@ export function normalizeApplicationDomSnapshot(
     questions,
     sourceUrl: capturedUrl,
     capturedAt: metadata.capturedAt,
+    ...(snapshot.diagnostics
+      ? { diagnostics: sanitizeDiagnostics(snapshot.diagnostics, capturedUrl) }
+      : {}),
   };
 }
 
 export function createCaptureFailure(
   metadata: CaptureMetadata,
   reason: string,
+  diagnostics?: ApplicationCaptureDiagnostics,
 ): AffiliateApplicationProgram {
   return {
     network: "partnerstack",
@@ -462,5 +487,83 @@ export function createCaptureFailure(
     questions: [],
     sourceUrl: safePartnerStackUrl(metadata.pageUrl),
     capturedAt: metadata.capturedAt,
+    ...(diagnostics
+      ? { diagnostics: sanitizeDiagnostics(diagnostics, safePartnerStackUrl(metadata.pageUrl)) }
+      : {}),
+  };
+}
+
+function safeDiagnosticText(value: string, maximum = 200): string | null {
+  const text = value.replace(/\s+/g, " ").trim().slice(0, maximum);
+  if (
+    !text ||
+    /(?:eyJ[A-Za-z0-9_-]{10,}\.|bearer\s+|access[_-]?token|refresh[_-]?token|csrf|xsrf|password|secret|session[_-]?token|[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,})/i.test(
+      text,
+    )
+  ) {
+    return null;
+  }
+  return text;
+}
+
+function sanitizeDiagnostics(
+  diagnostics: ApplicationCaptureDiagnostics,
+  capturedUrl: string | null,
+): ApplicationCaptureDiagnostics {
+  const safeList = (values: readonly string[]) =>
+    [
+      ...new Set(
+        values
+          .map((value) => safeDiagnosticText(value))
+          .filter((value): value is string => value !== null),
+      ),
+    ].slice(0, 40);
+  const safeCounts = (counts: Readonly<Record<string, number>>) =>
+    Object.fromEntries(
+      Object.entries(counts)
+        .filter(
+          ([key, count]) =>
+            /^[a-z][a-z0-9-]{0,39}$/i.test(key) &&
+            Number.isInteger(count) &&
+            count >= 0 &&
+            count < 10_000,
+        )
+        .slice(0, 40),
+    );
+  return {
+    pageTitle: diagnostics.pageTitle ? safeDiagnosticText(diagnostics.pageTitle) : null,
+    pageUrl: capturedUrl,
+    visibleFormCount: Math.max(0, Math.trunc(diagnostics.visibleFormCount)),
+    visibleRegionCount: Math.max(0, Math.trunc(diagnostics.visibleRegionCount)),
+    controls: {
+      nativeInputTypes: safeCounts(diagnostics.controls.nativeInputTypes),
+      customRoles: safeCounts(diagnostics.controls.customRoles),
+      textarea: Math.max(0, Math.trunc(diagnostics.controls.textarea)),
+      select: Math.max(0, Math.trunc(diagnostics.controls.select)),
+      combobox: Math.max(0, Math.trunc(diagnostics.controls.combobox)),
+      radio: Math.max(0, Math.trunc(diagnostics.controls.radio)),
+      checkbox: Math.max(0, Math.trunc(diagnostics.controls.checkbox)),
+    },
+    safeButtonTexts: safeList(diagnostics.safeButtonTexts),
+    safeLabels: safeList(diagnostics.safeLabels),
+    ariaControls: diagnostics.ariaControls
+      .map(({ role, name }) => ({
+        role: safeDiagnosticText(role, 40),
+        name: safeDiagnosticText(name),
+      }))
+      .filter(
+        (item): item is { role: string; name: string } => item.role !== null && item.name !== null,
+      )
+      .slice(0, 40),
+    nearbyHeadings: safeList(diagnostics.nearbyHeadings),
+    iframes: {
+      total: Math.max(0, Math.trunc(diagnostics.iframes.total)),
+      inspected: Math.max(0, Math.trunc(diagnostics.iframes.inspected)),
+      sameOrigin: Math.max(0, Math.trunc(diagnostics.iframes.sameOrigin)),
+      partnerStack: Math.max(0, Math.trunc(diagnostics.iframes.partnerStack)),
+      blocked: Math.max(0, Math.trunc(diagnostics.iframes.blocked)),
+      statuses: safeList(diagnostics.iframes.statuses),
+    },
+    customControlIndicators: safeList(diagnostics.customControlIndicators),
   };
 }

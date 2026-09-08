@@ -43,10 +43,15 @@ export interface PrefillExecutionResult {
 
 export function isSubmitLikeIdentity(identity: ApplicationControlIdentity): boolean {
   const tagName: string = identity.tagName;
+  const verifiedChoiceButton =
+    tagName === "button" &&
+    identity.kind === "custom-combobox" &&
+    identity.role === "combobox" &&
+    identity.inputType === "button";
   return (
-    tagName === "button" ||
+    (tagName === "button" && !verifiedChoiceButton) ||
     identity.inputType === "submit" ||
-    identity.inputType === "button" ||
+    (identity.inputType === "button" && !verifiedChoiceButton) ||
     identity.inputType === "reset" ||
     identity.inputType === "image"
   );
@@ -57,6 +62,9 @@ function actionForQuestion(
   value: string,
 ): PrefillAction | string {
   if (!question.domIdentity) return "The capture has no safe DOM identity.";
+  if (question.domIdentity.frameIndex !== undefined && question.domIdentity.frameUrl === null) {
+    return "Blank-frame controls require human review because their frame identity is unstable.";
+  }
   if (isSubmitLikeIdentity(question.domIdentity))
     return "Submit-like controls are always rejected.";
 

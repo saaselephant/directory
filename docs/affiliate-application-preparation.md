@@ -72,13 +72,31 @@ corepack pnpm run affiliate:applications capture --program "monday.com" --output
 ```
 
 For each command, log in and navigate to that program's official application before pressing
-Enter in the terminal. A capture contains only visible, enabled form controls. It excludes
-hidden, password, file, button, submit, and reset controls and does not read current field
-values, cookies, request headers, storage, or authentication tokens. It records safe
-`id`/`name`/document-order identity, labels, control types, required flags, select/radio
-options, legal signals, a query-free HTTPS `partnerstack.com` URL, and the timestamp.
+Enter in the terminal. Capture detects application regions using visible forms, dialogs,
+main/section regions, application headings, grouped controls, and a nearby “Submit
+application” button as a marker only. The marker is never clicked. Same-origin and
+PartnerStack frames may be inspected; unrelated third-party frame content is not. If an
+application appears to be in an inaccessible third-party frame, the capture records an
+explicit unsupported-frame diagnosis.
 
-To log in once and capture all four forms sequentially in one ephemeral browser session:
+A capture contains only visible, enabled eligible controls. Alongside native
+input/select/textarea elements, it supports accessible textboxes, textbox contenteditable
+elements, comboboxes (including verified non-submit button triggers), radios/radiogroups, and
+checkboxes. Labels may come from associated labels, `aria-label`, or `aria-labelledby`;
+required attributes and accessible required markers are retained. Native option values may be
+recorded when structural and non-secret. Custom option labels are canonical: the helper may
+open only a verified choice trigger, observe visible `option`/`menuitemradio` labels (including
+portal-rendered options), and close it with Escape without choosing an option.
+
+Captures exclude hidden, password, file, submit, and reset controls and never read current
+entered values, passwords, cookies, request headers, local/session storage, hidden fields, or
+unrelated page text. They record safe identity, labels, ARIA role/name, control types, required
+flags, choice labels, legal signals, a query/hash/credentials-free HTTPS PartnerStack URL, and
+the timestamp. Safe structural diagnostics are retained even for unsupported or not-found
+results: sanitized title/URL, visible form/region and control counts, safe labels and button
+texts, nearby headings, ARIA summaries, custom-control indicators, and iframe status.
+
+To log in once and capture all four forms sequentially in one dedicated browser session:
 
 ```powershell
 corepack pnpm run affiliate:applications capture-batch --output-dir "$captures" "ActiveCampaign" "1Password" "FreshBooks" "monday.com"
@@ -102,12 +120,16 @@ corepack pnpm run affiliate:applications prefill --capture "$captures\ActiveCamp
 
 The prefill command opens visible Chrome, waits for the human to open the matching official
 form, and applies only deterministic values from profile fields listed in `approvedFields`.
-Exact captured options are required for selects and radios. Every other field is reported as
+Exact captured options are required for native/custom selects and radios, and custom choices
+must still have one exact visible option at prefill time. Every other field is reported as
 `SKIPPED`. Legal, terms, acceptance, attestation, checkbox, ambiguous choice, unknown claim,
 unapproved, and review-required values are never filled.
 
 The browser adapter exposes only `fill`, `select`, and non-legal radio `check` primitives. It
-does not click buttons or press Enter. There is deliberately no submission command or
+has no general click or keyboard primitive and never presses Enter. Internally, `select` may
+click only a captured, re-verified custom choice trigger and its single exact visible option;
+`check` may click only a captured, re-verified custom radio. Arbitrary, submit, legal, and
+checkbox controls remain unreachable. There is deliberately no submission command or
 submission method. After prefill, Chrome stays open while the terminal waits so the human can
 review and, if appropriate, submit manually.
 

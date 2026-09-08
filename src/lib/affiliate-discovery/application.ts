@@ -143,8 +143,46 @@ export interface ApplicationControlIdentity {
   id: string | null;
   name: string | null;
   order: number;
-  tagName: "input" | "textarea" | "select";
+  tagName: string;
   inputType: string | null;
+  kind?: "native" | "accessible-textbox" | "custom-combobox" | "custom-radio" | "custom-checkbox";
+  role?: "textbox" | "combobox" | "radio" | "checkbox" | null;
+  ariaName?: string | null;
+  locatorIndex?: number;
+  frameUrl?: string | null;
+  frameIndex?: number;
+}
+
+export interface ApplicationCaptureDiagnostics {
+  pageTitle: string | null;
+  pageUrl: string | null;
+  visibleFormCount: number;
+  visibleRegionCount: number;
+  controls: {
+    nativeInputTypes: Readonly<Record<string, number>>;
+    customRoles: Readonly<Record<string, number>>;
+    textarea: number;
+    select: number;
+    combobox: number;
+    radio: number;
+    checkbox: number;
+  };
+  safeButtonTexts: readonly string[];
+  safeLabels: readonly string[];
+  ariaControls: readonly {
+    role: string;
+    name: string;
+  }[];
+  nearbyHeadings: readonly string[];
+  iframes: {
+    total: number;
+    inspected: number;
+    sameOrigin: number;
+    partnerStack: number;
+    blocked: number;
+    statuses: readonly string[];
+  };
+  customControlIndicators: readonly string[];
 }
 
 export interface AffiliateApplicationQuestion {
@@ -177,6 +215,7 @@ export interface AffiliateApplicationProgram {
   questions: readonly AffiliateApplicationQuestion[];
   sourceUrl?: string | null;
   capturedAt?: string | null;
+  diagnostics?: ApplicationCaptureDiagnostics;
 }
 
 export type ApplicationAnswerValue = string | boolean | readonly string[] | null;
