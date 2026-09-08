@@ -1,4 +1,4 @@
-import { safeReviewUrl } from "@/lib/security/review-url";
+import { safeReviewUrl } from "../security/review-url";
 
 import type { AffiliateProgramCandidate } from "./types";
 

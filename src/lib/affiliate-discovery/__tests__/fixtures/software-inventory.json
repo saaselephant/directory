@@ -1,0 +1,51 @@
+[
+  {
+    "id": "fixture-software-monday",
+    "slug": "monday",
+    "name": "monday.com",
+    "vendorName": "monday.com",
+    "websiteUrl": "https://monday.com"
+  },
+  {
+    "id": "fixture-software-activecampaign",
+    "slug": "activecampaign",
+    "name": "ActiveCampaign",
+    "vendorName": "ActiveCampaign",
+    "websiteUrl": "https://activecampaign.com"
+  },
+  {
+    "id": "fixture-software-1password",
+    "slug": "1password",
+    "name": "1Password",
+    "vendorName": "1Password",
+    "websiteUrl": "https://1password.com"
+  },
+  {
+    "id": "fixture-software-freshdesk",
+    "slug": "freshdesk",
+    "name": "Freshdesk",
+    "vendorName": "Freshworks",
+    "websiteUrl": "https://freshworks.com"
+  },
+  {
+    "id": "fixture-software-freshservice",
+    "slug": "freshservice",
+    "name": "Freshservice",
+    "vendorName": "Freshworks",
+    "websiteUrl": "https://freshworks.com"
+  },
+  {
+    "id": "fixture-software-kit",
+    "slug": "kit",
+    "name": "Kit",
+    "vendorName": null,
+    "websiteUrl": "https://kit.com"
+  },
+  {
+    "id": "fixture-software-openphone",
+    "slug": "openphone",
+    "name": "OpenPhone",
+    "vendorName": null,
+    "websiteUrl": "https://openphone.com"
+  }
+]

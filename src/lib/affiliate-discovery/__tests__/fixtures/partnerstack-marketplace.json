@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "source": {
+    "kind": "export",
+    "reference": "synthetic-marketplace-fixture-v1",
+    "observedAt": "2026-09-08T00:00:00Z",
+    "provenance": "SYNTHETIC TEST DATA. Names are representative; IDs, terms, states and URLs are not verified PartnerStack facts."
+  },
+  "programs": [
+    {
+      "programId": "fixture-monday",
+      "companyId": "fixture-company-monday",
+      "name": "monday.com",
+      "description": "Synthetic work-management program example.",
+      "destinationUrl": "https://www.monday.com/",
+      "programUrl": "https://marketplace.example.com/monday",
+      "commission": {
+        "text": "Example only: 20% revenue share",
+        "model": "Revenue Share",
+        "value": "20%",
+        "recurring": "Terms-dependent",
+        "metadata": { "fixtureOnly": true }
+      },
+      "partnerTypes": ["Affiliate", "Publisher"],
+      "supportsSubIds": true,
+      "relationship": "Not applied"
+    },
+    {
+      "programId": "fixture-activecampaign",
+      "name": "ActiveCampaign",
+      "domains": ["activecampaign.com"],
+      "commission": { "text": "Example only: qualified lead reward", "model": "CPL" },
+      "partnerTypes": ["Referral Partner"],
+      "supportsSubIds": false,
+      "relationship": "Applied"
+    },
+    {
+      "programId": "fixture-1password",
+      "name": "1Password",
+      "commission": { "text": "Example only: acquisition reward", "model": "CPA" },
+      "relationship": "Approved"
+    },
+    {
+      "programId": "fixture-freshdesk",
+      "name": "Freshdesk by Freshworks",
+      "commission": { "text": "Example only: reward per click", "model": "CPC" }
+    },
+    { "programId": "fixture-freshservice", "name": "Freshservice by Freshworks" },
+    {
+      "programId": "fixture-kit",
+      "name": "Kit (formerly ConvertKit)",
+      "commission": { "text": "Earn up to a variable percentage; see terms" }
+    },
+    {
+      "companyId": "fixture-company-quo",
+      "name": "Quo (formerly OpenPhone)",
+      "relationship": "Waitlisted"
+    },
+    {
+      "programId": "fixture-future",
+      "name": "Example Future Analytics",
+      "description": "Synthetic unmatched commercial opportunity.",
+      "commission": { "text": "Contact the program for terms" },
+      "partnerTypes": ["Publisher"]
+    },
+    {
+      "programId": "fixture-family",
+      "name": "Freshworks",
+      "vendorName": "Freshworks",
+      "domains": ["freshworks.com"]
+    },
+    { "programId": "fixture-conflict", "name": "ActiveCampaign", "domains": ["monday.com"] },
+    { "programId": "fixture-duplicate", "name": "Example Duplicate" },
+    {
+      "programId": "fixture-duplicate",
+      "name": "Example Duplicate",
+      "commission": { "text": "Updated terms" }
+    },
+    {},
+    {
+      "name": "Malformed Program",
+      "programId": {},
+      "destinationUrl": "javascript:alert(1)",
+      "supportsSubIds": "yes"
+    },
+    null
+  ]
+}

@@ -1,9 +1,4 @@
-export const KNOWN_AFFILIATE_NETWORKS = [
-  "partnerstack",
-  "awin",
-  "cj",
-  "impact",
-] as const;
+export const KNOWN_AFFILIATE_NETWORKS = ["partnerstack", "awin", "cj", "impact"] as const;
 
 export type KnownAffiliateNetwork = (typeof KNOWN_AFFILIATE_NETWORKS)[number];
 export type AffiliateNetwork = KnownAffiliateNetwork | (string & Record<never, never>);
@@ -41,6 +36,15 @@ export interface AffiliateSoftwareMatch {
 }
 
 export interface AffiliateProgramCandidate {
+  description?: string | null;
+  commercial?: {
+    commissionText: string | null;
+    commissionModel: "revenue_share" | "cpl" | "cpa" | "cpc" | "unknown";
+    partnerTypes: string[];
+    supportsSubIds: boolean | null;
+    relationshipText: string | null;
+    formerNames: string[];
+  };
   network: AffiliateNetwork;
   externalProgramId: string | null;
   externalAdvertiserId: string | null;
@@ -64,6 +68,7 @@ export interface AffiliateProgramCandidate {
     kind: "export" | "api";
     reference: string | null;
     observedAt: string | null;
+    provenance?: string | null;
   };
   match: AffiliateSoftwareMatch | null;
   reviewStatus: AffiliateCandidateReviewStatus;
