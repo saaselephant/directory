@@ -108,6 +108,8 @@ describe("Product Factory", () => {
       vendor: "Example Inc.",
       primaryCategory: "manage-projects-teams",
       officialEvidence: [sourceUrl],
+      indiaRelevance: false,
+      indiaRelevanceNote: null,
     });
   });
 
@@ -354,5 +356,20 @@ describe("Product Factory", () => {
     });
 
     expect(batch.ready).toBe(1);
+  });
+
+  it("keeps an explicit evidence acquisition failure out of READY", () => {
+    const input = candidate({
+      acquisitionException: {
+        code: "INSUFFICIENT_PRODUCT_EVIDENCE",
+        message: "The first-party response contained only a cookie banner.",
+      },
+    });
+
+    const result = processProductCandidate(input, context);
+
+    expect(result.decision).toBe("EXCEPTION");
+    expect(result.reasons).toContainEqual(input.acquisitionException);
+    expect(result.payload).toBeNull();
   });
 });

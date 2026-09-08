@@ -73,6 +73,12 @@ export interface ProductFactoryCandidate {
   pricing?: SourcedText | null;
   evidence: ProductEvidenceDocument[];
   monetizationClassification?: MonetizationClassification;
+  indiaRelevance?: boolean;
+  indiaRelevanceNote?: string;
+  acquisitionException?: {
+    code: "NO_AUTHORITATIVE_SOURCE" | "INSUFFICIENT_PRODUCT_EVIDENCE";
+    message: string;
+  };
 }
 
 export type DiscoveredProductCandidate = Omit<ProductFactoryCandidate, "evidence">;
@@ -168,6 +174,8 @@ export interface ProductFactoryResult {
     vendor: string;
     primaryCategory: string;
     officialEvidence: string[];
+    indiaRelevance: boolean;
+    indiaRelevanceNote: string | null;
   };
 }
 
@@ -282,6 +290,8 @@ function reviewMetadata(
     officialEvidence: [...new Set(candidate.evidence.map((item) => item.url))].sort((left, right) =>
       left.localeCompare(right, "en"),
     ),
+    indiaRelevance: candidate.indiaRelevance ?? false,
+    indiaRelevanceNote: candidate.indiaRelevanceNote?.trim() || null,
   };
 }
 
@@ -295,6 +305,10 @@ export function processProductCandidate(
   const slug = normalizeIdentitySlug(candidate.requestedSlug) || slugify(productName);
   const officialUrl = canonicalHttpsUrl(candidate.officialUrl);
   const officialDomain = normalizeIdentityDomain(officialUrl);
+
+  if (candidate.acquisitionException) {
+    reasons.push(candidate.acquisitionException);
+  }
 
   try {
     createProviderObjectKey(
