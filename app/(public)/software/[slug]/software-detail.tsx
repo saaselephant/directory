@@ -156,6 +156,14 @@ export function SoftwareDetail({
             ) : (
               <p>The official website link is currently unavailable.</p>
             )}
+            {item.slug === "pipedrive" ? (
+              <p>
+                {/* Temporary Sovrn onboarding verification link; remove after site approval. */}
+                <a href="https://sovrn.co/vmi0kgu" rel="sponsored nofollow">
+                  Visit Pipedrive
+                </a>
+              </p>
+            ) : null}
             <p className="vendor-responsibility">
               Purchases, payment, support and onboarding are handled directly by the vendor.
             </p>

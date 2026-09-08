@@ -89,6 +89,20 @@ describe("SoftwareDetail", () => {
     expect(html).toContain('href="/go/useful-tool"');
     expect(html).not.toMatch(/referral|PartnerStack|commission|destination_url/);
   });
+
+  it("shows the temporary Sovrn verification link only on Pipedrive", () => {
+    const pipedriveHtml = render({
+      status: "success",
+      item: { ...item, slug: "pipedrive", name: "Pipedrive" },
+    });
+    const otherHtml = render({ status: "success", item });
+
+    expect(pipedriveHtml).toContain('href="https://sovrn.co/vmi0kgu"');
+    expect(pipedriveHtml).toContain('href="/go/pipedrive"');
+    expect(pipedriveHtml).toContain(">Visit Pipedrive</a>");
+    expect(pipedriveHtml).not.toContain('target="_blank"');
+    expect(otherHtml).not.toContain("https://sovrn.co/vmi0kgu");
+  });
 });
 
 describe("public detail launch presentation", () => {
