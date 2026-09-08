@@ -47,7 +47,8 @@ const categoryPatterns = [
 
 export function categoryGroup(category: PublicCategory) {
   return (
-    categoryPatterns.find((pattern) => pattern.match.test(category.name))?.group ?? "Create & manage"
+    categoryPatterns.find((pattern) => pattern.match.test(category.name))?.group ??
+    "Create & manage"
   );
 }
 
@@ -67,6 +68,29 @@ export function CategoryGlyph({ category }: { category: PublicCategory }) {
       aria-hidden="true"
     >
       <path d={path} />
+    </svg>
+  );
+}
+
+const marketplaceGlyphs = {
+  vendor: "M4 20V8l8-5 8 5v12 M8 20v-7h8v7 M9 9h.01 M15 9h.01",
+  fit: "M12 3 14.5 8l5.5.8-4 3.9.9 5.5-4.9-2.6-4.9 2.6.9-5.5-4-3.9 5.5-.8z",
+  discovery: "M11 4a7 7 0 1 0 4.9 12L21 21 M8 11h6 M11 8v6",
+  external: "M14 4h6v6 M20 4l-9 9 M18 13v6a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h6",
+} as const;
+
+export function MarketplaceGlyph({ name }: { name: keyof typeof marketplaceGlyphs }) {
+  return (
+    <svg
+      aria-hidden="true"
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="1.8"
+      viewBox="0 0 24 24"
+    >
+      <path d={marketplaceGlyphs[name]} />
     </svg>
   );
 }
@@ -93,8 +117,8 @@ export function Breadcrumbs({ items }: { items: { label: string; href?: string }
 }
 
 export function DiscoveryNext({
-  title = "A different need? A new starting point.",
-  description = "Explore by business need or search for a tool you already have in mind.",
+  title = "Ask the Elephant. It knows software.",
+  description = "Start with a business need or search the marketplace by product and vendor.",
   href = "/categories",
   action = "Explore categories",
 }: {
@@ -105,8 +129,11 @@ export function DiscoveryNext({
 }) {
   return (
     <aside className="discovery-strip">
+      <span className="discovery-strip-icon">
+        <MarketplaceGlyph name="discovery" />
+      </span>
       <div>
-        <p className="eyebrow">Keep exploring</p>
+        <p className="eyebrow">Smarter discovery starts here</p>
         <h2>{title}</h2>
         <p>{description}</p>
       </div>

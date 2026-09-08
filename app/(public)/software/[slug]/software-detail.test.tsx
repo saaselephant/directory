@@ -38,7 +38,7 @@ describe("SoftwareDetail", () => {
     expect(html).toContain("$10 per month");
     expect(html).toContain("Free plan");
     expect(html).toContain("Free trial");
-    expect(html).toContain("https://vendor.example/product");
+    expect(html).toContain("Official site: vendor.example");
     expect(buildSoftwareMetadata(item)).toEqual({
       title: "Useful Tool",
       description: "A concise product description.",
@@ -87,6 +87,9 @@ describe("SoftwareDetail", () => {
     expect(html).not.toContain("verification_status");
     expect(html).not.toContain("affiliate");
     expect(html).toContain('href="/go/useful-tool"');
+    expect(html.match(/href="\/go\/useful-tool"/g)).toHaveLength(1);
+    expect(html).not.toContain("Explore the essentials");
+    expect(html).not.toContain("Your next step");
     expect(html).not.toMatch(/referral|PartnerStack|commission|destination_url/);
   });
 
@@ -117,7 +120,7 @@ describe("public detail launch presentation", () => {
       />,
     );
     expect(html).toContain('href="/categories/communication"');
-    expect(html).toContain("handled directly by the vendor");
+    expect(html).toContain("handled by the vendor");
     expect(html).not.toMatch(/internal-software-id|internal-vendor-id|verification|affiliate/);
   });
   it("omits unsafe official website destinations instead of making them clickable", () => {

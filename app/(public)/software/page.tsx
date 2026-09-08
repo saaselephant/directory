@@ -1,15 +1,10 @@
 import Link from "next/link";
-import { Breadcrumbs, DiscoveryNext } from "../discovery";
+import { Breadcrumbs, DiscoveryNext, MarketplaceGlyph } from "../discovery";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { listPublicCategories } from "@/lib/repositories/categories";
 import { searchPublishedSoftware } from "@/lib/repositories/search";
-import {
-  Pagination,
-  SOFTWARE_PAGE_SIZE,
-  paginationHref,
-  parsePageParam,
-} from "../pagination";
+import { Pagination, SOFTWARE_PAGE_SIZE, paginationHref, parsePageParam } from "../pagination";
 
 import { SoftwareCatalog } from "./software-catalog";
 import { SoftwareFilters } from "./software-filters";
@@ -71,26 +66,30 @@ export default async function SoftwareIndexPage({ searchParams }: SoftwareIndexP
     <main className="catalog-page">
       <Breadcrumbs items={[{ label: "Software" }]} />
       <header className="catalog-header">
-        <p className="eyebrow">Find your next tool</p>
-        <h1>Find your next better way to work.</h1>
-        <p className="lede">
-          Explore software for your business. Search by name, vendor or the work you need to do.
-        </p>
+        <span className="category-header-icon">
+          <MarketplaceGlyph name="discovery" />
+        </span>
+        <div>
+          <p className="eyebrow">The software marketplace</p>
+          <h1>Find your next better way to work.</h1>
+          <p className="lede">
+            Search {total || "the catalog"} business software products by name, vendor or use case.
+          </p>
+        </div>
       </header>
       <section className="directory-search-panel" aria-label="Search the software directory">
-        <p className="directory-guidance">
-          Not sure where to start?{" "}
-          <Link className="text-link" href="/categories">
-            Explore by business need →
-          </Link>
-        </p>
         <SoftwareFilters categories={categories} filters={result.filters} />
-        {result.status === "success" ? (
-          <p className="catalog-result-summary" role="status">
-            {total} {total === 1 ? "tool" : "tools"} to explore
-            {filtered ? " matching your search" : ""}
-          </p>
-        ) : null}
+        <div className="directory-results-bar">
+          {result.status === "success" ? (
+            <p className="catalog-result-summary" role="status">
+              <strong>{total}</strong> {total === 1 ? "product" : "products"}
+              {filtered ? " matching your search" : ""}
+            </p>
+          ) : null}
+          <Link className="text-link" href="/categories">
+            Browse by business need →
+          </Link>
+        </div>
       </section>
       <SoftwareCatalog
         contextLabel={selectedCategory ? `In ${selectedCategory.name}` : undefined}

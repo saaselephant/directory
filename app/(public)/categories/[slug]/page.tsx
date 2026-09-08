@@ -7,11 +7,7 @@ import {
   listPublicCategories,
   listPublishedSoftwareByCategorySlug,
 } from "@/lib/repositories/categories";
-import {
-  SOFTWARE_PAGE_SIZE,
-  paginationHref,
-  parsePageParam,
-} from "../../pagination";
+import { SOFTWARE_PAGE_SIZE, paginationHref, parsePageParam } from "../../pagination";
 
 import { buildCategoryMetadata, CategoryDetail } from "./category-detail";
 
@@ -34,11 +30,10 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
 export default async function CategoryPage({ params, searchParams }: CategoryPageProps) {
   const slug = (await params).slug;
   const page = parsePageParam((await searchParams).page);
-  const result = await listPublishedSoftwareByCategorySlug(
-    slug,
-    undefined,
-    { page, pageSize: SOFTWARE_PAGE_SIZE },
-  );
+  const result = await listPublishedSoftwareByCategorySlug(slug, undefined, {
+    page,
+    pageSize: SOFTWARE_PAGE_SIZE,
+  });
   if (result.status === "not_found") notFound();
   const total = result.status === "success" ? (result.total ?? 0) : 0;
   const totalPages = Math.ceil(total / SOFTWARE_PAGE_SIZE);
@@ -57,6 +52,7 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
       currentPage={page}
       pathname={pathname}
       result={result}
+      total={total}
       totalPages={totalPages}
     />
   );

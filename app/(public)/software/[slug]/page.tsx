@@ -48,9 +48,12 @@ export default async function SoftwareDetailPage({
   const relatedResults =
     categories?.status === "success"
       ? await Promise.all(
-          categories.categories
-            .slice(0, 3)
-            .map((category) => listPublishedSoftwareByCategorySlug(category.slug)),
+          categories.categories.slice(0, 3).map((category) =>
+            listPublishedSoftwareByCategorySlug(category.slug, undefined, {
+              page: 1,
+              pageSize: 7,
+            }),
+          ),
         )
       : [];
   const related = [
@@ -60,7 +63,7 @@ export default async function SoftwareDetailPage({
         .filter((item) => result.status === "success" && item.id !== result.item.id)
         .map((item) => [item.id, item]),
     ).values(),
-  ].slice(0, 3);
+  ].slice(0, 6);
   return (
     <SoftwareDetail
       result={result}

@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import type { PublishedSoftwareResult } from "@/lib/repositories/software";
 import type { SoftwareSearchResult } from "@/lib/repositories/search";
+import { MarketplaceGlyph } from "../discovery";
 import { SoftwareLogo } from "./software-logo";
 
 interface SoftwareCatalogProps {
@@ -82,60 +83,65 @@ export function SoftwareCatalog({
               : (item.bestFor ?? item.description);
           return (
             <article className="catalog-card catalog-card-compact" key={item.id}>
-              <div className="catalog-card-heading">
-                <SoftwareLogo logo={item.logo} name={item.name} />
-                <div>
-                  <h2>
-                    <Link href={href}>{item.name}</Link>
-                  </h2>
-                  <p className="compact-product-support">{compactSupport}</p>
-                  <Link className="catalog-detail-link" href={href}>
-                    <span>Explore</span>
-                    <span aria-hidden="true">→</span>
-                  </Link>
+              <Link aria-label={`View ${item.name}`} className="catalog-card-link" href={href}>
+                <div className="catalog-card-heading">
+                  <SoftwareLogo logo={item.logo} name={item.name} />
+                  <div>
+                    <h2>{item.name}</h2>
+                    <p className="compact-product-support">{compactSupport}</p>
+                  </div>
+                  <span className="catalog-card-arrow" aria-hidden="true">
+                    →
+                  </span>
                 </div>
-              </div>
+              </Link>
             </article>
           );
         }
         return (
           <article className="catalog-card" key={item.id}>
-            {contextLabel ? <p className="catalog-context">{contextLabel}</p> : null}
-            <div className="catalog-card-heading">
-              <SoftwareLogo logo={item.logo} name={item.name} />
-              <div>
-                <h2>
-                  <Link href={href}>{item.name}</Link>
-                </h2>
-                {item.vendor.name ? <p className="catalog-vendor">by {item.vendor.name}</p> : null}
+            <Link aria-label={`View ${item.name}`} className="catalog-card-link" href={href}>
+              <div className="catalog-card-topline">
+                {contextLabel ? <span className="catalog-context">{contextLabel}</span> : null}
+                <span className="catalog-card-arrow" aria-hidden="true">
+                  →
+                </span>
               </div>
-            </div>
-            {item.description ? <p className="catalog-description">{item.description}</p> : null}
-            {item.bestFor || item.pricing ? (
-              <dl className="catalog-metadata">
-                {item.bestFor ? (
-                  <div>
-                    <dt>Best for</dt>
-                    <dd>{item.bestFor}</dd>
-                  </div>
-                ) : null}
-                {item.pricing ? (
-                  <div>
-                    <dt>Pricing</dt>
-                    <dd>{item.pricing}</dd>
-                  </div>
-                ) : null}
-              </dl>
-            ) : null}
-            {item.hasFreePlan || item.hasFreeTrial ? (
-              <ul className="catalog-options" aria-label="Available options">
-                {item.hasFreePlan ? <li>Free plan</li> : null}
-                {item.hasFreeTrial ? <li>Free trial</li> : null}
-              </ul>
-            ) : null}
-            <Link className="catalog-detail-link" href={href}>
-              <span>Explore {item.name}</span>
-              <span aria-hidden="true">→</span>
+              <div className="catalog-card-heading">
+                <SoftwareLogo logo={item.logo} name={item.name} />
+                <div>
+                  <h2>{item.name}</h2>
+                  {item.vendor.name ? (
+                    <p className="catalog-vendor">
+                      <MarketplaceGlyph name="vendor" />
+                      <span>{item.vendor.name}</span>
+                    </p>
+                  ) : null}
+                </div>
+              </div>
+              {item.description ? <p className="catalog-description">{item.description}</p> : null}
+              {item.bestFor || item.pricing ? (
+                <dl className="catalog-metadata">
+                  {item.bestFor ? (
+                    <div>
+                      <dt>Best for</dt>
+                      <dd>{item.bestFor}</dd>
+                    </div>
+                  ) : null}
+                  {item.pricing ? (
+                    <div>
+                      <dt>Pricing</dt>
+                      <dd>{item.pricing}</dd>
+                    </div>
+                  ) : null}
+                </dl>
+              ) : null}
+              {item.hasFreePlan || item.hasFreeTrial ? (
+                <ul className="catalog-options" aria-label="Available options">
+                  {item.hasFreePlan ? <li>Free plan</li> : null}
+                  {item.hasFreeTrial ? <li>Free trial</li> : null}
+                </ul>
+              ) : null}
             </Link>
           </article>
         );

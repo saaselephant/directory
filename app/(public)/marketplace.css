@@ -10,7 +10,12 @@
   background: #fff;
   color: var(--ink);
   font-family:
-    Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    Inter,
+    ui-sans-serif,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
   font-size: 1.0625rem;
   line-height: 1.65;
 }
@@ -1528,6 +1533,480 @@
   border-color: transparent;
   background: transparent;
 }
+
+/* Dense marketplace surfaces */
+.public-shell .catalog-page,
+.public-shell .software-detail-page {
+  padding-block: 1.5rem 3rem;
+}
+.public-shell .breadcrumbs ol {
+  margin-bottom: 0.75rem;
+  font-size: 0.82rem;
+}
+.public-shell .software-detail-back {
+  min-height: auto;
+  margin: 0 0 0.8rem;
+  padding: 0.15rem 0;
+  border: 0;
+  background: transparent;
+  color: #526779;
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+.public-shell .software-detail-back:hover {
+  border-color: transparent;
+  background: transparent;
+  color: #0874c9;
+}
+.public-shell .catalog-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  max-width: 62rem;
+  margin-bottom: 1.35rem;
+}
+.public-shell .catalog-header h1 {
+  margin-bottom: 0.35rem;
+  font-size: clamp(2rem, 3.4vw, 3.15rem);
+  line-height: 1.04;
+}
+.public-shell .catalog-header .lede {
+  max-width: 48rem;
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.55;
+}
+.public-shell .category-header-icon,
+.public-shell .discovery-strip-icon,
+.public-shell .fit-heading > span {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 2.9rem;
+  height: 2.9rem;
+  border: 1px solid #b9d8eb;
+  border-radius: 0.8rem;
+  background: #e9f6fc;
+  color: #0874c9;
+}
+.public-shell .category-header-icon svg,
+.public-shell .discovery-strip-icon svg,
+.public-shell .fit-heading svg {
+  width: 1.35rem;
+  height: 1.35rem;
+}
+.public-shell .catalog-count {
+  display: inline-flex;
+  margin: 0.7rem 0 0;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  background: #18283c;
+  color: white;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+.public-shell .directory-search-panel {
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  border-color: #dce4ea;
+  border-radius: 0.85rem;
+  background: #f5f7f9;
+}
+.public-shell .directory-search-panel .catalog-filters {
+  margin: 0;
+  padding: 0.75rem;
+  gap: 0.75rem;
+  border-color: #e0e5e9;
+  border-radius: 0.65rem;
+}
+.public-shell .directory-search-panel .catalog-filters input,
+.public-shell .directory-search-panel .catalog-filters select {
+  min-height: 2.8rem;
+  font-size: 0.92rem;
+}
+.public-shell .directory-results-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.65rem 0.25rem 0;
+}
+.public-shell .directory-results-bar .catalog-result-summary {
+  margin: 0;
+  font-size: 0.88rem;
+}
+.public-shell .directory-results-bar .text-link {
+  font-size: 0.84rem;
+  font-weight: 750;
+}
+.public-shell .section-heading {
+  align-items: end;
+  margin-bottom: 0.85rem;
+}
+.public-shell .section-heading h2 {
+  margin-bottom: 0;
+  font-size: clamp(1.35rem, 2vw, 1.75rem);
+}
+.public-shell .section-heading .eyebrow {
+  margin-bottom: 0.25rem;
+}
+.public-shell .section-heading > .text-link {
+  min-height: auto;
+  padding: 0;
+  background: transparent;
+  font-size: 0.84rem;
+  font-weight: 750;
+}
+.public-shell .section-heading > .text-link:hover {
+  background: transparent;
+  color: #064f88;
+}
+.public-shell .catalog-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+.public-shell .catalog-card {
+  min-height: 15rem;
+  padding: 0;
+  border-color: #e0e5e9;
+  border-radius: 0.8rem;
+  box-shadow: 0 3px 12px #172b3d0a;
+}
+.public-shell .catalog-card::before {
+  height: 2px;
+  background: #0874c9;
+}
+.public-shell .catalog-card:hover,
+.public-shell .catalog-card:focus-within {
+  border-color: #9abfd4;
+  box-shadow: 0 9px 24px #173b5514;
+  transform: translateY(-2px);
+}
+.public-shell .catalog-card-link {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 1rem;
+  color: inherit;
+  text-decoration: none;
+}
+.public-shell .catalog-card-topline {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 1.55rem;
+  margin-bottom: 0.55rem;
+}
+.public-shell .catalog-context {
+  overflow: hidden;
+  max-width: calc(100% - 2rem);
+  margin: 0;
+  padding: 0.18rem 0.5rem;
+  background: #eef5f8;
+  color: #315d73;
+  font-size: 0.68rem;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.public-shell .catalog-card-arrow {
+  margin-left: auto;
+  color: #0874c9;
+  font-size: 1.05rem;
+  font-weight: 900;
+  transition: transform 160ms ease;
+}
+.public-shell .catalog-card:hover .catalog-card-arrow,
+.public-shell .catalog-card:focus-within .catalog-card-arrow {
+  transform: translateX(3px);
+}
+.public-shell .catalog-card-heading {
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin: 0;
+}
+.public-shell .catalog-card .product-monogram {
+  width: 3.1rem;
+  height: 3.1rem;
+  border-radius: 0.72rem;
+  font-size: 1.35rem;
+  box-shadow: inset 0 0 0 1px #ffffffc7;
+}
+.public-shell .catalog-card h2 {
+  margin: 0;
+  font-size: 1.12rem;
+  line-height: 1.22;
+}
+.public-shell .catalog-vendor {
+  display: flex;
+  align-items: center;
+  gap: 0.28rem;
+  margin: 0.3rem 0 0;
+  color: #617180;
+  font-size: 0.78rem;
+}
+.public-shell .catalog-vendor svg {
+  width: 0.85rem;
+  height: 0.85rem;
+  color: #7994a7;
+}
+.public-shell .catalog-description {
+  -webkit-line-clamp: 3;
+  min-height: 4.05em;
+  margin: 0.7rem 0;
+  color: #526371;
+  font-size: 0.86rem;
+  line-height: 1.42;
+}
+.public-shell .catalog-metadata {
+  gap: 0.7rem;
+  margin: auto 0 0.5rem;
+  padding-top: 0.55rem;
+  border-top: 1px solid #eef1f3;
+}
+.public-shell .catalog-metadata div {
+  padding: 0;
+}
+.public-shell .catalog-metadata dt {
+  font-size: 0.64rem;
+}
+.public-shell .catalog-metadata dd {
+  display: -webkit-box;
+  overflow: hidden;
+  margin-top: 0.1rem;
+  font-size: 0.76rem;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+.public-shell .catalog-card .catalog-options {
+  margin: auto 0 0;
+  gap: 0.65rem;
+  padding-top: 0.45rem;
+  border-top: 1px solid #eef1f3;
+}
+.public-shell .catalog-card .catalog-options li {
+  color: #176a54;
+  font-size: 0.72rem;
+  font-weight: 750;
+}
+.public-shell .catalog-card-compact {
+  min-height: 5.2rem;
+}
+.public-shell .catalog-card-compact .catalog-card-link {
+  justify-content: center;
+  padding: 0.7rem;
+}
+.public-shell .catalog-card-compact .catalog-card-heading {
+  align-items: center;
+}
+.public-shell .catalog-card-compact h2 {
+  font-size: 0.92rem;
+}
+.public-shell .catalog-card-compact .product-monogram {
+  width: 2.55rem;
+  height: 2.55rem;
+}
+.public-shell .catalog-grid-compact {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.65rem;
+}
+.public-shell .software-profile-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 2rem;
+  padding: 1.4rem;
+  border-color: #dce4ea;
+  border-top: 3px solid #0874c9;
+  border-radius: 0.85rem;
+  background: #fff;
+  box-shadow: 0 7px 24px #1839560d;
+}
+.public-shell .software-profile-main {
+  min-width: 0;
+}
+.public-shell .product-title {
+  gap: 0.9rem;
+}
+.public-shell .product-title h1 {
+  font-size: clamp(2rem, 3.2vw, 3rem);
+  line-height: 1;
+}
+.public-shell .product-title .product-monogram {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 0.85rem;
+  font-size: 1.8rem;
+}
+.public-shell .software-detail-vendor {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0.35rem 0 0;
+  color: #5e7181;
+  font-size: 0.84rem;
+}
+.public-shell .software-detail-vendor svg {
+  width: 0.9rem;
+  height: 0.9rem;
+}
+.public-shell .software-detail-description {
+  max-width: 51rem;
+  margin: 1rem 0 0;
+  color: #354b5c;
+  font-size: 1rem;
+  line-height: 1.55;
+}
+.public-shell .category-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0.8rem 0 0;
+}
+.public-shell .category-tags a {
+  min-height: auto;
+  padding: 0.25rem 0.55rem;
+  border: 1px solid #c7dce8;
+  border-radius: 999px;
+  background: #edf7fb;
+  color: #176083;
+  font-size: 0.72rem;
+  font-weight: 750;
+  text-decoration: none;
+}
+.public-shell .software-profile-action {
+  align-self: center;
+  min-width: 12rem;
+  max-width: 18rem;
+  text-align: center;
+}
+.public-shell .software-profile-action .primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  min-height: 3rem;
+  padding-inline: 1rem;
+}
+.public-shell .software-profile-action .primary svg {
+  width: 1rem;
+  height: 1rem;
+}
+.public-shell .official-site-label,
+.public-shell .software-profile-action .vendor-responsibility {
+  margin: 0.5rem 0 0;
+  color: #6a7985;
+  font-size: 0.7rem;
+  line-height: 1.35;
+}
+.public-shell .software-profile-body {
+  display: block;
+  margin-top: 0.9rem;
+}
+.public-shell .product-fit-panel {
+  padding: 1.1rem 1.25rem;
+  border: 1px solid #e1e6ea;
+  border-radius: 0.8rem;
+  background: #f8fafb;
+}
+.public-shell .fit-heading {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+.public-shell .fit-heading > span {
+  width: 2.45rem;
+  height: 2.45rem;
+  border-color: #d7caec;
+  background: #f2edfb;
+  color: #7057ad;
+}
+.public-shell .fit-heading h2 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+.public-shell .fit-heading .eyebrow {
+  margin-bottom: 0.15rem;
+}
+.public-shell .software-detail-facts {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin: 0.9rem 0 0;
+}
+.public-shell .software-detail-facts div {
+  padding: 0.65rem 0.75rem;
+  border: 1px solid #e1e6ea;
+  border-radius: 0.55rem;
+  background: #fff;
+}
+.public-shell .software-detail-facts dt {
+  font-size: 0.65rem;
+}
+.public-shell .software-detail-facts dd {
+  margin-top: 0.15rem;
+  color: #465967;
+  font-size: 0.84rem;
+  line-height: 1.4;
+}
+.public-shell .product-fit-panel > .catalog-options {
+  margin: 0.75rem 0 0;
+}
+.public-shell .product-guidance {
+  margin: 0.75rem 0 0;
+  color: #667784;
+  font-size: 0.8rem;
+  line-height: 1.45;
+}
+.public-shell .verification-link {
+  margin: 0.55rem 0 0;
+  font-size: 0.75rem;
+}
+.public-shell .related-section {
+  margin-top: 1.7rem;
+  padding-top: 1.25rem;
+}
+.public-shell .related-links {
+  gap: 0.5rem;
+}
+.public-shell .related-links a {
+  padding: 0.55rem 0.75rem;
+  font-size: 0.8rem;
+}
+.public-shell .discovery-strip {
+  justify-content: flex-start;
+  gap: 1rem;
+  margin-top: 1.75rem;
+  padding: 1.1rem 1.25rem;
+  border: 1px solid #273b52;
+  border-radius: 0.8rem;
+  background: #142235;
+}
+.public-shell .discovery-strip-icon {
+  border-color: #38556d;
+  background: #20364d;
+  color: #79d4ea;
+}
+.public-shell .discovery-strip h2 {
+  margin-bottom: 0.15rem;
+  font-size: 1.25rem;
+}
+.public-shell .discovery-strip p:last-child {
+  font-size: 0.82rem;
+}
+.public-shell .discovery-strip > a {
+  margin-left: auto;
+}
+.public-shell .pagination {
+  margin-top: 1.25rem;
+}
+.public-shell .pagination a,
+.public-shell .pagination-direction,
+.public-shell .pagination-ellipsis {
+  min-width: 2.25rem;
+  min-height: 2.25rem;
+  padding: 0.35rem 0.6rem;
+  font-size: 0.8rem;
+}
 .public-shell .public-footer {
   display: block;
   background: linear-gradient(110deg, #f4f6f8, #edf3f7);
@@ -1713,7 +2192,25 @@
     padding: 2rem;
   }
   .public-shell .software-profile-heading {
+    grid-template-columns: 1fr;
+    gap: 1rem;
     padding: 1.5rem;
+  }
+  .public-shell .software-profile-action {
+    width: 100%;
+    max-width: none;
+    text-align: left;
+  }
+  .public-shell .software-profile-action .primary {
+    width: auto;
+  }
+  .public-shell .directory-results-bar {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .public-shell .discovery-strip > a {
+    margin-left: 0;
   }
   .public-shell .public-footer {
     display: block;
@@ -1777,10 +2274,10 @@
     grid-template-columns: 1fr;
   }
   .public-shell .catalog-card {
-    padding: 1.5rem;
+    padding: 0;
   }
   .public-shell .catalog-card.catalog-card-compact {
-    padding: 0.55rem;
+    padding: 0;
   }
   .public-shell .category-collection {
     padding: 1.25rem;
@@ -1802,6 +2299,15 @@
     width: 3.5rem;
     height: 3.5rem;
     font-size: 1.75rem;
+  }
+  .public-shell .catalog-grid.catalog-grid-compact {
+    grid-template-columns: 1fr;
+  }
+  .public-shell .software-profile-action .primary {
+    width: 100%;
+  }
+  .public-shell .software-detail-facts {
+    grid-template-columns: 1fr;
   }
   .public-shell .profile-explore {
     margin-left: 0;

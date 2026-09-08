@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Breadcrumbs, DiscoveryNext, categoryGroup } from "../../discovery";
+import { Breadcrumbs, CategoryGlyph, DiscoveryNext, categoryGroup } from "../../discovery";
 import type { PublicCategoriesResult } from "@/lib/repositories/categories";
 import type { Metadata } from "next";
 
@@ -21,12 +21,14 @@ export function CategoryDetail({
   currentPage = 1,
   pathname,
   totalPages = 0,
+  total = 0,
 }: {
   categories?: PublicCategoriesResult;
   currentPage?: number;
   pathname?: string;
   result: Exclude<PublishedSoftwareByCategoryResult, { status: "not_found" }>;
   totalPages?: number;
+  total?: number;
 }) {
   if (result.status === "error") {
     return (
@@ -39,39 +41,38 @@ export function CategoryDetail({
     );
   }
 
-  const categoryPath =
-    pathname ?? `/categories/${encodeURIComponent(result.category.slug)}`;
+  const categoryPath = pathname ?? `/categories/${encodeURIComponent(result.category.slug)}`;
 
   return (
     <main className="catalog-page">
       <Breadcrumbs
         items={[{ label: "Categories", href: "/categories" }, { label: result.category.name }]}
       />
-      <Link className="software-detail-back" href="/categories">
-        ← All categories
-      </Link>
       <header className="catalog-header">
-        <p className="eyebrow">Category</p>
-        <h1>{result.category.name}</h1>
-        {result.category.description ? <p className="lede">{result.category.description}</p> : null}
+        <span className="category-header-icon">
+          <CategoryGlyph category={result.category} />
+        </span>
+        <div>
+          <p className="eyebrow">Software category</p>
+          <h1>{result.category.name}</h1>
+          {result.category.description ? (
+            <p className="lede">{result.category.description}</p>
+          ) : null}
+          <p className="catalog-count">
+            {total} {total === 1 ? "product" : "products"}
+          </p>
+        </div>
       </header>
-      <aside className="category-guide">
-        <p className="eyebrow">Build your shortlist</p>
-        <p>
-          Explore the tools below, open a product overview, then check the features and plans that
-          matter to your team.
-        </p>
+      <div className="section-heading">
+        <div>
+          <p className="eyebrow">Browse and compare</p>
+          <h2>Software in this category</h2>
+        </div>
         <Link
           className="text-link"
           href={`/software?category=${encodeURIComponent(result.category.slug)}`}
         >
-          Search within {result.category.name} →
-        </Link>
-      </aside>
-      <div className="section-heading">
-        <h2>Software in this category</h2>
-        <Link className="text-link" href="/software">
-          Browse all software →
+          Search this category →
         </Link>
       </div>
       {result.items.length > 0 ? (

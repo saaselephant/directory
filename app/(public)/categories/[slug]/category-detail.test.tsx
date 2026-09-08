@@ -23,14 +23,15 @@ const category = { slug: "crm", name: "CRM", description: "Customer relationship
 describe("CategoryDetail", () => {
   it("renders visible software with an internal detail link and safe metadata", () => {
     const html = renderToStaticMarkup(
-      <CategoryDetail result={{ status: "success", category, items: [software] }} />,
+      <CategoryDetail result={{ status: "success", category, items: [software] }} total={24} />,
     );
     expect(html).toContain("CRM");
-    expect(html).toContain('href="/software/useful-tool"');
+    expect(html).toContain('href="/software/useful-tool?from=');
     expect(html).not.toContain("internal-id");
     expect(html).not.toContain("internal-vendor");
     expect(html).not.toContain("https://vendor.example");
     expect(html).not.toContain("affiliate");
+    expect(html).toContain("24 products");
     expect(buildCategoryMetadata(category)).toEqual({
       title: "CRM",
       description: "Customer relationship tools.",
