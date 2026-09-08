@@ -104,6 +104,11 @@ describe("Product Factory", () => {
       },
       officialOutboundDestination: sourceUrl,
     });
+    expect(result.review).toEqual({
+      vendor: "Example Inc.",
+      primaryCategory: "manage-projects-teams",
+      officialEvidence: [sourceUrl],
+    });
   });
 
   it("rejects facts whose cited excerpt is absent", () => {
@@ -290,6 +295,18 @@ describe("Product Factory", () => {
     const second = runProductFactoryBatch([candidate()], context);
 
     expect(second).toEqual(first);
+  });
+
+  it("carries monetization discovery metadata without affecting the quality decision", () => {
+    const result = processProductCandidate(
+      candidate({ monetizationClassification: "NETWORK_OR_MARKETPLACE_OPPORTUNITY" }),
+      context,
+    );
+
+    expect(result).toMatchObject({
+      decision: "READY",
+      monetizationClassification: "NETWORK_OR_MARKETPLACE_OPPORTUNITY",
+    });
   });
 
   it("uses an injected evidence acquirer before the same quality gate", async () => {

@@ -49,15 +49,21 @@ function markdownReport(
 ): string {
   const rows = result.results.map((item, index) => {
     const candidate = candidates[index];
-    const source = candidate?.evidence[0]?.url ?? "-";
-    const vendor = candidate?.vendorName.value ?? "-";
-    const category = candidate?.primaryCategory.slug ?? "-";
+    const source = item.review?.officialEvidence[0] ?? candidate?.evidence[0]?.url ?? "-";
+    const vendor = item.review?.vendor ?? candidate?.vendorName.value ?? "-";
+    const category = item.review?.primaryCategory ?? candidate?.primaryCategory.slug ?? "-";
+    const monetization = item.monetizationClassification ?? "UNKNOWN";
     const exception =
       item.reasons.length === 0
         ? "-"
         : item.reasons.map((reason) => `${reason.code}: ${reason.message}`).join("<br>");
-    return `| ${item.candidate} | ${vendor} | ${category} | ${source} | ${item.decision} | ${exception} |`;
+    return `| ${item.candidate} | ${vendor} | ${category} | ${source} | ${monetization} | ${item.decision} | ${exception} |`;
   });
+  const monetizationCounts = new Map<string, number>();
+  for (const item of result.results) {
+    const classification = item.monetizationClassification ?? "UNKNOWN";
+    monetizationCounts.set(classification, (monetizationCounts.get(classification) ?? 0) + 1);
+  }
 
   const payloads = result.results
     .filter((item) => item.payload)
@@ -76,8 +82,15 @@ function markdownReport(
 - Manual product-entry actions required: ${result.manualProductEntryActionsRequired}
 - Production writes: 0
 
-| Candidate | Vendor | Category | Official source | Result | Exception |
-|---|---|---|---|---|---|
+## Monetization discovery
+
+${[...monetizationCounts.entries()]
+  .sort(([left], [right]) => left.localeCompare(right, "en"))
+  .map(([classification, count]) => `- ${classification}: ${count}`)
+  .join("\n")}
+
+| Candidate | Vendor | Category | Official source | Monetization | Result | Exception |
+|---|---|---|---|---|---|---|
 ${rows.join("\n")}
 
 ## READY payloads

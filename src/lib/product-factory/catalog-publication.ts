@@ -152,18 +152,27 @@ export function prepareCatalogPublicationBatch(
 ): CatalogPublicationBatch {
   if (
     result.processed !== result.results.length ||
-    result.ready !== result.results.length ||
-    result.exceptions !== 0
+    result.ready !== result.results.filter((item) => item.decision === "READY").length ||
+    result.exceptions !== result.results.filter((item) => item.decision === "EXCEPTION").length
   ) {
-    throw new Error("Only an all-READY Product Factory result can become a publication batch.");
+    throw new Error("Product Factory result counters are inconsistent.");
   }
 
-  const prepared = result.results.map((item) => {
-    if (item.decision !== "READY" || item.payload === null || item.reasons.length > 0) {
-      throw new Error(`Candidate "${item.candidate}" is not ready for controlled publication.`);
+  const prepared = result.results.flatMap((item) => {
+    if (item.decision === "EXCEPTION") {
+      if (item.payload !== null || item.reasons.length === 0) {
+        throw new Error(`Exception candidate "${item.candidate}" is malformed.`);
+      }
+      return [];
     }
-    return recordFromPayload(item.payload.idempotencyKey, item.payload);
+    if (item.payload === null || item.reasons.length > 0) {
+      throw new Error(`Ready candidate "${item.candidate}" is malformed.`);
+    }
+    return [recordFromPayload(item.payload.idempotencyKey, item.payload)];
   });
+  if (prepared.length === 0) {
+    throw new Error("Publication batch has no READY products.");
+  }
   const uniqueProviderObjects = new Set(
     prepared.map((record) =>
       JSON.stringify([record.providerKey, record.externalObjectType, record.externalId]),

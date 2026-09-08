@@ -99,20 +99,19 @@ describe("controlled catalog publication", () => {
     expect(first.records[0].softwareId).toMatch(/^PF-[a-f0-9]{24}$/);
   });
 
-  it("rejects a batch containing any exception", () => {
+  it("publishes READY records while retaining legitimate exceptions in the review result", () => {
     const result = readyResult();
-    result.ready = 0;
+    result.processed = 2;
+    result.ready = 1;
     result.exceptions = 1;
-    result.results[0] = {
+    result.results.push({
       candidate: "Example Product",
       decision: "EXCEPTION",
       reasons: [{ code: "AMBIGUOUS_IDENTITY", message: "Conflict." }],
       payload: null,
-    };
+    });
 
-    expect(() => prepareCatalogPublicationBatch(result)).toThrow(
-      "Only an all-READY Product Factory result can become a publication batch.",
-    );
+    expect(prepareCatalogPublicationBatch(result).records).toHaveLength(1);
   });
 
   it("rejects payloads that bypass the review-state contract", () => {

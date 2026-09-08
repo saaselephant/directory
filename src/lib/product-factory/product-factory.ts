@@ -23,6 +23,14 @@ export const PRODUCT_FACTORY_REASON_CODES = [
 
 export type ProductFactoryReasonCode = (typeof PRODUCT_FACTORY_REASON_CODES)[number];
 export type ProductFactoryDecision = "READY" | "EXCEPTION";
+export const MONETIZATION_CLASSIFICATIONS = [
+  "KNOWN_EXISTING_MONETIZATION",
+  "NETWORK_OR_MARKETPLACE_OPPORTUNITY",
+  "PUBLIC_AFFILIATE_PROGRAM_FOUND",
+  "NO_MONETIZATION_FOUND_YET",
+  "UNKNOWN",
+] as const;
+export type MonetizationClassification = (typeof MONETIZATION_CLASSIFICATIONS)[number];
 
 export interface EvidenceCitation {
   sourceUrl: string;
@@ -64,6 +72,7 @@ export interface ProductFactoryCandidate {
   capabilities: SourcedText[];
   pricing?: SourcedText | null;
   evidence: ProductEvidenceDocument[];
+  monetizationClassification?: MonetizationClassification;
 }
 
 export type DiscoveredProductCandidate = Omit<ProductFactoryCandidate, "evidence">;
@@ -154,6 +163,12 @@ export interface ProductFactoryResult {
   decision: ProductFactoryDecision;
   reasons: ProductFactoryExceptionReason[];
   payload: ProductFactoryReadyPayload | null;
+  monetizationClassification?: MonetizationClassification;
+  review?: {
+    vendor: string;
+    primaryCategory: string;
+    officialEvidence: string[];
+  };
 }
 
 export interface ProductFactoryBatchResult {
@@ -256,6 +271,18 @@ function uniqueReasons(
       reasons.map((reason) => [`${reason.code}:${reason.message}`, reason] as const),
     ).values(),
   ];
+}
+
+function reviewMetadata(
+  candidate: ProductFactoryCandidate,
+): NonNullable<ProductFactoryResult["review"]> {
+  return {
+    vendor: candidate.vendorName.value.trim(),
+    primaryCategory: candidate.primaryCategory.slug.trim(),
+    officialEvidence: [...new Set(candidate.evidence.map((item) => item.url))].sort((left, right) =>
+      left.localeCompare(right, "en"),
+    ),
+  };
 }
 
 export function processProductCandidate(
@@ -485,6 +512,8 @@ export function processProductCandidate(
       decision: "EXCEPTION",
       reasons: finalReasons,
       payload: null,
+      monetizationClassification: candidate.monetizationClassification,
+      review: reviewMetadata(candidate),
     };
   }
 
@@ -497,6 +526,8 @@ export function processProductCandidate(
     candidate: productName,
     decision: "READY",
     reasons: [],
+    monetizationClassification: candidate.monetizationClassification,
+    review: reviewMetadata(candidate),
     payload: {
       idempotencyKey,
       vendor: {
@@ -567,6 +598,8 @@ export function runProductFactoryBatch(
           },
         ],
         payload: null,
+        monetizationClassification: candidate.monetizationClassification,
+        review: reviewMetadata(candidate),
       };
     }
 
