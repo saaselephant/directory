@@ -91,7 +91,14 @@ export function recognizeApplicationSemantic(label: string): ApplicationSemantic
   ) {
     return "BUSINESS_DESCRIPTION";
   }
-  if (exactOrQuestion(label, [/^country$/, /^country\/region$/, /^country of residence$/])) {
+  if (
+    exactOrQuestion(label, [
+      /^country$/,
+      /^country\/region$/,
+      /^country of residence$/,
+      /^select (?:a )?country$/,
+    ])
+  ) {
     return "COUNTRY";
   }
   if (exactOrQuestion(label, [/^(business )?location$/, /^city and (state|country)$/])) {
@@ -490,6 +497,22 @@ export function createCaptureFailure(
     ...(diagnostics
       ? { diagnostics: sanitizeDiagnostics(diagnostics, safePartnerStackUrl(metadata.pageUrl)) }
       : {}),
+  };
+}
+
+export function normalizeCapturedApplicationSemantics(
+  capture: AffiliateApplicationProgram,
+): AffiliateApplicationProgram {
+  return {
+    ...capture,
+    questions: capture.questions.map((question) =>
+      question.semanticKey === null
+        ? {
+            ...question,
+            semanticKey: recognizeApplicationSemantic(question.exactLabel),
+          }
+        : question,
+    ),
   };
 }
 

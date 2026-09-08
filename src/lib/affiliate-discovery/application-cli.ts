@@ -16,7 +16,11 @@ import {
   launchPartnerStackBrowser,
   PlaywrightPrefillPrimitives,
 } from "./application-browser";
-import { createCaptureFailure, normalizeApplicationDomSnapshot } from "./application-capture";
+import {
+  createCaptureFailure,
+  normalizeApplicationDomSnapshot,
+  normalizeCapturedApplicationSemantics,
+} from "./application-capture";
 import { executeApplicationPrefill, planApplicationPrefill } from "./application-prefill";
 
 interface ParsedArguments {
@@ -109,7 +113,7 @@ function applicationCapture(value: unknown): AffiliateApplicationProgram {
   ) {
     throw new Error("The capture file is not a valid affiliate application capture.");
   }
-  return value as AffiliateApplicationProgram;
+  return normalizeCapturedApplicationSemantics(value as AffiliateApplicationProgram);
 }
 
 function errorMessage(error: unknown): string {

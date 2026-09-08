@@ -20,6 +20,8 @@ import { captureBatchPrompt } from "../application-cli";
 import { SYNTHETIC_APPLICATION_PROFILE_FIXTURE } from "../application-fixtures";
 import {
   normalizeApplicationDomSnapshot,
+  normalizeCapturedApplicationSemantics,
+  recognizeApplicationSemantic,
   type CaptureMetadata,
   type RawApplicationControl,
   type RawApplicationDomSnapshot,
@@ -315,6 +317,24 @@ const customRegionSnapshot: RawApplicationDomSnapshot = {
 };
 
 describe("PartnerStack application capture normalization", () => {
+  it("recognizes PartnerStack's country placeholder as the reusable country field", () => {
+    expect(recognizeApplicationSemantic("Select a country")).toBe("COUNTRY");
+  });
+
+  it("reclassifies preserved labels in captures created before a semantic rule existed", () => {
+    const capture = normalizeApplicationDomSnapshot(snapshot, metadata);
+    const historical = {
+      ...capture,
+      questions: capture.questions.map((question, index) =>
+        index === 3 ? { ...question, exactLabel: "Select a country", semanticKey: null } : question,
+      ),
+    };
+
+    expect(normalizeCapturedApplicationSemantics(historical).questions[3].semanticKey).toBe(
+      "COUNTRY",
+    );
+  });
+
   it("uses an isolated OS-local Chrome profile without automation or security-bypass flags", () => {
     const profile = defaultPartnerStackProfilePath(String.raw`C:\Users\tester\AppData\Local`);
     const arguments_ = chromeLaunchArguments(profile);
