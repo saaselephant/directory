@@ -14,7 +14,14 @@ export const APPLICATION_WORKFLOW_STATES = [
 
 export type ApplicationWorkflowState = (typeof APPLICATION_WORKFLOW_STATES)[number];
 
-export const FORM_CAPTURE_STATES = ["CAPTURED", "FORM_NOT_CAPTURED"] as const;
+export const FORM_CAPTURE_STATES = [
+  "CAPTURED",
+  "FORM_NOT_CAPTURED",
+  "FORM_NOT_FOUND",
+  "AUTH_REQUIRED",
+  "UNSUPPORTED_FORM",
+  "CAPTURE_FAILED",
+] as const;
 export type FormCaptureState = (typeof FORM_CAPTURE_STATES)[number];
 
 export const APPLICATION_READINESS_STATES = [
@@ -25,10 +32,23 @@ export const APPLICATION_READINESS_STATES = [
 export type ApplicationReadinessState = (typeof APPLICATION_READINESS_STATES)[number];
 
 export const APPLICATION_SEMANTIC_KEYS = [
+  "BUSINESS_NAME",
+  "BUSINESS_DESCRIPTION",
   "COUNTRY",
+  "LOCATION",
   "WEBSITE",
+  "LINKEDIN_URL",
+  "PARTNER_TYPE",
+  "PROMOTIONAL_MODEL",
+  "PROMOTIONAL_METHODS",
+  "PROMOTIONAL_CHANNELS",
   "PROMOTIONAL_PLAN",
   "PRIMARY_PROMOTIONAL_METHOD",
+  "INDUSTRIES",
+  "CUSTOMER_SEGMENTS",
+  "BUSINESS_IDENTITY",
+  "PREFERRED_COMMISSION_STRUCTURE",
+  "RESELLER_DISTRIBUTOR",
   "AGENCY_CLIENT_MANAGEMENT",
   "LEGACY_AFFILIATE_EMAIL",
   "SUPPORT_RESOURCES",
@@ -116,6 +136,15 @@ export interface AffiliateApplicationProfile {
 export interface ApplicationQuestionOption {
   label: string;
   value: string;
+  domIdentity?: ApplicationControlIdentity;
+}
+
+export interface ApplicationControlIdentity {
+  id: string | null;
+  name: string | null;
+  order: number;
+  tagName: "input" | "textarea" | "select";
+  inputType: string | null;
 }
 
 export interface AffiliateApplicationQuestion {
@@ -130,6 +159,7 @@ export interface AffiliateApplicationQuestion {
   required: boolean;
   legal: boolean;
   programSpecific: boolean;
+  domIdentity?: ApplicationControlIdentity;
   provenance: {
     kind: "manual_capture" | "export" | "fixture";
     reference: string | null;
@@ -145,6 +175,8 @@ export interface AffiliateApplicationProgram {
   formCaptureState: FormCaptureState;
   formCaptureReason: string | null;
   questions: readonly AffiliateApplicationQuestion[];
+  sourceUrl?: string | null;
+  capturedAt?: string | null;
 }
 
 export type ApplicationAnswerValue = string | boolean | readonly string[] | null;
@@ -217,10 +249,23 @@ export interface AffiliateApplicationPreparationReport {
 const PROFILE_FIELD_BY_SEMANTIC_KEY: Partial<
   Record<ApplicationSemanticKey, AffiliateApplicationProfileField>
 > = {
+  BUSINESS_NAME: "businessName",
+  BUSINESS_DESCRIPTION: "businessDescription",
   COUNTRY: "country",
+  LOCATION: "location",
   WEBSITE: "website",
+  LINKEDIN_URL: "linkedInUrl",
+  PARTNER_TYPE: "partnerType",
+  PROMOTIONAL_MODEL: "promotionalModel",
+  PROMOTIONAL_METHODS: "promotionalMethods",
+  PROMOTIONAL_CHANNELS: "promotionalChannels",
   PROMOTIONAL_PLAN: "promotionalPlan",
   PRIMARY_PROMOTIONAL_METHOD: "primaryPromotionalMethod",
+  INDUSTRIES: "industries",
+  CUSTOMER_SEGMENTS: "customerSegments",
+  BUSINESS_IDENTITY: "businessIdentity",
+  PREFERRED_COMMISSION_STRUCTURE: "preferredCommissionStructure",
+  RESELLER_DISTRIBUTOR: "resellerDistributor",
   AGENCY_CLIENT_MANAGEMENT: "agencyClientManagement",
   SUPPORT_RESOURCES: "supportResources",
   AUDIENCE_DESCRIPTION: "audience.description",
@@ -229,8 +274,14 @@ const PROFILE_FIELD_BY_SEMANTIC_KEY: Partial<
 };
 
 const DETERMINISTIC_KEYS = new Set<ApplicationSemanticKey>([
+  "BUSINESS_NAME",
+  "BUSINESS_DESCRIPTION",
   "COUNTRY",
+  "LOCATION",
   "WEBSITE",
+  "LINKEDIN_URL",
+  "PARTNER_TYPE",
+  "PROMOTIONAL_MODEL",
   "PROMOTIONAL_PLAN",
   "PRIMARY_PROMOTIONAL_METHOD",
 ]);
@@ -497,7 +548,7 @@ export function prepareAffiliateApplication(
   program: AffiliateApplicationProgram,
   profile: AffiliateApplicationProfile,
 ): PreparedAffiliateApplication {
-  if (program.formCaptureState === "FORM_NOT_CAPTURED") {
+  if (program.formCaptureState !== "CAPTURED") {
     return {
       network: program.network,
       programId: program.programId,

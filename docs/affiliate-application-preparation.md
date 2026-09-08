@@ -31,3 +31,65 @@ profile information, legal items, uncaptured forms, and a per-program
 `NOT_READY`/`NEEDS_REVIEW`/`READY_TO_APPLY` result. Submission authorization is a separate
 object and defaults to false. `READY_TO_APPLY` is preparation status only; this module has no
 submission executor.
+
+## Browser-assisted PartnerStack helper
+
+The helper uses the installed system Chrome through `playwright-core`; it does not install or
+download a browser. It creates an in-memory browser context and never saves cookies, session
+tokens, credentials, or browser storage. Authentication is always performed by the human in
+visible Chrome and is discarded when the command closes.
+
+Create a local output directory, then capture each application independently:
+
+```powershell
+$captures = Join-Path $env:LOCALAPPDATA "SaaSElephant\affiliate-captures"
+New-Item -ItemType Directory -Force $captures
+corepack pnpm run affiliate:applications capture --program "ActiveCampaign" --output "$captures\ActiveCampaign.json"
+corepack pnpm run affiliate:applications capture --program "1Password" --output "$captures\1Password.json"
+corepack pnpm run affiliate:applications capture --program "FreshBooks" --output "$captures\FreshBooks.json"
+corepack pnpm run affiliate:applications capture --program "monday.com" --output "$captures\monday.json"
+```
+
+For each command, log in and navigate to that program's official application before pressing
+Enter in the terminal. A capture contains only visible, enabled form controls. It excludes
+hidden, password, file, button, submit, and reset controls and does not read current field
+values, cookies, request headers, storage, or authentication tokens. It records safe
+`id`/`name`/document-order identity, labels, control types, required flags, select/radio
+options, legal signals, a query-free HTTPS `partnerstack.com` URL, and the timestamp.
+
+To log in once and capture all four forms sequentially in one ephemeral browser session:
+
+```powershell
+corepack pnpm run affiliate:applications capture-batch --output-dir "$captures" "ActiveCampaign" "1Password" "FreshBooks" "monday.com"
+```
+
+This writes `activecampaign.json`, `1password.json`, `freshbooks.json`, and
+`monday-com.json` in the capture directory without retaining the authenticated session after
+the command exits.
+
+Prepare one review report from an explicitly approved profile:
+
+```powershell
+corepack pnpm run affiliate:applications prepare --profile "C:\path\approved-profile.json" --output "$captures\review.json" "$captures\ActiveCampaign.json" "$captures\1Password.json" "$captures\FreshBooks.json" "$captures\monday.json"
+```
+
+Safely prefill one captured form:
+
+```powershell
+corepack pnpm run affiliate:applications prefill --capture "$captures\ActiveCampaign.json" --profile "C:\path\approved-profile.json"
+```
+
+The prefill command opens visible Chrome, waits for the human to open the matching official
+form, and applies only deterministic values from profile fields listed in `approvedFields`.
+Exact captured options are required for selects and radios. Every other field is reported as
+`SKIPPED`. Legal, terms, acceptance, attestation, checkbox, ambiguous choice, unknown claim,
+unapproved, and review-required values are never filled.
+
+The browser adapter exposes only `fill`, `select`, and non-legal radio `check` primitives. It
+does not click buttons or press Enter. There is deliberately no submission command or
+submission method. After prefill, Chrome stays open while the terminal waits so the human can
+review and, if appropriate, submit manually.
+
+Capture outcomes are explicit: `CAPTURED`, `FORM_NOT_CAPTURED`, `FORM_NOT_FOUND`,
+`AUTH_REQUIRED`, `UNSUPPORTED_FORM`, or `CAPTURE_FAILED`. Every state other than `CAPTURED`
+prepares as `NOT_READY`.
