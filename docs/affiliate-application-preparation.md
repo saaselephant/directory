@@ -47,6 +47,14 @@ nor other browser storage enter capture files. Authentication and any Cloudflare
 remain interactive and user-controlled. Do not save a PartnerStack password in this dedicated
 profile.
 
+Chrome records its dynamically assigned local debugging port in the dedicated profile's
+`DevToolsActivePort` file. The helper treats that verified localhost endpoint—not the
+short-lived Windows launcher process—as browser availability. A running dedicated instance is
+reused when its endpoint is healthy. A stale port file is discarded before launch; Chrome
+remains responsible for its own profile locks. For compatibility with earlier helper runs,
+read-only Windows process metadata is checked for an exact dedicated-profile command line and
+usable localhost endpoint; ordinary Chrome profiles are ignored.
+
 The helper waits for the user to finish authentication before Playwright attaches to the
 browser. After attachment, it performs only the documented capture or safe-prefill operations.
 When the command finishes, it closes only this dedicated Chrome instance through Chrome's

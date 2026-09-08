@@ -7,10 +7,15 @@ import {
   type ApplicationControlIdentity,
 } from "../application";
 import {
+  assertPartnerStackChromeAvailable,
   chromeLaunchArguments,
   defaultPartnerStackProfilePath,
+  discoverExistingPartnerStackChrome,
+  legacyChromeEndpointsFromCommandLines,
   PlaywrightPrefillPrimitives,
+  waitForPartnerStackChromeEndpoint,
 } from "../application-browser";
+import { captureBatchPrompt } from "../application-cli";
 import { SYNTHETIC_APPLICATION_PROFILE_FIXTURE } from "../application-fixtures";
 import {
   normalizeApplicationDomSnapshot,
@@ -155,13 +160,13 @@ const snapshot: RawApplicationDomSnapshot = {
 describe("PartnerStack application capture normalization", () => {
   it("uses an isolated OS-local Chrome profile without automation or security-bypass flags", () => {
     const profile = defaultPartnerStackProfilePath(String.raw`C:\Users\tester\AppData\Local`);
-    const arguments_ = chromeLaunchArguments(profile, 43123);
+    const arguments_ = chromeLaunchArguments(profile);
 
     expect(profile).toBe(
       String.raw`C:\Users\tester\AppData\Local\SaaSElephant\partnerstack-chrome-profile`,
     );
     expect(arguments_).toContain(`--user-data-dir=${profile}`);
-    expect(arguments_).toContain("--remote-debugging-port=43123");
+    expect(arguments_).toContain("--remote-debugging-port=0");
     expect(arguments_).toContain("--remote-debugging-address=127.0.0.1");
     expect(arguments_).not.toEqual(
       expect.arrayContaining([
@@ -169,6 +174,88 @@ describe("PartnerStack application capture normalization", () => {
         "--disable-blink-features=AutomationControlled",
         "--remote-allow-origins=*",
       ]),
+    );
+  });
+
+  it("accepts CDP availability after the initial Windows launcher process exits", async () => {
+    let attempts = 0;
+    const launcherExited = true;
+    const endpoint = await waitForPartnerStackChromeEndpoint("unused", 1_000, {
+      readEndpoint: async () => {
+        attempts += 1;
+        return attempts < 2 ? null : "http://127.0.0.1:43123";
+      },
+      probeEndpoint: async () => true,
+      sleep: async () => undefined,
+      now: () => 0,
+    });
+
+    expect(launcherExited).toBe(true);
+    expect(endpoint).toBe("http://127.0.0.1:43123");
+  });
+
+  it("keeps polling while Chrome's DevTools endpoint starts slowly", async () => {
+    let attempts = 0;
+    const endpoint = await waitForPartnerStackChromeEndpoint("unused", 10_000, {
+      readEndpoint: async () => {
+        attempts += 1;
+        return attempts < 5 ? null : "http://127.0.0.1:43124";
+      },
+      probeEndpoint: async () => true,
+      sleep: async () => undefined,
+      now: () => 0,
+    });
+
+    expect(attempts).toBe(5);
+    expect(endpoint).toBe("http://127.0.0.1:43124");
+  });
+
+  it("reports when no DevTools endpoint appears before the timeout", async () => {
+    let now = 0;
+    await expect(
+      waitForPartnerStackChromeEndpoint("unused", 500, {
+        readEndpoint: async () => null,
+        probeEndpoint: async () => false,
+        sleep: async (milliseconds) => {
+          now += milliseconds;
+        },
+        now: () => now,
+      }),
+    ).rejects.toThrow("before the timeout");
+  });
+
+  it("reuses an existing dedicated Chrome endpoint", async () => {
+    const probe = vi.fn(async () => true);
+    await expect(
+      discoverExistingPartnerStackChrome("unused", async () => "http://127.0.0.1:43125", probe),
+    ).resolves.toBe("http://127.0.0.1:43125");
+    expect(probe).toHaveBeenCalledWith("http://127.0.0.1:43125");
+  });
+
+  it("finds only a legacy Chrome process using the exact dedicated profile", () => {
+    const profile = String.raw`C:\Users\tester\AppData\Local\SaaSElephant\partnerstack-chrome-profile`;
+    expect(
+      legacyChromeEndpointsFromCommandLines(profile, [
+        String.raw`chrome.exe --user-data-dir="C:\Users\tester\AppData\Local\Google\Chrome\User Data" --remote-debugging-port=9000`,
+        String.raw`chrome.exe "--user-data-dir=C:\Users\tester\AppData\Local\SaaSElephant\partnerstack-chrome-profile" --remote-debugging-port=43125`,
+      ]),
+    ).toEqual(["http://127.0.0.1:43125"]);
+  });
+
+  it("reports when the actual dedicated browser disappears", async () => {
+    await expect(
+      assertPartnerStackChromeAvailable("http://127.0.0.1:43126", async () => false),
+    ).rejects.toThrow("closed before capture");
+  });
+
+  it("shows an indexed capture prompt after attachment", () => {
+    expect(captureBatchPrompt(0, 4, "ActiveCampaign")).toBe(
+      [
+        "",
+        "[1/4] ActiveCampaign",
+        "Open the ActiveCampaign application in the dedicated Chrome window.",
+        "Press Enter when the form is visible: ",
+      ].join("\n"),
     );
   });
 

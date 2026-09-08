@@ -187,6 +187,15 @@ function captureFileName(programName: string): string {
   return `${name}.json`;
 }
 
+export function captureBatchPrompt(index: number, total: number, programName: string): string {
+  return [
+    "",
+    `[${index + 1}/${total}] ${programName}`,
+    `Open the ${programName} application in the dedicated Chrome window.`,
+    "Press Enter when the form is visible: ",
+  ].join("\n");
+}
+
 async function captureBatchCommand(arguments_: ParsedArguments): Promise<void> {
   validateOptions(arguments_, ["--output-dir"]);
   const outputDirectory = resolve(requiredOption(arguments_, "--output-dir"));
@@ -208,7 +217,7 @@ async function captureBatchCommand(arguments_: ParsedArguments): Promise<void> {
     for (let index = 0; index < programs.length; index += 1) {
       const programName = programs[index];
       const output = join(outputDirectory, fileNames[index]);
-      await waitForUser(`Open ${programName}, then press Enter to capture visible controls: `);
+      await waitForUser(captureBatchPrompt(index, programs.length, programName));
       const capturedAt = new Date().toISOString();
       try {
         const page = activePage(context);

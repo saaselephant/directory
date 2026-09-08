@@ -1,7 +1,8 @@
-import { spawn, type ChildProcess } from "node:child_process";
+import { execFile, spawn, type ChildProcess } from "node:child_process";
 import { mkdirSync } from "node:fs";
-import { createServer } from "node:net";
+import { access, readFile, unlink } from "node:fs/promises";
 import path from "node:path";
+import { promisify } from "node:util";
 
 import { chromium, type BrowserContext, type Locator, type Page } from "playwright-core";
 
@@ -10,6 +11,7 @@ import type { BrowserPrefillPrimitives } from "./application-prefill";
 import type { RawApplicationControl, RawApplicationDomSnapshot } from "./application-capture";
 
 export const SYSTEM_CHROME_PATH = String.raw`C:\Program Files\Google\Chrome\Application\chrome.exe`;
+const execFileAsync = promisify(execFile);
 
 export function defaultPartnerStackProfilePath(localAppData = process.env.LOCALAPPDATA): string {
   if (!localAppData) {
@@ -18,10 +20,10 @@ export function defaultPartnerStackProfilePath(localAppData = process.env.LOCALA
   return path.join(localAppData, "SaaSElephant", "partnerstack-chrome-profile");
 }
 
-export function chromeLaunchArguments(profilePath: string, debuggingPort: number): string[] {
+export function chromeLaunchArguments(profilePath: string): string[] {
   return [
     `--user-data-dir=${profilePath}`,
-    `--remote-debugging-port=${debuggingPort}`,
+    "--remote-debugging-port=0",
     "--remote-debugging-address=127.0.0.1",
     "--no-first-run",
     "--no-default-browser-check",
@@ -30,57 +32,184 @@ export function chromeLaunchArguments(profilePath: string, debuggingPort: number
   ];
 }
 
-async function availableLoopbackPort(): Promise<number> {
-  return new Promise((resolve, reject) => {
-    const server = createServer();
-    server.once("error", reject);
-    server.listen(0, "127.0.0.1", () => {
-      const address = server.address();
-      if (!address || typeof address === "string") {
-        server.close();
-        reject(new Error("Unable to allocate a local Chrome debugging port."));
-        return;
-      }
-      server.close((error) => {
-        if (error) reject(error);
-        else resolve(address.port);
-      });
-    });
-  });
+interface ChromeEndpointPolling {
+  readEndpoint: () => Promise<string | null>;
+  probeEndpoint: (endpoint: string) => Promise<boolean>;
+  sleep: (milliseconds: number) => Promise<void>;
+  now: () => number;
 }
 
-async function waitForChromeEndpoint(child: ChildProcess, debuggingPort: number): Promise<string> {
-  const endpoint = `http://127.0.0.1:${debuggingPort}`;
-  const deadline = Date.now() + 20_000;
-  let launchError: Error | null = null;
-  child.once("error", (error) => {
-    launchError = error;
-  });
-  while (Date.now() < deadline) {
-    try {
-      const response = await fetch(`${endpoint}/json/version`, {
-        signal: AbortSignal.timeout(1_000),
-      });
-      if (response.ok) {
-        const version = (await response.json()) as { Browser?: unknown };
-        if (typeof version.Browser === "string" && version.Browser.includes("Chrome/")) {
-          return endpoint;
-        }
-      }
-    } catch {
-      // Chrome may take several seconds to initialize the dedicated profile.
-    }
-    if (launchError) throw launchError;
-    if (child.exitCode !== null) {
-      throw new Error(
-        "Chrome exited before the helper could connect. Close any existing SaaSElephant PartnerStack Chrome window and retry.",
-      );
-    }
-    await new Promise((resolve) => setTimeout(resolve, 200));
+export class ChromeEndpointTimeoutError extends Error {
+  constructor() {
+    super("Chrome did not expose a usable local DevTools endpoint before the timeout.");
+    this.name = "ChromeEndpointTimeoutError";
   }
-  throw new Error(
-    "Chrome did not expose its local debugging endpoint. Close any existing SaaSElephant PartnerStack Chrome window and retry.",
-  );
+}
+
+async function defaultSleep(milliseconds: number): Promise<void> {
+  await new Promise((resolve) => setTimeout(resolve, milliseconds));
+}
+
+function devToolsActivePortPath(profilePath: string): string {
+  return path.join(profilePath, "DevToolsActivePort");
+}
+
+export async function readDedicatedChromeEndpoint(profilePath: string): Promise<string | null> {
+  let content: string;
+  try {
+    content = await readFile(devToolsActivePortPath(profilePath), "utf8");
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === "ENOENT") return null;
+    throw error;
+  }
+  const port = Number.parseInt(content.split(/\r?\n/, 1)[0] ?? "", 10);
+  if (!Number.isInteger(port) || port < 1 || port > 65_535) return null;
+  return `http://127.0.0.1:${port}`;
+}
+
+export async function probeChromeEndpoint(endpoint: string): Promise<boolean> {
+  try {
+    const response = await fetch(`${endpoint}/json/version`, {
+      signal: AbortSignal.timeout(1_000),
+    });
+    if (!response.ok) return false;
+    const version = (await response.json()) as {
+      Browser?: unknown;
+      webSocketDebuggerUrl?: unknown;
+    };
+    return (
+      typeof version.Browser === "string" &&
+      version.Browser.includes("Chrome/") &&
+      typeof version.webSocketDebuggerUrl === "string" &&
+      version.webSocketDebuggerUrl.startsWith("ws://127.0.0.1:")
+    );
+  } catch {
+    return false;
+  }
+}
+
+export async function discoverExistingPartnerStackChrome(
+  profilePath: string,
+  readEndpoint: () => Promise<string | null> = () => readDedicatedChromeEndpoint(profilePath),
+  probeEndpoint: (endpoint: string) => Promise<boolean> = probeChromeEndpoint,
+): Promise<string | null> {
+  const endpoint = await readEndpoint();
+  return endpoint && (await probeEndpoint(endpoint)) ? endpoint : null;
+}
+
+function commandLineArgument(commandLine: string, name: string): string | null {
+  const escapedName = name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const patterns = [
+    new RegExp(`"--${escapedName}=([^"]+)"`, "i"),
+    new RegExp(`--${escapedName}="([^"]+)"`, "i"),
+    new RegExp(`--${escapedName}=([^\\s"]+)`, "i"),
+  ];
+  for (const pattern of patterns) {
+    const match = commandLine.match(pattern);
+    if (match?.[1]) return match[1];
+  }
+  return null;
+}
+
+export function legacyChromeEndpointsFromCommandLines(
+  profilePath: string,
+  commandLines: readonly string[],
+): string[] {
+  const expectedProfile = path.resolve(profilePath).toLocaleLowerCase("en");
+  const endpoints = new Set<string>();
+  for (const commandLine of commandLines) {
+    const userDataDirectory = commandLineArgument(commandLine, "user-data-dir");
+    const rawPort = commandLineArgument(commandLine, "remote-debugging-port");
+    if (!userDataDirectory || !rawPort) continue;
+    if (path.resolve(userDataDirectory).toLocaleLowerCase("en") !== expectedProfile) continue;
+    const port = Number.parseInt(rawPort, 10);
+    if (Number.isInteger(port) && port > 0 && port <= 65_535) {
+      endpoints.add(`http://127.0.0.1:${port}`);
+    }
+  }
+  return [...endpoints];
+}
+
+async function discoverLegacyDedicatedChrome(profilePath: string): Promise<string | null> {
+  if (process.platform !== "win32") return null;
+  const command = [
+    "$items = @(Get-CimInstance Win32_Process -Filter \"Name = 'chrome.exe'\" |",
+    "Select-Object -ExpandProperty CommandLine | Where-Object { $_ });",
+    "ConvertTo-Json -Compress -InputObject $items",
+  ].join(" ");
+  let commandLines: unknown;
+  try {
+    const { stdout } = await execFileAsync(
+      "powershell.exe",
+      ["-NoProfile", "-NonInteractive", "-Command", command],
+      { windowsHide: true, maxBuffer: 1024 * 1024 },
+    );
+    commandLines = JSON.parse(stdout) as unknown;
+  } catch {
+    return null;
+  }
+  if (!Array.isArray(commandLines) || !commandLines.every((item) => typeof item === "string")) {
+    return null;
+  }
+  for (const endpoint of legacyChromeEndpointsFromCommandLines(profilePath, commandLines)) {
+    if (await probeChromeEndpoint(endpoint)) return endpoint;
+  }
+  return null;
+}
+
+export async function assertPartnerStackChromeAvailable(
+  endpoint: string,
+  probeEndpoint: (endpoint: string) => Promise<boolean> = probeChromeEndpoint,
+): Promise<void> {
+  if (!(await probeEndpoint(endpoint))) {
+    throw new Error("The dedicated Chrome browser closed before capture could attach.");
+  }
+}
+
+export async function waitForPartnerStackChromeEndpoint(
+  profilePath: string,
+  timeoutMilliseconds = 60_000,
+  polling: Partial<ChromeEndpointPolling> = {},
+): Promise<string> {
+  const readEndpoint = polling.readEndpoint ?? (() => readDedicatedChromeEndpoint(profilePath));
+  const probeEndpoint = polling.probeEndpoint ?? probeChromeEndpoint;
+  const sleep = polling.sleep ?? defaultSleep;
+  const now = polling.now ?? Date.now;
+  const deadline = now() + timeoutMilliseconds;
+
+  while (now() < deadline) {
+    const endpoint = await readEndpoint();
+    if (endpoint && (await probeEndpoint(endpoint))) return endpoint;
+    await sleep(250);
+  }
+  throw new ChromeEndpointTimeoutError();
+}
+
+async function removeStaleActivePortFile(profilePath: string): Promise<void> {
+  try {
+    await unlink(devToolsActivePortPath(profilePath));
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
+  }
+}
+
+async function dedicatedProfileHasLock(profilePath: string): Promise<boolean> {
+  const lockFiles = ["SingletonLock", "SingletonCookie", "SingletonSocket"];
+  for (const file of lockFiles) {
+    try {
+      await access(path.join(profilePath, file));
+      return true;
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
+    }
+  }
+  return false;
+}
+
+function launchError(child: ChildProcess): Promise<never> {
+  return new Promise((_, reject) => {
+    child.once("error", reject);
+  });
 }
 
 export async function launchPartnerStackBrowser(
@@ -88,22 +217,45 @@ export async function launchPartnerStackBrowser(
 ): Promise<BrowserContext> {
   const profilePath = defaultPartnerStackProfilePath();
   mkdirSync(profilePath, { recursive: true });
-  const debuggingPort = await availableLoopbackPort();
-  const child = spawn(SYSTEM_CHROME_PATH, chromeLaunchArguments(profilePath, debuggingPort), {
-    stdio: "ignore",
-    windowsHide: false,
-  });
+  let endpoint = await discoverExistingPartnerStackChrome(profilePath);
+  endpoint ??= await discoverLegacyDedicatedChrome(profilePath);
+  let child: ChildProcess | null = null;
+
+  if (!endpoint) {
+    await removeStaleActivePortFile(profilePath);
+    child = spawn(SYSTEM_CHROME_PATH, chromeLaunchArguments(profilePath), {
+      stdio: "ignore",
+      windowsHide: false,
+    });
+    try {
+      endpoint = await Promise.race([
+        waitForPartnerStackChromeEndpoint(profilePath),
+        launchError(child),
+      ]);
+    } catch (error) {
+      if (child.exitCode === null) child.kill();
+      if (error instanceof ChromeEndpointTimeoutError) {
+        const profileLocked = await dedicatedProfileHasLock(profilePath);
+        throw new Error(
+          profileLocked
+            ? "The dedicated SaaSElephant Chrome profile is locked or has stale lock artifacts but no usable DevTools endpoint. Close only a visible SaaSElephant PartnerStack Chrome window; if none is open, wait a few seconds and retry."
+            : "Chrome opened, but no usable localhost DevTools endpoint appeared within 60 seconds.",
+        );
+      }
+      throw error;
+    }
+  }
+
   try {
-    const endpoint = await waitForChromeEndpoint(child, debuggingPort);
     await beforeAttach?.();
+    await assertPartnerStackChromeAvailable(endpoint);
     const browser = await chromium.connectOverCDP(endpoint);
     const context = browser.contexts()[0];
     if (!context) throw new Error("Chrome did not expose its user-controlled browser context.");
     if (context.pages().length === 0) await context.newPage();
     return context;
-  } catch (error) {
-    if (child.exitCode === null) child.kill();
-    throw error;
+  } catch {
+    throw new Error("The dedicated Chrome browser became unavailable before capture could attach.");
   }
 }
 
