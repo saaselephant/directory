@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import type { PublishedSoftwareResult } from "@/lib/repositories/software";
 import type { SoftwareSearchResult } from "@/lib/repositories/search";
+import { SoftwareLogo } from "./software-logo";
 
 interface SoftwareCatalogProps {
   result: PublishedSoftwareResult | SoftwareSearchResult;
@@ -82,9 +83,7 @@ export function SoftwareCatalog({
           return (
             <article className="catalog-card catalog-card-compact" key={item.id}>
               <div className="catalog-card-heading">
-                <span className="product-monogram" aria-hidden="true">
-                  {item.name.slice(0, 1)}
-                </span>
+                <SoftwareLogo logo={item.logo} name={item.name} />
                 <div>
                   <h2>
                     <Link href={href}>{item.name}</Link>
@@ -103,9 +102,7 @@ export function SoftwareCatalog({
           <article className="catalog-card" key={item.id}>
             {contextLabel ? <p className="catalog-context">{contextLabel}</p> : null}
             <div className="catalog-card-heading">
-              <span className="product-monogram" aria-hidden="true">
-                {item.name.slice(0, 1)}
-              </span>
+              <SoftwareLogo logo={item.logo} name={item.name} />
               <div>
                 <h2>
                   <Link href={href}>{item.name}</Link>

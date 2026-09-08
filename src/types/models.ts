@@ -16,10 +16,16 @@ export interface PublicCategory {
   description: string | null;
 }
 
+export interface SoftwareLogoDescriptor {
+  src: string;
+  alt: string | null;
+}
+
 export interface SoftwareCatalogItem {
   id: SoftwareId;
   slug: string;
   name: string;
+  logo?: SoftwareLogoDescriptor | null;
   description: string;
   bestFor: string | null;
   pricing: string | null;

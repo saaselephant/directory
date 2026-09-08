@@ -6,6 +6,7 @@ import type { Metadata } from "next";
 import type { PublishedSoftwareDetailResult } from "@/lib/repositories/software";
 import type { PublicCategoriesResult } from "@/lib/repositories/categories";
 import { safeReviewUrl } from "@/lib/security/review-url";
+import { SoftwareLogo } from "../software-logo";
 
 interface SoftwareDetailProps {
   result: Exclude<PublishedSoftwareDetailResult, { status: "not_found" }>;
@@ -79,9 +80,7 @@ export function SoftwareDetail({
         <header className="software-profile-heading">
           <p className="eyebrow">Software overview</p>
           <div className="product-title">
-            <span className="product-monogram" aria-hidden="true">
-              {softwareName.slice(0, 1)}
-            </span>
+            <SoftwareLogo logo={item.logo} name={softwareName} />
             <h1>{softwareName}</h1>
           </div>
           {vendorName ? <p className="software-detail-vendor">by {vendorName}</p> : null}
