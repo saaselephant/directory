@@ -309,6 +309,44 @@ describe("Product Factory", () => {
     });
   });
 
+  it("merges multiple acquired excerpts from the same official URL", () => {
+    const input = candidate({
+      description: {
+        value: "Plan projects with shared boards and automate team workflows.",
+        citations: citation("Plan projects with shared boards."),
+      },
+      capabilities: [
+        {
+          value: "Shared project boards",
+          citations: citation("shared boards"),
+        },
+        {
+          value: "Workflow automation",
+          citations: citation("automate team workflows"),
+        },
+      ],
+      evidence: [
+        {
+          url: sourceUrl,
+          retrievedAt,
+          sourceType: "official_product",
+          httpStatus: 200,
+          content:
+            "Example Product is made by Example Inc. Plan projects with shared boards. Project management helps teams coordinate work.",
+        },
+        {
+          url: sourceUrl,
+          retrievedAt,
+          sourceType: "official_product",
+          httpStatus: 200,
+          content: "Automate team workflows. Pricing starts at $10 per user.",
+        },
+      ],
+    });
+
+    expect(processProductCandidate(input, context).decision).toBe("READY");
+  });
+
   it("uses an injected evidence acquirer before the same quality gate", async () => {
     const { evidence, ...discovered } = candidate();
     const batch = await acquireAndRunProductFactoryBatch([discovered], context, {

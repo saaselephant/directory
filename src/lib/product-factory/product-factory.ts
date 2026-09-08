@@ -338,7 +338,16 @@ export function processProductCandidate(
         validRetrievedAt(evidence.retrievedAt) &&
         sourceIsOfficial(evidenceUrl, officialDomain)
       ) {
-        evidenceByUrl.set(evidenceUrl, evidence);
+        const existing = evidenceByUrl.get(evidenceUrl);
+        evidenceByUrl.set(
+          evidenceUrl,
+          existing
+            ? {
+                ...existing,
+                content: `${existing.content}\n${evidence.content}`,
+              }
+            : evidence,
+        );
       }
     }
   }
