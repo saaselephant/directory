@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 
 import type { SoftwareLogoDescriptor } from "@/types/models";
 
@@ -18,9 +19,12 @@ export function SoftwareLogo({ name, logo }: SoftwareLogoProps) {
   return (
     <span className="product-monogram">
       {showLogo ? (
-        <img
+        <Image
+          width={64}
+          height={64}
+          unoptimized
           className="software-logo-image"
-          src={logoSrc}
+          src={logoSrc!}
           alt={logo?.alt ?? ""}
           decoding="async"
           loading="lazy"

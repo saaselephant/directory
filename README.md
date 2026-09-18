@@ -1,56 +1,49 @@
-# SaaSElephant V1
+# SaaSElephant
 
-SaaSElephant is evolving from a static software-directory prototype into a user-first
-software discovery, comparison, and affiliate platform.
+A Next.js software discovery directory in the Pralka Tech ecosystem. Public browsing
+requires no account. Supabase provides the published catalog, categories, editorial
+roles and private affiliate configuration. This is an established product, not a starter.
 
-The original static prototype remains preserved at the repository root in `index.html`
-and in Git history. The Next.js application introduced in Phase 1 is intentionally a
-small foundation; it does not read from or write to Supabase yet.
+## Runtime and development
 
-## Requirements
+Node 22+ (CI: 24), pnpm 11.19.0, Next.js 16.3.3, React 19.2.3.
+Use the committed lockfile: `pnpm install --frozen-lockfile`.
+Copy `.env.example` to `.env.local` and set the two public Supabase variables.
+`pnpm dev` starts the application. If Windows Application Control blocks native SWC,
+use `pnpm dev --webpack`; do not weaken the machine's security policy.
 
-- Node.js 22 or newer
-- pnpm 10 or newer
+- `NEXT_PUBLIC_SUPABASE_URL`: Supabase project endpoint.
+- `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`: public API key, constrained by RLS.
+- `SITE_URL`: optional canonical HTTPS origin; defaults to the existing sitemap's
+  `https://saaselephant.com`. The legacy root CNAME is not deployment authority.
 
-## Local development
+The runtime uses public credentials and authenticated admin sessions, never a service-role key.
 
-1. Copy `.env.example` to `.env.local`.
-2. Populate only the public Supabase variables when a future route needs them. Do not
-   commit `.env.local`.
-3. Install dependencies with `pnpm install`.
-4. Start the application with `pnpm dev`.
+## Capabilities
 
-The starter routes are available at `/`, `/software`, `/admin`, and `/api/health`.
+- `/`: search-led discovery and alphabetical six-product shelf.
+- `/software`, `/categories`, and their slug routes: published catalog, filters,
+  pagination, product essentials and related software.
+- `/go/[slug]`: server-side eligible affiliate routing with official-site fallback.
+- `/privacy`, `/terms`, `/contact`: factual public information; contact remains an
+  owner decision, not a functioning enquiry form.
+- `/admin`: authenticated editorial verification and publication.
+- `/sitemap.xml`: paginated published software/category inventory; fails on database
+  errors rather than returning a misleading partial catalog.
+- `/api/health`: application liveness only, not a database readiness check.
 
-## Environment variables
+Product Factory and Logo Factory remain operator-driven tools. The latest recorded
+catalog milestone is 507 published products (September 9, 2026), not a live count.
+353 local product logos are mapped by the generated manifest; other products use initials.
+The original `index.html` and CNAME are legacy artifacts outside the Next application.
 
-- `NEXT_PUBLIC_SUPABASE_URL`: public Supabase project URL.
-- `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`: browser-safe Supabase publishable key.
+## Verification
 
-Application runtime uses only public Supabase configuration and authenticated user sessions.
-There is no service-role key or alternative privileged runtime secret. Private software
-review/history uses fixed database functions that authorize the active platform administrator.
+`pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build`.
+CI runs these on pull requests and pushes to `main` and `v1-platform`.
+On machines without permitted native SWC, verify with `pnpm build --webpack`.
+An access-denied error resolving an installed dependency is an environment problem;
+do not change dependency versions to conceal it.
 
-## Quality checks
-
-```text
-pnpm typecheck
-pnpm lint
-pnpm test
-pnpm build
-pnpm format
-```
-
-GitHub Actions runs installation, type-checking, linting, production build, and tests
-for pull requests and pushes to `main` and `v1-platform`.
-
-## Architecture boundaries
-
-- `app/(public)`: public discovery routes.
-- `app/admin`: future protected editorial routes.
-- `app/api`: server-only HTTP endpoints, beginning with health monitoring.
-- `src/lib/supabase/client.ts`: browser-safe Supabase client factory.
-- `src/lib/supabase/server.ts`: server-only configuration boundary for future privileged
-  work.
-- Future schema migrations will live under `supabase/migrations`; Phase 1 makes no
-  database connection or change.
+See [current handoff](docs/current-state-handoff.md) for closure evidence and external decisions.
+Historical checkpoint files and migration records are historical evidence, not current runtime guarantees.

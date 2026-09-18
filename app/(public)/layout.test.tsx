@@ -6,24 +6,25 @@ import { describe, expect, it, vi } from "vitest";
 import PublicLayout from "./layout";
 
 vi.mock("next/navigation", () => ({ usePathname: () => "/" }));
+vi.mock("@/lib/repositories/categories", () => ({
+  listPublicCategories: async () => ({ status: "empty", categories: [] }),
+  listPublishedSoftwareByCategorySlug: vi.fn(),
+}));
 
 describe("public application shell", () => {
-  it("renders internal public navigation without advertising Admin", () => {
-    const html = renderToStaticMarkup(
-      <PublicLayout>
-        <main>Route content</main>
-      </PublicLayout>,
-    );
+  it("renders internal public navigation without advertising Admin", async () => {
+    const html = renderToStaticMarkup(await PublicLayout({ children: <main>Route content</main> }));
 
     expect(html).toContain('aria-label="Primary navigation"');
     expect(html).toContain('href="/"');
     expect(html).toContain('href="/software"');
-    expect(html).toContain('href="/categories"');
+    expect(html).toContain("Categories");
     expect(html).toContain("Route content");
     expect(html).toContain(String(new Date().getFullYear()));
     expect(html).toContain("Skip to content");
-    expect(html).toContain("saaselephant-logo.png");
-    expect(html).not.toContain("brand-mark");
+    expect(html).toContain("SaaSElephantLogo2026.png");
+    expect(html).toContain("tuskey-mark.png");
+    for (const route of ["privacy", "terms", "contact"]) expect(html).toContain(`href="/${route}"`);
     expect(html).toContain("through certain links, at no additional cost to you");
     expect(html).not.toMatch(/href="\/admin|Admin preview/);
   });

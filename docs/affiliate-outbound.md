@@ -57,3 +57,20 @@ is business context, not an instruction for this batch to mutate production.
 There is no isolated database permission-test runner in this repository. Local tests
 cover application behavior and migration source contracts, not executed PostgreSQL
 eligibility or gateway response behavior.
+
+## Production logging discrepancy — finishing-pass closeout
+
+The checked-in outbound migration and resolver do not write click events. Local
+checkpoint 24 says the production redirect function was upgraded to log to
+`affiliate_clicks`, but provides neither the exact function definition nor a migration.
+Consequently production logging is UNKNOWN, not proven absent or complete.
+
+Owner/authorized database operator follow-up: inspect the deployed function definition,
+its grants/RLS, recorded event fields and retention, and compare it with this migration.
+If the deployed change is intended, capture the reviewed definition in a NEW migration
+with executed database permission/behavior verification. Do not edit historical migrations,
+replay guessed SQL, or generate real affiliate clicks merely to test tracking.
+
+The temporary direct Sovrn link on the Pipedrive profile is retained because there is
+no evidence that onboarding has completed. The main product CTA still uses `/go/pipedrive`.
+Remove the temporary link only after the owner confirms it is no longer required.

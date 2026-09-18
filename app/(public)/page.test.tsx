@@ -1,41 +1,37 @@
 import { renderToStaticMarkup } from "react-dom/server";
-import { beforeEach, describe, expect, it, vi } from "vitest";
-const mocks = vi.hoisted(() => ({ categories: vi.fn() }));
-vi.mock("@/lib/repositories/categories", () => ({ listPublicCategories: mocks.categories }));
+import { describe, expect, it, vi } from "vitest";
+const mocks = vi.hoisted(() => ({ software: vi.fn() }));
+vi.mock("@/lib/repositories/software", () => ({ listPublishedSoftware: mocks.software }));
 import HomePage from "./page";
 describe("public homepage", () => {
-  beforeEach(() => mocks.categories.mockResolvedValue({ status: "empty", categories: [] }));
-  it("offers both discovery paths and a complete intentional empty homepage", async () => {
+  it("keeps search available with an intentional empty catalog", async () => {
+    mocks.software.mockResolvedValue({ status: "empty", items: [] });
     const html = renderToStaticMarkup(await HomePage());
-    expect(html).toContain("Your Elephant-Sized");
-    expect(html).toContain("saaselephant-elephant.png");
-    expect(html).toContain("Store of Software");
-    expect(html).toContain("Browse Software");
-    expect(html).toContain("Browse Categories");
-    expect(html).toContain("How SaaSElephant works");
-    expect(html).toContain("preparing the first software categories");
-    expect(html).not.toMatch(
-      /href="\/admin|Future tracked|Platform foundation|Editorial operations/,
-    );
+    expect(html).toContain('action="/software"');
+    expect(html).toContain('name="q"');
+    expect(html).toContain("preparing the first software recommendations");
+    expect(html).not.toContain("/admin");
   });
-  it("uses only returned public categories, capped at six", async () => {
-    mocks.categories.mockResolvedValue({
+  it("caps the alphabetical shelf at six returned products", async () => {
+    mocks.software.mockResolvedValue({
       status: "success",
-      categories: Array.from({ length: 8 }, (_, index) => ({
-        slug: "category-" + index,
-        name: "Category " + index,
-        description: null,
+      items: Array.from({ length: 8 }, (_, i) => ({
+        id: String(i),
+        slug: `product-${i}`,
+        name: `Product ${i}`,
+        description: "Useful software",
+        vendor: { name: "Vendor" },
       })),
     });
     const html = renderToStaticMarkup(await HomePage());
-    expect(html).toContain('href="/categories/category-5"');
-    expect(html).not.toContain('href="/categories/category-6"');
+    expect(html).toContain("Product 5");
+    expect(html).not.toContain("Product 6");
   });
-  it("keeps discovery available when category reads fail without leaking diagnostics", async () => {
-    mocks.categories.mockResolvedValue({ status: "error", error: { message: "secret SQL" } });
+  it("does not expose database diagnostics when catalog reads fail", async () => {
+    mocks.software.mockResolvedValue({ status: "error", error: { message: "secret SQL" } });
     const html = renderToStaticMarkup(await HomePage());
-    expect(html).toContain("Browse Software");
-    expect(html).toContain("couldn&#x27;t load the category directory");
+    expect(html).toContain('action="/software"');
+    expect(html).toContain("load the software directory");
     expect(html).not.toContain("secret SQL");
   });
 });

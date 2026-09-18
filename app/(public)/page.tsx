@@ -1,14 +1,15 @@
+import { publicMetadata } from "@/lib/config/site";
 import { listPublishedSoftware } from "@/lib/repositories/software";
 import { SoftwareCatalog } from "./software/software-catalog";
 import { FeaturedSoftwareShelf } from "./featured-software-shelf";
 import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
-export const metadata: Metadata = {
-  title: "Business software discovery",
-  description:
-    "Discover, compare and choose software for your business. Explore SaaSElephant by product or category and take your next step with the vendor.",
-};
+export const metadata: Metadata = publicMetadata(
+  "Business software discovery",
+  "Discover, compare and choose software for your business. Explore SaaSElephant by product or category and take your next step with the vendor.",
+  "/",
+);
 
 export default async function HomePage() {
   const software = await listPublishedSoftware();
@@ -117,7 +118,6 @@ export default async function HomePage() {
               />
             </FeaturedSoftwareShelf>
           </section>
-
         </div>
       </div>
     </main>

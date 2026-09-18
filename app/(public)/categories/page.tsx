@@ -1,3 +1,4 @@
+import { publicMetadata } from "@/lib/config/site";
 import { Breadcrumbs, DiscoveryNext } from "../discovery";
 import type { Metadata } from "next";
 
@@ -7,10 +8,11 @@ import { CategoryList } from "./category-list";
 
 export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = {
-  title: "Software categories",
-  description: "Find business software by category and explore tools for the work you do.",
-};
+export const metadata: Metadata = publicMetadata(
+  "Software categories",
+  "Find business software by category and explore tools for the work you do.",
+  "/categories",
+);
 
 export default async function CategoriesPage() {
   const result = await listPublicCategories();

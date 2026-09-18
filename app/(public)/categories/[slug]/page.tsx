@@ -1,3 +1,4 @@
+import { publicMetadata } from "@/lib/config/site";
 import { cache } from "react";
 import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
@@ -9,7 +10,7 @@ import {
 } from "@/lib/repositories/categories";
 import { SOFTWARE_PAGE_SIZE, paginationHref, parsePageParam } from "../../pagination";
 
-import { buildCategoryMetadata, CategoryDetail } from "./category-detail";
+import { CategoryDetail } from "./category-detail";
 
 export const dynamic = "force-dynamic";
 
@@ -23,7 +24,11 @@ const getCategory = cache(getPublicCategoryBySlug);
 export async function generateMetadata({ params }: CategoryPageProps): Promise<Metadata> {
   const result = await getCategory((await params).slug);
   return result.status === "success"
-    ? buildCategoryMetadata(result.category)
+    ? publicMetadata(
+        result.category.name,
+        result.category.description ?? `Browse ${result.category.name} software on SaaSElephant.`,
+        `/categories/${encodeURIComponent(result.category.slug)}`,
+      )
     : { title: "Software categories" };
 }
 

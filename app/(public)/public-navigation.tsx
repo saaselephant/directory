@@ -34,10 +34,12 @@ interface SoftwareIndexResponse {
   availableLetters?: string[];
 }
 
-export function PublicNavigation({
-  categories = [],
-  categorySoftware = {},
-}: PublicNavigationProps) {
+export function PublicNavigation(props: PublicNavigationProps) {
+  const pathname = usePathname();
+  return <NavigationContents key={pathname} {...props} />;
+}
+
+function NavigationContents({ categories = [], categorySoftware = {} }: PublicNavigationProps) {
   const pathname = usePathname();
   const navigationRef = useRef<HTMLUListElement>(null);
   const categoryNavigationRef = useRef<HTMLUListElement>(null);
@@ -49,8 +51,10 @@ export function PublicNavigation({
   const [availableInitials, setAvailableInitials] = useState<string[]>([]);
   const [initialsLoaded, setInitialsLoaded] = useState(false);
   const [loadedIndexKey, setLoadedIndexKey] = useState<string | null>(null);
-  const [softwareIndexError, setSoftwareIndexError] = useState<string | null>(null);
-  const [softwareIndexLoading, setSoftwareIndexLoading] = useState(false);
+  const [indexError, setIndexError] = useState<{ key: string; message: string } | null>(null);
+  const indexKey = `${selectedInitial}:${softwareIndexPage}`;
+  const softwareIndexError = indexError?.key === indexKey ? indexError.message : null;
+  const softwareIndexLoading = loadedIndexKey !== indexKey && !softwareIndexError;
   const [softwareIndexRequest, setSoftwareIndexRequest] = useState(0);
   const categoryGroups = [
     "Run your business",
@@ -63,8 +67,6 @@ export function PublicNavigation({
       categories: categories.filter((category) => categoryGroup(category) === name),
     }))
     .filter((group) => group.categories.length);
-
-  useEffect(() => setOpenMenu(null), [pathname]);
 
   useEffect(() => {
     function closeOutside(event: PointerEvent) {
@@ -81,8 +83,7 @@ export function PublicNavigation({
         const trigger =
           categoryNavigationRef.current?.querySelector<HTMLButtonElement>(
             '[aria-expanded="true"]',
-          ) ??
-          navigationRef.current?.querySelector<HTMLButtonElement>('[aria-expanded="true"]');
+          ) ?? navigationRef.current?.querySelector<HTMLButtonElement>('[aria-expanded="true"]');
         trigger?.focus();
         setOpenMenu(null);
       }
@@ -108,8 +109,6 @@ export function PublicNavigation({
     });
     if (!initialsLoaded) params.set("includeLetters", "1");
 
-    setSoftwareIndexLoading(true);
-    setSoftwareIndexError(null);
     fetch(`/api/software-index?${params}`, { signal: controller.signal })
       .then(async (response) => {
         if (!response.ok) {
@@ -119,6 +118,8 @@ export function PublicNavigation({
         return response.json() as Promise<SoftwareIndexResponse>;
       })
       .then((result) => {
+        if (controller.signal.aborted) return;
+        setIndexError(null);
         setSoftwareIndex(result);
         if (result.availableLetters) {
           setAvailableInitials(result.availableLetters);
@@ -128,12 +129,11 @@ export function PublicNavigation({
       })
       .catch((error: unknown) => {
         if (error instanceof DOMException && error.name === "AbortError") return;
-        setSoftwareIndexError(
-          error instanceof Error ? error.message : "Unable to load the software index.",
-        );
-      })
-      .finally(() => {
-        if (!controller.signal.aborted) setSoftwareIndexLoading(false);
+        if (!controller.signal.aborted)
+          setIndexError({
+            key: indexKey,
+            message: error instanceof Error ? error.message : "Unable to load the software index.",
+          });
       });
 
     return () => controller.abort();
@@ -237,9 +237,7 @@ export function PublicNavigation({
             aria-haspopup="true"
             onClick={() => {
               cancelScheduledClose();
-              setOpenMenu((current) =>
-                current === ALL_SOFTWARE_MENU ? null : ALL_SOFTWARE_MENU,
-              );
+              setOpenMenu((current) => (current === ALL_SOFTWARE_MENU ? null : ALL_SOFTWARE_MENU));
             }}
           >
             All Softwares {chevron}
@@ -287,7 +285,10 @@ export function PublicNavigation({
                     <p>{softwareIndexError}</p>
                     <button
                       type="button"
-                      onClick={() => setSoftwareIndexRequest((request) => request + 1)}
+                      onClick={() => {
+                        setIndexError(null);
+                        setSoftwareIndexRequest((request) => request + 1);
+                      }}
                     >
                       Try again
                     </button>
@@ -325,8 +326,7 @@ export function PublicNavigation({
                 <button
                   type="button"
                   disabled={
-                    softwareIndexLoading ||
-                    softwareIndexPage >= (softwareIndex?.totalPages ?? 1)
+                    softwareIndexLoading || softwareIndexPage >= (softwareIndex?.totalPages ?? 1)
                   }
                   onClick={() => {
                     setSoftwareIndexPage((page) =>

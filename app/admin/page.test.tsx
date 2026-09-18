@@ -23,13 +23,13 @@ describe("AdminPage access boundary", () => {
 
   it("redirects unauthenticated visitors to sign-in", async () => {
     mocks.requireAdmin.mockResolvedValue({ status: "unauthenticated" });
-    await expect(AdminPage()).rejects.toThrow("REDIRECT:/admin/sign-in");
+    await expect(AdminPage({})).rejects.toThrow("REDIRECT:/admin/sign-in");
     expect(mocks.getAdminDashboard).not.toHaveBeenCalled();
   });
 
   it("does not load admin data for an authenticated non-admin", async () => {
     mocks.requireAdmin.mockResolvedValue({ status: "forbidden" });
-    const page = await AdminPage();
+    const page = await AdminPage({});
     expect(page.props.children).toBeTruthy();
     expect(mocks.getAdminDashboard).not.toHaveBeenCalled();
   });
@@ -47,7 +47,7 @@ describe("AdminPage access boundary", () => {
         categoriesPublished: [],
       },
     });
-    await AdminPage();
+    await AdminPage({});
     expect(mocks.getAdminDashboard).toHaveBeenCalledWith(client);
   });
 

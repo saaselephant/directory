@@ -33,3 +33,11 @@ No HubSpot or Notion software slug/category is inferred from affiliate-program p
   is not included in current public column grants, so this UI batch does not request
   it or weaken permissions. The existing short description is shown instead.
 - Empty public directories remain intentional until those publication decisions occur.
+
+## Current-state clarification (September 2026 finishing pass)
+
+The launch shortlist above records an earlier, pre-publication phase. It is retained
+as historical evidence, not a current launch requirement. Checkpoint 25 records 507
+published products; the committed Logo Factory report considers 507 products. Check
+the production inventory before making any statement about the current live count.
+Do not repeat the old first-publication process or reimport the catalog.

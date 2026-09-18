@@ -22,9 +22,7 @@ const RESULT_MESSAGES: Record<string, string> = {
   verification_unavailable: "Verification is unavailable.",
 };
 
-export default async function AdminPage({
-  searchParams = Promise.resolve({}),
-}: AdminPageProps = {}) {
+export default async function AdminPage({ searchParams = Promise.resolve({}) }: AdminPageProps) {
   const authorization = await requireAdmin();
 
   if (authorization.status === "unauthenticated") {

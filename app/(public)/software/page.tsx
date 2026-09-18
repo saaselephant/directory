@@ -1,3 +1,4 @@
+import { publicMetadata } from "@/lib/config/site";
 import Link from "next/link";
 import { Breadcrumbs, DiscoveryNext, MarketplaceGlyph } from "../discovery";
 import type { Metadata } from "next";
@@ -10,11 +11,11 @@ import { SoftwareCatalog } from "./software-catalog";
 import { SoftwareFilters } from "./software-filters";
 
 export const dynamic = "force-dynamic";
-export const metadata: Metadata = {
-  title: "Software directory",
-  description:
-    "Browse business software on SaaSElephant. Search by product, vendor or use case and compare pricing and available plans.",
-};
+export const metadata: Metadata = publicMetadata(
+  "Software directory",
+  "Browse business software on SaaSElephant. Search by product, vendor or use case and compare pricing and available plans.",
+  "/software",
+);
 
 interface SoftwareIndexPageProps {
   searchParams: Promise<{

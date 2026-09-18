@@ -34,7 +34,10 @@ export function FeaturedSoftwareShelf({ children }: { children: ReactNode }) {
     const card = viewport?.querySelector<HTMLElement>(".catalog-card");
     if (!viewport || !card) return;
     const gap = Number.parseFloat(getComputedStyle(viewport).columnGap) || 0;
-    viewport.scrollBy({ left: direction * (card.offsetWidth + gap), behavior: "smooth" });
+    viewport.scrollBy({
+      left: direction * (card.offsetWidth + gap),
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
+    });
   }
 
   return (

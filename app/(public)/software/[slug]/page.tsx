@@ -1,3 +1,4 @@
+import { publicMetadata } from "@/lib/config/site";
 import { cache } from "react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -8,7 +9,7 @@ import {
   listPublishedSoftwareByCategorySlug,
 } from "@/lib/repositories/categories";
 
-import { buildSoftwareMetadata, SoftwareDetail } from "./software-detail";
+import { SoftwareDetail } from "./software-detail";
 
 export const dynamic = "force-dynamic";
 
@@ -27,7 +28,11 @@ export async function generateMetadata({ params }: SoftwareDetailPageProps): Pro
     return { title: "Software directory" };
   }
 
-  return buildSoftwareMetadata(result.item);
+  return publicMetadata(
+    result.item.name,
+    result.item.description,
+    `/software/${encodeURIComponent(result.item.slug)}`,
+  );
 }
 
 export default async function SoftwareDetailPage({

@@ -2354,3 +2354,306 @@
     transform: none;
   }
 }
+
+/* Final family signature and fluid desktop scale; preserve the marketplace palette. */
+.public-shell {
+  --page-width: clamp(80rem, 84vw, 100rem);
+  --family-spectrum: linear-gradient(
+    90deg,
+    #0874c9,
+    #42bacb 28%,
+    #7270c9 52%,
+    #c579a4 73%,
+    #d6b26b
+  );
+}
+.public-shell .public-nav,
+.public-shell .marketplace-workspace,
+.public-shell .catalog-page,
+.public-shell .software-detail-page {
+  max-width: var(--page-width);
+}
+.public-shell .public-header {
+  border-bottom: 0;
+}
+.public-shell .public-header::before,
+.public-shell .public-footer::before {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 2px;
+  background: var(--family-spectrum);
+  pointer-events: none;
+}
+.public-shell .public-nav {
+  gap: clamp(1rem, 1.7vw, 2rem);
+}
+.public-shell .tuskey-signature-compact {
+  margin-left: auto;
+  flex: 0 0 auto;
+}
+.tuskey-signature {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+.tuskey-coin {
+  position: relative;
+  display: block;
+  flex: 0 0 auto;
+  width: 3.6rem;
+  height: 3.6rem;
+  border-radius: 50%;
+  background: radial-gradient(circle, #d8ad4524 40%, transparent 72%);
+  box-shadow: 0 0 20px 2px #b98a2520;
+}
+.tuskey-coin img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+.tuskey-coin::after {
+  content: "";
+  position: absolute;
+  inset: 5%;
+  border-radius: 50%;
+  pointer-events: none;
+  background: linear-gradient(
+    112deg,
+    transparent 35%,
+    #fff3c535 48%,
+    #fff7da55 50%,
+    transparent 64%
+  );
+  background-size: 350% 100%;
+  background-position: 100% 0;
+  animation: tuskey-light 4.8s ease-in-out infinite;
+}
+@keyframes tuskey-light {
+  0% {
+    background-position: 100% 0;
+    opacity: 0;
+  }
+  5% {
+    opacity: 0.65;
+  }
+  30% {
+    opacity: 0.65;
+  }
+  35.4167%,
+  100% {
+    background-position: 0 0;
+    opacity: 0;
+  }
+}
+.tuskey-signature-compact .tuskey-coin {
+  width: 2.75rem;
+  height: 2.75rem;
+}
+.tuskey-identity {
+  display: grid;
+  gap: 0.1rem;
+}
+.tuskey-identity strong {
+  font-size: 0.82rem;
+  letter-spacing: 0.09em;
+  color: #473919;
+}
+.tuskey-identity > span {
+  color: #66707a;
+  font-size: 0.8rem;
+}
+.public-shell .public-footer {
+  display: block;
+  position: relative;
+  padding: 2.25rem 2rem 1rem;
+  background: linear-gradient(115deg, #f5f8fb, #f8f9fa);
+  border: 0;
+}
+.public-shell .public-footer::before {
+  inset: 0 0 auto;
+}
+.footer-inner {
+  max-width: calc(var(--page-width) - 4rem);
+  margin-inline: auto;
+}
+.public-shell .footer-description {
+  max-width: none;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+}
+.public-shell .footer-left {
+  max-width: 34rem;
+}
+.public-shell .footer-logo-img {
+  width: 145px;
+}
+.public-shell .affiliate-disclosure {
+  font-size: 0.8rem;
+  line-height: 1.65;
+  color: var(--muted);
+}
+.footer-ecosystem {
+  flex-shrink: 0;
+}
+.public-shell .footer-ecosystem p {
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin: 0.65rem 0 0;
+}
+.footer-bottom {
+  border-top: 1px solid #dce3e9;
+  margin-top: 1.5rem;
+  padding-top: 0.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.footer-bottom small {
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+.public-shell .footer-bottom nav {
+  display: flex;
+  gap: 1.4rem;
+  flex-wrap: wrap;
+}
+.public-shell .footer-bottom a {
+  font-size: 0.8rem;
+  min-height: 44px;
+  text-decoration: none;
+}
+.public-shell .footer-bottom a:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.25em;
+}
+.public-shell .information-page {
+  max-width: 64rem;
+  margin: 0 auto;
+  padding: clamp(2rem, 4vw, 4rem) 2rem;
+  min-height: 60vh;
+}
+.public-shell .information-page h1 {
+  font-size: clamp(2.2rem, 4vw, 3.5rem);
+}
+.public-shell .information-page .lede {
+  max-width: 44rem;
+}
+.information-content {
+  max-width: 46rem;
+  margin-top: 2.5rem;
+}
+.information-content section + section {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+.public-shell .information-content h2 {
+  font-size: 1.25rem;
+  margin-bottom: 0.75rem;
+}
+.information-content p {
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.8;
+}
+.information-content a {
+  text-underline-offset: 0.2em;
+}
+@media (min-width: 90rem) {
+  .public-shell .workspace-main {
+    padding-block: 1.5rem 3rem;
+  }
+  .public-shell .workspace-intro {
+    padding-block: clamp(1.75rem, 2.5vw, 3rem);
+  }
+  .public-shell .workspace-intro-layout {
+    gap: clamp(2rem, 4vw, 4.5rem);
+  }
+  .public-shell .workspace-intro h1 {
+    font-size: clamp(2.65rem, 3vw, 3.6rem);
+    max-width: 23ch;
+  }
+  .public-shell .workspace-search {
+    max-width: 46rem;
+  }
+  .public-shell .workspace-featured {
+    margin-top: 1.75rem;
+  }
+  .public-shell .catalog-grid {
+    gap: 1.15rem;
+  }
+  .public-shell .catalog-card-link {
+    padding: 1.25rem;
+  }
+}
+@media (min-width: 105rem) {
+  .public-shell .catalog-grid:not(.catalog-grid-compact) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+@media (max-width: 75rem) {
+  .public-shell .tuskey-signature-compact {
+    margin-left: 0;
+  }
+}
+@media (max-width: 48rem) {
+  .public-shell .public-nav {
+    column-gap: 0.75rem;
+  }
+  .public-shell .tuskey-signature-compact {
+    margin-left: auto;
+  }
+  .public-shell .public-footer {
+    padding: 1.75rem 1.25rem 0.75rem;
+  }
+  .public-shell .footer-description {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  .footer-bottom {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+  .public-shell .information-page {
+    padding: 2rem 1.25rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tuskey-coin::after {
+    animation: none;
+    opacity: 0;
+  }
+}
+
+/* Keep decoration inside the narrow canvas and the header divider attached to it. */
+@media (max-width: 48rem) {
+  .public-shell .public-header {
+    position: relative;
+  }
+  .public-shell .workspace-featured::before {
+    inset-inline: 0;
+  }
+}
+.public-shell .featured-shelf-viewport .catalog-card-compact {
+  min-height: 5rem;
+}
+@media (min-width: 90rem) {
+  .public-shell .discovery-path h2 {
+    font-size: 1rem;
+  }
+  .public-shell .discovery-path li p {
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+  .public-shell .discovery-trust li {
+    font-size: 0.75rem;
+  }
+}
