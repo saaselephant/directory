@@ -13,7 +13,7 @@ export function InformationPage({
     <main className="information-page">
       <Breadcrumbs items={[{ label: title }]} />
       <header>
-        <p className="eyebrow">SaaSElephant™</p>
+        <p className="eyebrow">SaaSElephant</p>
         <h1>{title}</h1>
         <p className="lede">{introduction}</p>
       </header>

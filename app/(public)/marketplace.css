@@ -2382,8 +2382,37 @@
   position: absolute;
   inset: auto 0 0;
   height: 2px;
-  background: var(--family-spectrum);
+  background: linear-gradient(
+    90deg,
+    #0874c9 0%,
+    #42bacb 14%,
+    #7270c9 26%,
+    #c579a4 36%,
+    #d6b26b 50%,
+    #c579a4 64%,
+    #7270c9 74%,
+    #42bacb 86%,
+    #0874c9 100%
+  );
+  background-size: 200% 100%;
+  animation: family-spectrum-flow 2.8s linear infinite;
   pointer-events: none;
+}
+/* Matching endpoints repeat seamlessly; only the gradient travels, not the line. */
+@keyframes family-spectrum-flow {
+  from {
+    background-position: 0% 0;
+  }
+  to {
+    background-position: 200% 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .public-shell .public-header::before,
+  .public-shell .public-footer::before {
+    animation: none;
+    background: var(--family-spectrum);
+  }
 }
 .public-shell .public-nav {
   gap: clamp(1rem, 1.7vw, 2rem);

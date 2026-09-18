@@ -90,7 +90,7 @@ export default async function PublicLayout({ children }: Readonly<{ children: Re
             </div>
           </div>
           <div className="footer-bottom">
-            <small>© {new Date().getFullYear()} SaaSElephant™. All rights reserved.</small>
+            <small>© {new Date().getFullYear()} SaaSElephant. All rights reserved.</small>
             <nav aria-label="Footer">
               <Link href="/privacy">Privacy</Link>
               <Link href="/terms">Terms</Link>

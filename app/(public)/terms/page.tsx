@@ -14,7 +14,7 @@ export default function TermsPage() {
       <section>
         <h2>About the directory</h2>
         <p>
-          SaaSElephant™ helps you discover third-party software and review product essentials.
+          SaaSElephant helps you discover third-party software and review product essentials.
           Listings are informational and do not guarantee that a product will meet your
           requirements. Search is a catalog search, not personalized professional advice.
         </p>
@@ -47,7 +47,7 @@ export default function TermsPage() {
         <h2>Responsible use and identities</h2>
         <p>
           Do not misuse the service, attempt unauthorized access or disrupt availability.
-          SaaSElephant™, TUSKEY AI™ and Pralka Tech™ identify their respective product and ecosystem
+          SaaSElephant, TUSKEY AI™ and Pralka Tech™ identify their respective product and ecosystem
           roles. Third-party names and logos belong to their respective owners.
         </p>
       </section>
